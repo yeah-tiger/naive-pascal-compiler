@@ -9,6 +9,20 @@ var
     i, sum: integer;
     j: char;
     arr: array[1..10] of integer;
+function myabs(x: real):real;
+var ret: real;
+begin
+    if x >= 0 then ret := x
+    else ret := -x;
+    myabs := ret;
+end;
+procedure calcAbs(x:real);
+var r: real;
+begin
+    r := myabs(x);
+    if r <> x then write('x < 0')
+    else write('x > 0');
+end;
 begin
     readln(r);
     readln(x);

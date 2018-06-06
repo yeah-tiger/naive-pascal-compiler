@@ -176,6 +176,7 @@ term: term MUL factor
 ;
 factor: NAME
     | NAME LP args_list RP
+    | ID LP args_list RP            /* FUNCTION is parsed as ID */
     | SYS_FUNCT
     | SYS_FUNCT LP args_list RP
     | const_value
