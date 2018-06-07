@@ -8,8 +8,10 @@
 
 class AbstractNode
 {
-    virtual ~AbstractNode() = 0
-    {};
+public:
+    virtual ~AbstractNode() = default;
+
+    virtual void codegen() = 0;
 };
 
 

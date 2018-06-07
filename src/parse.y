@@ -1,6 +1,8 @@
 %{
     #include <cstdio>
     #include <cstdlib>
+    #include <memory>
+    #include <utility>
     int yylex();
     int yyerror(const char *s);
 %}
@@ -193,6 +195,8 @@ args_list: args_list COMMA expression
 
 %%
 
+/*
 int main() {
     yyparse();
 }
+*/

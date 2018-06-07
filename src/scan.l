@@ -1,6 +1,5 @@
 %{
-    #include <stdio.h>
-    #include <stdbool.h>
+    #include <cstdio>
     #include "y.tab.h"
 
     int line_no;
@@ -130,11 +129,14 @@ NQUOTE [^']
 "*"                 return MUL;
 "{"    {
     int c;
-    while ((c = input())) {
+    while ((c = yyinput())) {
         if (c == '}') break;
         else if (c == '*') {
-            if ((c = input()) == ')') break;
-            else unput (c);
+            if ((c = yyinput()) == ')') {
+                break;
+            } else {
+                unput(c);
+            }
         } else if (c == '\n') line_no++;
         else if (c == 0) commenteof();
     }
