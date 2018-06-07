@@ -19,6 +19,6 @@ set(SOURCE_FILES
         src/parse.g.cpp
         src/abstract_node.cpp
         src/abstract_node.hpp
-        src/program_node.cpp src/program_node.hpp)
+        src/program_node.cpp src/program_node.hpp src/codegen_context.cpp src/codegen_context.hpp src/dummy_node.cpp src/dummy_node.hpp)
 
 add_executable(npc ${SOURCE_FILES})

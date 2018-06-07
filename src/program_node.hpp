@@ -6,12 +6,14 @@
 #define NAIVE_PASCAL_COMPILER_PROGRAM_NODE_H
 
 
-#include "abstract_node.hpp"
+#include "dummy_node.hpp"
 
-class ProgramNode : public AbstractNode
+namespace npc
 {
+    class ProgramNode : public DummyNode
+    {
 
-};
-
+    };
+}
 
 #endif //NAIVE_PASCAL_COMPILER_PROGRAM_NODE_H
