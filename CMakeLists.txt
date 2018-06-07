@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 # make -f parser.make
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ll")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ll")
 
 set(SOURCE_FILES
         src/main.cpp

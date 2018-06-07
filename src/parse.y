@@ -3,6 +3,7 @@
     #include <cstdlib>
     #include <memory>
     #include <utility>
+    #include "y.tab.h"
     int yylex();
     int yyerror(const char *s);
 %}
@@ -200,3 +201,8 @@ int main() {
     yyparse();
 }
 */
+
+inline int yyerror(const char *s) {
+    fprintf(stderr, "Yacc Error: %s\n", s);
+    exit(-1);
+}
