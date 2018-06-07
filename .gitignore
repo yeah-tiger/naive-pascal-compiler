@@ -7,3 +7,6 @@ y.tab.h
 
 .idea/
 cmake-build-debug/
+\#*\#
+.\#*
+*.g.cpp
