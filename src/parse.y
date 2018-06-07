@@ -6,6 +6,10 @@
     #include "y.tab.h"
     int yylex();
     int yyerror(const char *s);
+
+    #include "abstract_node.hpp"
+
+    using namespace npc;
 %}
 
 %token PROGRAM ID CONST NAME ARRAY VAR FUNCTION PROCEDURE _BEGIN END TYPE READ RECORD
@@ -38,8 +42,12 @@ const_part: CONST const_expr_list
 |
 ;
 const_expr_list: const_expr_list NAME EQUAL const_value SEMI
-|                NAME EQUAL const_value SEMI
-;
+    {
+    }
+    | NAME EQUAL const_value SEMI
+    {
+    }
+    ;
 const_value: INTEGER | REAL | CHAR | STRING | SYS_CON
 ;
 type_part: TYPE type_decl_list

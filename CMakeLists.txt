@@ -11,14 +11,12 @@ set(CMAKE_CXX_STANDARD 14)
 
 # make -f parser.make
 
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ll")
-
 set(SOURCE_FILES
         src/main.cpp
         src/scan.g.cpp
         src/parse.g.cpp
-        src/abstract_node.cpp
-        src/abstract_node.hpp
-        src/program_node.cpp src/program_node.hpp src/codegen_context.cpp src/codegen_context.hpp src/dummy_node.cpp src/dummy_node.hpp)
+        src/ast/abstract_node.cpp
+        src/ast/abstract_node.hpp
+        src/ast/program_node.cpp src/ast/program_node.hpp src/ast/codegen_context.cpp src/ast/codegen_context.hpp src/ast/dummy_node.hpp src/ast/const_part_node.hpp src/ast/const_expr_node.hpp src/utils/ast_utils.hpp src/utils/ast.hpp src/exceptions/codegen_exception.hpp)
 
 add_executable(npc ${SOURCE_FILES})
