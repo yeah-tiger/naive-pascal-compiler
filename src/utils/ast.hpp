@@ -1,6 +1,8 @@
 //
 // Created by yzy on 6/7/18.
 //
+// Including all types of AST nodes.
+//
 
 #ifndef NAIVE_PASCAL_COMPILER_AST_HPP
 #define NAIVE_PASCAL_COMPILER_AST_HPP

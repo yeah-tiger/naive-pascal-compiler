@@ -27,7 +27,7 @@ namespace npc
     bool is_a_ptr_of(const std::shared_ptr<AbstractNode> &ptr)
     {
         auto _p = ptr.get();
-        return !(!dynamic_cast<NodeType>(_p) != nullptr);
+        return dynamic_cast<NodeType *>(_p) != nullptr;
     }
 }
 

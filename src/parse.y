@@ -3,13 +3,24 @@
     #include <cstdlib>
     #include <memory>
     #include <utility>
-    #include "y.tab.h"
     int yylex();
     int yyerror(const char *s);
 
-    #include "abstract_node.hpp"
+    #include "utils/ast.hpp"
+    #include "utils/ast_utils.hpp"
 
     using namespace npc;
+
+    #ifdef YYSTYPE
+    #undef YYSTYPE
+    #endif  // YYSTYPE
+
+    #define YYSTYPE_IS_DECLARED
+
+    using YYSTYPE = std::shared_ptr<AbstractNode>;
+
+    // must be placed here, avoiding conflict with YYSTYPE
+    #include "y.tab.h"
 %}
 
 %token PROGRAM ID CONST NAME ARRAY VAR FUNCTION PROCEDURE _BEGIN END TYPE READ RECORD
