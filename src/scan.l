@@ -5,7 +5,7 @@
 
     int line_no;
     void commenteof();
-    int yywrap();
+    // int yywrap();
     int yyerror(const char *s);
 
     #define HASH_TABLE_SIZE 2000
@@ -148,16 +148,16 @@ NQUOTE [^']
 
 %%
 
-void commenteof() {
+inline void commenteof() {
     fprintf(stderr, "unexpected EOF inside comment at line %d\n", line_no);
     exit(1);
 }
 
-int yywrap() {
+inline int yywrap() {
     return 1;
 }
 
-int yyerror(const char *s) {
+inline int yyerror(const char *s) {
     fprintf(stderr, "Yacc Error: %s\n", s);
     exit(-1);
 }
