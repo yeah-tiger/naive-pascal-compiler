@@ -15,6 +15,8 @@ set(SOURCE_FILES
         src/main.cpp
         src/scan.g.cpp
         src/parse.g.cpp
+        src/abstract_node.cpp
+        src/abstract_node.hpp
         )
 
 add_executable(npc ${SOURCE_FILES})

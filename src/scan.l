@@ -129,7 +129,7 @@ NQUOTE [^']
 "/"                 return DIV;
 "*"                 return MUL;
 "{"    {
-    register int c;
+    int c;
     while ((c = input())) {
         if (c == '}') break;
         else if (c == '*') {
