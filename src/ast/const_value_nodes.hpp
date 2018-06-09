@@ -29,8 +29,21 @@ namespace npc
     {
     };
 
+    enum class SysConEnum
+    {
+        TRUE,
+        FALSE,
+        MAXINT
+    };
+
     class SysConNode : public ConstValueNode
     {
+    public:
+        SysConEnum val;
+
+        SysConNode(SysConEnum v)
+                : val(v)
+        {}
     };
 }
 

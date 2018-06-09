@@ -1,6 +1,7 @@
 %{
     #include <cstdio>
     #include <string>
+    #include <cassert>
     #include "utils/ast.hpp"
     #include "utils/ast_utils.hpp"
 
@@ -100,7 +101,26 @@ NQUOTE [^']
 {W}{H}{I}{L}{E}             return WHILE;
 
 {I}{N}{T}{E}{G}{E}{R}|{R}{E}{A}{L}|{B}{O}{O}{L}{E}{A}{N}|{C}{H}{A}{R}   return SYS_TYPE;
-{F}{A}{L}{S}{E}|{T}{R}{U}{E}|{M}{A}{X}{I}{N}{T}                         return SYS_CON;
+{F}{A}{L}{S}{E}|{T}{R}{U}{E}|{M}{A}{X}{I}{N}{T} {
+    switch (yytext[0])
+    {
+    case 'f':
+    case 'F':
+        yylval = make_node<SysConNode>(SysConEnum::FALSE);
+        break;
+    case 't':
+    case 'T':
+        yylval = make_node<SysConNode>(SysConEnum::TRUE);
+        break;
+    case 'm':
+    case 'M':
+        yylval = make_node<SysConNode>(SysConEnum::MAXINT);
+        break;
+    default:
+        assert(false);
+    }
+    return SYS_CON;
+}
 {A}{B}{S}|{C}{H}{R}|{O}{R}{D}|{P}{R}{E}{D}|{S}{Q}{R}|{S}{U}{C}{C}       return SYS_FUNCT;
 {R}{E}{A}{D}|{R}{E}{A}{D}{L}{N}                                         return READ;
 {W}{R}{I}{T}{E}|{W}{R}{I}{T}{E}{L}{N}                                   return SYS_PROC;

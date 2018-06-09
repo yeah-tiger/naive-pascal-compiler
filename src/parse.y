@@ -71,11 +71,11 @@ const_expr_list: const_expr_list NAME EQUAL const_value SEMI
     ;
 
 // TODO
-const_value: INTEGER { $$ = make_node<IntegerNode>(); }
-    | REAL { $$ = make_node<RealNode>(); }
-    | CHAR { $$ = make_node<CharNode>(); }
-    | STRING { $$ = make_node<StringNode>(); }
-    | SYS_CON { $$ = make_node<SysConNode>(); }
+const_value: INTEGER { $$ = $1; }
+    | REAL { $$ = $1; }
+    | CHAR { $$ = $1; }
+    | STRING { $$ = $1; }
+    | SYS_CON { $$ = $1; }
     ;
 
 type_part: TYPE type_decl_list
