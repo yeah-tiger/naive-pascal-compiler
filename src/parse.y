@@ -208,7 +208,7 @@ while_stmt: WHILE expression DO stmt
 ;
 for_stmt: FOR ID ASSIGN expression direction expression DO stmt
 ;
-direction: TO | DOWNTO
+direction: TO { $$ = make_node<DirectionNode>(false); } | DOWNTO { $$ = make_node<DirectionNode>(true); }
 ;
 case_stmt: CASE expression OF case_expr_list END
 ;
@@ -216,7 +216,7 @@ case_expr_list: case_expr_list case_expr
     | case_expr
 ;
 case_expr: const_value COLON stmt SEMI
-| ID COLON  stmt SEMI
+| ID COLON stmt SEMI
 ;
 goto_stmt: GOTO INTEGER
 ;

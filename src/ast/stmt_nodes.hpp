@@ -17,7 +17,55 @@ namespace npc
 
     inline AbstractStmtNode::~AbstractStmtNode() = default;
 
+    enum class DirectionEnum
+    {
+        TO,
+        DOWNTO
+    };
+
+    class DirectionNode : public DummyNode
+    {
+    public:
+        DirectionEnum val;
+
+        DirectionNode(bool isDownTo)
+                : val(isDownTo ? DirectionEnum::DOWNTO : DirectionEnum::TO)
+        {}
+    };
+
     class AssignStmtNode : public AbstractStmtNode
+    {
+    };
+
+    class ProcStmtNode : public AbstractStmtNode
+    {
+    };
+
+    class CompoundStmtNode : public AbstractStmtNode
+    {
+    };
+
+    class IfStmtNode : public AbstractStmtNode
+    {
+    };
+
+    class RepeatStmtNode : public AbstractStmtNode
+    {
+    };
+
+    class WhileStmtNode : public AbstractStmtNode
+    {
+    };
+
+    class ForStmtNode : public AbstractStmtNode
+    {
+    };
+
+    class CaseStmtNode : public AbstractStmtNode
+    {
+    };
+
+    class GotoStmtNode : public AbstractStmtNode
     {
     };
 
