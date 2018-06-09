@@ -133,11 +133,14 @@ routine_part: routine_part function_decl { $$ = $1; $$->add($2); }
 
 function_decl: function_head SEMI sub_routine SEMI
     {
+        // TODO
+        $$ = make_node<FunctionNode>();
     }
     ;
 
 function_head: FUNCTION ID parameters COLON simple_type_decl
     {
+        $$ = make_node<FunctionHeadNode>($3, $5);
     }
     ;
 

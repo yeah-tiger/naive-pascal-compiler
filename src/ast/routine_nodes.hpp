@@ -6,13 +6,11 @@
 #define NAIVE_PASCAL_COMPILER_PROCEDURE_NODES_HPP
 
 #include "dummy_node.hpp"
+#include "parameter_nodes.hpp"
+#include "type_nodes.hpp"
 
 namespace npc
 {
-    class ParametersNode;
-
-    class TypeDeclNode;
-
     class RoutineNode : public DummyNode
     {
     };
@@ -27,8 +25,14 @@ namespace npc
 
     class FunctionHeadNode : public DummyNode
     {
+    public:
         std::shared_ptr<ParametersNode> parameters;
         std::shared_ptr<TypeDeclNode> type;
+
+        FunctionHeadNode(const NodePtr &params, const NodePtr &_type)
+                : parameters(cast_node<ParametersNode>(params)),
+                  type(cast_node<TypeDeclNode>(_type))
+        {}
     };
 
     class FunctionNode : public DummyNode
