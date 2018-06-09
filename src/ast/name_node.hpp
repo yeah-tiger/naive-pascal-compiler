@@ -18,9 +18,6 @@ namespace npc
                 : name(std::move(_name))
         {}
 
-        NameNode(const NodePtr &ptr)
-        {}
-
         std::string name;
     };
 }

@@ -60,6 +60,7 @@ const_part: CONST const_expr_list
 
 const_expr_list: const_expr_list NAME EQUAL const_value SEMI
     {
+        $$ = $1;
         $$->add(make_node<ConstExprNode>($2, $4));
     }
     | NAME EQUAL const_value SEMI
@@ -69,6 +70,7 @@ const_expr_list: const_expr_list NAME EQUAL const_value SEMI
     }
     ;
 
+// TODO
 const_value: INTEGER { $$ = make_node<IntegerNode>(); }
     | REAL { $$ = make_node<RealNode>(); }
     | CHAR { $$ = make_node<CharNode>(); }
@@ -77,15 +79,26 @@ const_value: INTEGER { $$ = make_node<IntegerNode>(); }
     ;
 
 type_part: TYPE type_decl_list
-|
+    {
+        $$ = $2;
+    }
+    |
+    ;
+
+type_decl_list: type_decl_list type_definition { $$ = $1; $$->add($2); }
+|               type_definition { $$ = make_node<TypePartNode>(); $$->add($1); }
 ;
-type_decl_list: type_decl_list type_definition
-|               type_definition
-;
+
 type_definition: NAME EQUAL type_decl SEMI
-;
+    {
+        $$ = make_node<TypeDefNode>($1, $3);
+    }
+    ;
+
 type_decl: simple_type_decl | array_type_decl | record_type_decl
 ;
+
+// TODO
 simple_type_decl: SYS_TYPE | NAME | LP name_list RP
     | const_value DOTDOT const_value
     | MINUS const_value DOTDOT const_value
@@ -111,12 +124,13 @@ var_decl_list: var_decl_list var_decl
     | var_decl
 ;
 var_decl: name_list COLON type_decl SEMI
-
 ;
+
 routine_part: routine_part function_decl
     | routine_part procedure_decl
     |
-;
+    ;
+
 function_decl: function_head SEMI sub_routine SEMI
 ;
 function_head: FUNCTION ID parameters COLON simple_type_decl

@@ -16,6 +16,6 @@ set(SOURCE_FILES
         src/scan.g.cpp
         src/parse.g.cpp
         src/ast/abstract_node.hpp
-        src/ast/program_node.hpp src/ast/codegen_context.cpp src/ast/codegen_context.hpp src/ast/dummy_node.hpp src/ast/const_part_node.hpp src/ast/const_expr_node.hpp src/utils/ast_utils.hpp src/utils/ast.hpp src/exceptions/codegen_exception.hpp src/ast/const_value_nodes.hpp src/ast/name_node.hpp)
+        src/ast/program_node.hpp src/ast/codegen_context.cpp src/ast/codegen_context.hpp src/ast/dummy_node.hpp src/ast/const_part_node.hpp src/ast/const_expr_node.hpp src/utils/ast_utils.hpp src/utils/ast.hpp src/exceptions/codegen_exception.hpp src/ast/const_value_nodes.hpp src/ast/name_node.hpp src/ast/type_nodes.hpp src/ast/stmt_nodes.hpp)
 
 add_executable(npc ${SOURCE_FILES})
