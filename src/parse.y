@@ -171,18 +171,22 @@ compound_stmt: _BEGIN stmt_list END
 stmt_list: stmt_list stmt SEMI
 |
 ;
-stmt: INTEGER COLON non_label_stmt | non_label_stmt
-;
-non_label_stmt: assign_stmt
-    | proc_stmt
-    | compound_stmt
-    | if_stmt
-    | repeat_stmt
-    | while_stmt
-    | for_stmt
-    | case_stmt
-    | goto_stmt
-;
+
+stmt: INTEGER COLON non_label_stmt { $$ = make_node<StmtNode>(dynamic_cast<IntegerNode *>($1.get())->val, $3); }
+    | non_label_stmt { $$ = make_node<StmtNode>($1); }
+    ;
+
+non_label_stmt: assign_stmt { $$ = $1; }
+    | proc_stmt { $$ = $1; }
+    | compound_stmt { $$ = $1; }
+    | if_stmt { $$ = $1; }
+    | repeat_stmt { $$ = $1; }
+    | while_stmt { $$ = $1; }
+    | for_stmt { $$ = $1; }
+    | case_stmt { $$ = $1; }
+    | goto_stmt { $$ = $1; }
+    ;
+
 assign_stmt: ID ASSIGN expression
     | ID LB expression RB ASSIGN expression
     | ID DOT ID ASSIGN expression

@@ -9,3 +9,5 @@ For ZJU course project.
 - [ ] deal with ID
 
 - [ ] symbol table
+
+- [ ] CHAR const value, is it defined in lexer?
