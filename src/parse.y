@@ -126,15 +126,21 @@ var_decl_list: var_decl_list var_decl
 var_decl: name_list COLON type_decl SEMI
 ;
 
-routine_part: routine_part function_decl
-    | routine_part procedure_decl
-    |
+routine_part: routine_part function_decl { $$ = $1; $$->add($2); }
+    | routine_part procedure_decl { $$ = $1; $$->add($2); }
+    | { $$ = make_node<RoutineNode>(); }
     ;
 
 function_decl: function_head SEMI sub_routine SEMI
-;
+    {
+    }
+    ;
+
 function_head: FUNCTION ID parameters COLON simple_type_decl
-;
+    {
+    }
+    ;
+
 procedure_decl: procedure_head SEMI sub_routine SEMI
 ;
 procedure_head: PROCEDURE ID parameters

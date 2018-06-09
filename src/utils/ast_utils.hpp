@@ -7,6 +7,8 @@
 
 #include <memory>
 #include <utility>
+#include <type_traits>
+#include <cassert>
 
 namespace npc
 {
@@ -16,24 +18,32 @@ namespace npc
      */
     class AbstractNode;
 
-    inline std::shared_ptr<AbstractNode> wrap_node(AbstractNode *node)
-    {
-        return std::shared_ptr<AbstractNode>{node};
-    }
-
-    template<typename NodeType, typename...Args>
-    std::shared_ptr<AbstractNode> make_node(Args&&...args)
-    {
-        auto *node = new NodeType(std::forward<Args&&>(args)...);
-        return std::shared_ptr<AbstractNode>(node);
-    };
-
     template<typename NodeType>
     bool is_a_ptr_of(const std::shared_ptr<AbstractNode> &ptr)
     {
         auto _p = ptr.get();
         return dynamic_cast<NodeType *>(_p) != nullptr;
     }
+
+    inline std::shared_ptr<AbstractNode> wrap_node(AbstractNode *node)
+    {
+        return std::shared_ptr<AbstractNode>{node};
+    }
+
+    template<typename TNode>
+    typename std::enable_if<std::is_base_of<AbstractNode, TNode>::value, std::shared_ptr<TNode>>::type
+    cast_node(const std::shared_ptr<AbstractNode> &node)
+    {
+        assert(is_a_ptr_of<TNode>(node));
+        return std::shared_ptr<TNode>(node.get());
+    }
+
+    template<typename NodeType, typename...Args>
+    std::shared_ptr<AbstractNode> make_node(Args &&...args)
+    {
+        auto *node = new NodeType(std::forward<Args &&>(args)...);
+        return std::shared_ptr<AbstractNode>(node);
+    };
 
     using NodePtr = std::shared_ptr<AbstractNode>;
 }

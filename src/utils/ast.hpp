@@ -15,5 +15,6 @@
 #include "../ast/const_value_nodes.hpp"
 #include "../ast/name_node.hpp"
 #include "../ast/type_nodes.hpp"
+#include "../ast/routine_nodes.hpp"
 
 #endif //NAIVE_PASCAL_COMPILER_AST_HPP

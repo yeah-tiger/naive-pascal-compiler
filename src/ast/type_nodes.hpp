@@ -5,10 +5,15 @@
 #ifndef NAIVE_PASCAL_COMPILER_TYPE_NODES_HPP
 #define NAIVE_PASCAL_COMPILER_TYPE_NODES_HPP
 
+#include <cassert>
 #include "dummy_node.hpp"
 
 namespace npc
 {
+    class TypeDeclNode : public DummyNode
+    {
+    };
+
     class TypePartNode : public DummyNode
     {
     };
@@ -20,6 +25,8 @@ namespace npc
         {
             this->add(name);
             this->add(type_decl);
+            assert(is_a_ptr_of<NameNode>(name));
+            assert(is_a_ptr_of<TypeDeclNode>(type_decl));
         }
     };
 }
