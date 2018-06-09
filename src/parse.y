@@ -1,3 +1,5 @@
+%require "3.0.4"
+
 %{
     #include <cstdio>
     #include <cstdlib>
@@ -58,12 +60,12 @@ const_part: CONST const_expr_list
 
 const_expr_list: const_expr_list NAME EQUAL const_value SEMI
     {
-        $$->add(make_node<ConstExprNode>(make_node<NameNode>($2), $4));
+        $$->add(make_node<ConstExprNode>($2, $4));
     }
     | NAME EQUAL const_value SEMI
     {
         $$ = make_node<ConstPartNode>();
-        $$->add(make_node<ConstExprNode>(make_node<NameNode>($1), $3));
+        $$->add(make_node<ConstExprNode>($1, $3));
     }
     ;
 

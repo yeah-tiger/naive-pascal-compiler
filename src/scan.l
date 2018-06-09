@@ -1,5 +1,18 @@
 %{
     #include <cstdio>
+    #include <string>
+    #include "utils/ast.hpp"
+    #include "utils/ast_utils.hpp"
+
+    using namespace npc;
+
+    #ifdef YYSTYPE
+    #undef YYSTYPE
+    #endif  // YYSTYPE
+
+    #define YYSTYPE_IS_DECLARED
+
+    using YYSTYPE = std::shared_ptr<AbstractNode>;
     #include "y.tab.h"
 
     int line_no;
@@ -95,9 +108,11 @@ NQUOTE [^']
 [a-zA-Z]([a-zA-Z0-9])* {
     if (naming) {
         add_to_hash_table(yytext);
+        yylval = make_node<NameNode>(std::string(yytext));
         return NAME;
     }
     if (in_hash_table(yytext)) {
+        yylval = make_node<NameNode>(std::string(yytext));
         return NAME;
     }
     // printf("\nReturning Id: %s\n", yytext);

@@ -16,7 +16,7 @@ namespace npc
      */
     class AbstractNode;
 
-    std::shared_ptr<AbstractNode> wrap_node(AbstractNode *node)
+    inline std::shared_ptr<AbstractNode> wrap_node(AbstractNode *node)
     {
         return std::shared_ptr<AbstractNode>{node};
     }
