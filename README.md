@@ -4,4 +4,6 @@ For ZJU course project.
 
 ## TODO List
 
-- [ ] YYSTYPE
+- [X] YYSTYPE
+
+- [ ] deal with ID

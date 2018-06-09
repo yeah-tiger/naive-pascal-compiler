@@ -19,8 +19,26 @@ namespace npc
     {
     };
 
+    class ProcedureHeadNode : public DummyNode
+    {
+    public:
+        std::shared_ptr<ParametersNode> parameters;
+
+        ProcedureHeadNode(const NodePtr &params)
+                : parameters(cast_node<ParametersNode>(params))
+        {}
+    };
+
     class ProcedureNode : public DummyNode
     {
+    public:
+        std::shared_ptr<ProcedureHeadNode> head;
+
+        ProcedureNode(const NodePtr &_head, const NodePtr &_body)
+                : head(cast_node<ProcedureHeadNode>(_head))
+        {
+            this->children() = _body->children();
+        }
     };
 
     class FunctionHeadNode : public DummyNode
@@ -39,6 +57,12 @@ namespace npc
     {
     public:
         std::shared_ptr<FunctionHeadNode> head;
+
+        FunctionNode(const NodePtr &_head, const NodePtr &_body)
+                : head(cast_node<FunctionHeadNode>(_head))
+        {
+            this->children() = _body->children();
+        }
     };
 }
 

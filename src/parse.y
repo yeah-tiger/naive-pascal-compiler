@@ -133,8 +133,7 @@ routine_part: routine_part function_decl { $$ = $1; $$->add($2); }
 
 function_decl: function_head SEMI sub_routine SEMI
     {
-        // TODO
-        $$ = make_node<FunctionNode>();
+        $$ = make_node<FunctionNode>($1, $3);
     }
     ;
 
@@ -145,9 +144,14 @@ function_head: FUNCTION ID parameters COLON simple_type_decl
     ;
 
 procedure_decl: procedure_head SEMI sub_routine SEMI
+    {
+        $$ = make_node<ProcedureNode>($1, $3);
+    }
+    ;
+
+procedure_head: PROCEDURE ID parameters { $$ = make_node<ProcedureHeadNode>($3); }
 ;
-procedure_head: PROCEDURE ID parameters
-;
+
 parameters: LP para_decl_list RP
 |
 ;
