@@ -7,3 +7,5 @@ For ZJU course project.
 - [X] YYSTYPE
 
 - [ ] deal with ID
+
+- [ ] symbol table

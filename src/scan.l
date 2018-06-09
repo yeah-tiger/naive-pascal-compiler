@@ -2,6 +2,7 @@
     #include <cstdio>
     #include <string>
     #include <cassert>
+    #include <sstream>
     #include "utils/ast.hpp"
     #include "utils/ast_utils.hpp"
 
@@ -140,10 +141,10 @@ NQUOTE [^']
 }
 
 ":="                return ASSIGN;
-'({NQUOTE}|'')+'    return STRING;
+'({NQUOTE}|'')+'    { yylval = make_node<StringNode>(yytext); return STRING; }
 ":"                 return COLON;
 ","                 return COMMA;
-[0-9]+              return INTEGER;
+[0-9]+              { yylval = make_node<StringNode>(yytext); return INTEGER; }
 "."                 return DOT;
 ".."                return DOTDOT;
 "="                 return EQUAL;
@@ -157,7 +158,7 @@ NQUOTE [^']
 "<>"                return UNEQUAL;
 "+"                 return PLUS;
 "]"                 return RB;
-[0-9]+"."[0-9]+     return REAL;
+[0-9]+"."[0-9]+     { yylval = make_node<StringNode>(yytext); return REAL; }
 ")"                 return RP;
 ";"                 return SEMI;
 "/"                 return DIV;
