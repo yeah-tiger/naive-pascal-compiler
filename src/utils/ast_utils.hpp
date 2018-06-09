@@ -7,20 +7,25 @@
 
 #include <memory>
 #include <utility>
-#include "../ast/abstract_node.hpp"
 
 namespace npc
 {
-    std::shared_ptr<AbstractNode> make_node(AbstractNode *node)
+    /*
+     * NOTE: DO NOT include abstract_node.hpp
+     * due to cycle including issue.
+     */
+    class AbstractNode;
+
+    std::shared_ptr<AbstractNode> wrap_node(AbstractNode *node)
     {
         return std::shared_ptr<AbstractNode>{node};
     }
 
     template<typename NodeType, typename...Args>
-    std::shared_ptr<AbstractNode> make_node(Args...args)
+    std::shared_ptr<AbstractNode> make_node(Args&&...args)
     {
-        auto *node = new NodeType{std::forward(args)...};
-        return std::shared_ptr<AbstractNode>{node};
+        auto *node = new NodeType(std::forward<Args&&>(args)...);
+        return std::shared_ptr<AbstractNode>(node);
     };
 
     template<typename NodeType>
@@ -29,6 +34,8 @@ namespace npc
         auto _p = ptr.get();
         return dynamic_cast<NodeType *>(_p) != nullptr;
     }
+
+    using NodePtr = std::shared_ptr<AbstractNode>;
 }
 
 #endif //NAIVE_PASCAL_COMPILER_AST_UTILS_HPP

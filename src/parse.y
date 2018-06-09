@@ -50,17 +50,30 @@ routine_head: label_part const_part type_part var_part routine_part
 label_part:
 ;
 const_part: CONST const_expr_list
-|
-;
+    {
+        $$ = $2;
+    }
+    |
+    ;
+
 const_expr_list: const_expr_list NAME EQUAL const_value SEMI
     {
+        $$->add(make_node<ConstExprNode>(make_node<NameNode>($2), $4));
     }
     | NAME EQUAL const_value SEMI
     {
+        $$ = make_node<ConstPartNode>();
+        $$->add(make_node<ConstExprNode>(make_node<NameNode>($1), $3));
     }
     ;
-const_value: INTEGER | REAL | CHAR | STRING | SYS_CON
-;
+
+const_value: INTEGER { $$ = make_node<IntegerNode>(); }
+    | REAL { $$ = make_node<RealNode>(); }
+    | CHAR { $$ = make_node<CharNode>(); }
+    | STRING { $$ = make_node<StringNode>(); }
+    | SYS_CON { $$ = make_node<SysConNode>(); }
+    ;
+
 type_part: TYPE type_decl_list
 |
 ;
