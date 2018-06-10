@@ -44,6 +44,12 @@ namespace npc
             this->_children.push_back(node);
         }
 
+        void merge_children(const std::list<std::shared_ptr<AbstractNode>> &children) {
+            for (const auto &e : children) {
+                this->add(e);
+            }
+        }
+
     protected:
         std::list<std::shared_ptr<AbstractNode>> _children;
     };

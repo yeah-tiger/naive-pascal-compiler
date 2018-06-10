@@ -70,7 +70,6 @@ const_expr_list: const_expr_list NAME EQUAL const_value SEMI
     }
     ;
 
-// TODO
 const_value: INTEGER { $$ = $1; }
     | REAL { $$ = $1; }
     | CHAR { $$ = $1; }
@@ -114,16 +113,24 @@ field_decl_list: field_decl_list field_decl
 ;
 field_decl: name_list COLON type_decl SEMI
 ;
-name_list: name_list COMMA ID
-    | ID
+name_list: name_list COMMA ID { $$ = $1; $$->add($3); }
+    | ID { $$ = make_node<NameList>(); $$->add($1); }
 ;
-var_part: VAR var_decl_list
-|
+var_part: VAR var_decl_list { $$ = $2; }
+| { $$ = make_node<VarDeclList>(); }
 ;
-var_decl_list: var_decl_list var_decl
-    | var_decl
+var_decl_list: var_decl_list var_decl {
+    $$ = $1;
+    $$->merge_children($2->children());
+}
+    | var_decl { $$ = $1; }
 ;
-var_decl: name_list COLON type_decl SEMI
+var_decl: name_list COLON type_decl SEMI {
+    $$ = make_node<VarDeclList>();
+    for (const auto node : $1->children()) {
+        $$->add(make_node<VarDeclNode>(node, $3));
+    }
+}
 ;
 
 routine_part: routine_part function_decl { $$ = $1; $$->add($2); }

@@ -101,7 +101,22 @@ NQUOTE [^']
 {V}{A}{R}                   { naming = false; return VAR; }
 {W}{H}{I}{L}{E}             return WHILE;
 
-{I}{N}{T}{E}{G}{E}{R}|{R}{E}{A}{L}|{B}{O}{O}{L}{E}{A}{N}|{C}{H}{A}{R}   return SYS_TYPE;
+{I}{N}{T}{E}{G}{E}{R} {
+    yylval = make_node<TypeDeclNode>(TypeDeclNode::integer);
+    return SYS_TYPE;
+}
+{R}{E}{A}{L} {
+    yylval = make_node<TypeDeclNode>(TypeDeclNode::real);
+    return SYS_TYPE;
+}
+{B}{O}{O}{L}{E}{A}{N} {
+    yylval = make_node<TypeDeclNode>(TypeDeclNode::boolean);
+    return SYS_TYPE;
+}
+{C}{H}{A}{R} {
+    yylval = make_node<TypeDeclNode>(TypeDeclNode::character);
+    return SYS_TYPE;
+}
 {F}{A}{L}{S}{E}|{T}{R}{U}{E}|{M}{A}{X}{I}{N}{T} {
     switch (yytext[0])
     {
@@ -137,6 +152,7 @@ NQUOTE [^']
         return NAME;
     }
     // printf("\nReturning Id: %s\n", yytext);
+    yylval = make_node<IdentifierNode>(std::string(yytext));
     return ID;
 }
 
@@ -144,7 +160,7 @@ NQUOTE [^']
 '({NQUOTE}|'')+'    { yylval = make_node<StringNode>(yytext); return STRING; }
 ":"                 return COLON;
 ","                 return COMMA;
-[0-9]+              { yylval = make_node<StringNode>(yytext); return INTEGER; }
+[0-9]+              { yylval = make_node<IntegerNode>(yytext); return INTEGER; }
 "."                 return DOT;
 ".."                return DOTDOT;
 "="                 return EQUAL;
@@ -158,7 +174,7 @@ NQUOTE [^']
 "<>"                return UNEQUAL;
 "+"                 return PLUS;
 "]"                 return RB;
-[0-9]+"."[0-9]+     { yylval = make_node<StringNode>(yytext); return REAL; }
+[0-9]+"."[0-9]+     { yylval = make_node<RealNode>(yytext); return REAL; }
 ")"                 return RP;
 ";"                 return SEMI;
 "/"                 return DIV;
@@ -182,7 +198,7 @@ NQUOTE [^']
 
 \n   { line_no++; }
 
-.    { fprintf (stderr, "'%c' (0%o): illegal charcter at line %d\n", yytext[0], yytext[0], line_no); }
+.    { fprintf (stderr, "'%c' (0%o): illegal character at line %d\n", yytext[0], yytext[0], line_no); }
 
 %%
 
