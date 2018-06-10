@@ -22,10 +22,11 @@ namespace npc
     class ProcedureHeadNode : public DummyNode
     {
     public:
+        std::shared_ptr<IdentifierNode> name;
         std::shared_ptr<ParametersNode> parameters;
 
-        ProcedureHeadNode(const NodePtr &params)
-                : parameters(cast_node<ParametersNode>(params))
+        ProcedureHeadNode(const NodePtr &_name, const NodePtr &params)
+                : parameters(cast_node<ParametersNode>(params)), name(cast_node<IdentifierNode>(_name))
         {}
     };
 
@@ -44,12 +45,13 @@ namespace npc
     class FunctionHeadNode : public DummyNode
     {
     public:
+        std::shared_ptr<IdentifierNode> name;
         std::shared_ptr<ParametersNode> parameters;
         std::shared_ptr<TypeDeclNode> type;
 
-        FunctionHeadNode(const NodePtr &params, const NodePtr &_type)
+        FunctionHeadNode(const NodePtr &_name, const NodePtr &params, const NodePtr &_type)
                 : parameters(cast_node<ParametersNode>(params)),
-                  type(cast_node<TypeDeclNode>(_type))
+                  type(cast_node<TypeDeclNode>(_type)), name(cast_node<IdentifierNode>(_name))
         {}
     };
 
@@ -63,6 +65,28 @@ namespace npc
         {
             this->children() = _body->children();
         }
+    };
+
+    class ProcCallNode : public DummyNode
+    {
+    public:
+        ProcCallNode(NodePtr &_ID)
+                : ID(cast_node<IdentifierNode>(ID)) {}
+        ProcCallNode(NodePtr &_ID, NodePtr &_args)
+                : ID(cast_node<IdentifierNode>(ID)), args(cast_node<ExprList>(_args)) {}
+        std::shared_ptr<IdentifierNode> ID;
+        std::shared_ptr<ExprList> args;
+    };
+
+    class SysProcCallNode : public DummyNode
+    {
+    public:
+        SysProcCallNode(NodePtr &_ID)
+        : ID(cast_node<IdentifierNode>(ID)) {}
+        SysProcCallNode(NodePtr &_ID, NodePtr &_args)
+        : ID(cast_node<IdentifierNode>(ID)), args(cast_node<ExprList>(_args)) {}
+        std::shared_ptr<IdentifierNode> ID;
+        std::shared_ptr<ExprList> args;
     };
 }
 

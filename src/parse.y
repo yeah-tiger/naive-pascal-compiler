@@ -55,7 +55,7 @@ const_part: CONST const_expr_list
     {
         $$ = $2;
     }
-    |
+    | { $$ = make_node<ConstPartNode>(); }
     ;
 
 const_expr_list: const_expr_list NAME EQUAL const_value SEMI
@@ -94,10 +94,10 @@ type_definition: NAME EQUAL type_decl SEMI
     }
     ;
 
+// TODO
 type_decl: simple_type_decl | array_type_decl | record_type_decl
 ;
 
-// TODO
 simple_type_decl: SYS_TYPE | NAME | LP name_list RP
     | const_value DOTDOT const_value
     | MINUS const_value DOTDOT const_value
@@ -146,7 +146,7 @@ function_decl: function_head SEMI sub_routine SEMI
 
 function_head: FUNCTION ID parameters COLON simple_type_decl
     {
-        $$ = make_node<FunctionHeadNode>($3, $5);
+        $$ = make_node<FunctionHeadNode>($2, $3, $5);
     }
     ;
 
@@ -156,27 +156,26 @@ procedure_decl: procedure_head SEMI sub_routine SEMI
     }
     ;
 
-procedure_head: PROCEDURE ID parameters { $$ = make_node<ProcedureHeadNode>($3); }
+procedure_head: PROCEDURE ID parameters { $$ = make_node<ProcedureHeadNode>($2, $3); }
 ;
 
-parameters: LP para_decl_list RP
-|
+parameters: LP para_decl_list RP { $$ = $2; }
+|   { $$ = make_node<ParametersNode>(); }
 ;
-para_decl_list: para_decl_list SEMI para_type_list | para_type_list
+para_decl_list: para_decl_list SEMI para_type_list { $$ = $1; $$->add($3); }
+|   para_type_list  { $$ = make_node<ParametersNode>(); $$->add($1); }
 ;
-para_type_list: var_para_list COLON simple_type_decl
-    | val_para_list COLON simple_type_decl
+para_type_list: var_para_list COLON simple_type_decl { $$ = make_node<ParameterNode>($1, $3); }
 ;
-var_para_list: VAR name_list
+var_para_list: VAR name_list    { $$ = $2; }
+    | name_list { $$ = $1; }
 ;
-val_para_list: name_list
+routine_body: compound_stmt { $$ = $1; }
 ;
-routine_body: compound_stmt
+compound_stmt: _BEGIN stmt_list END { $$ = $2; }
 ;
-compound_stmt: _BEGIN stmt_list END
-;
-stmt_list: stmt_list stmt SEMI
-|
+stmt_list: stmt_list stmt SEMI { $$ = $1; $$->add($1); }
+| { $$ = make_node<StmtList>(); }
 ;
 
 stmt: INTEGER COLON non_label_stmt { $$ = make_node<StmtNode>(dynamic_cast<IntegerNode *>($1.get())->val, $3); }
@@ -194,41 +193,41 @@ non_label_stmt: assign_stmt { $$ = $1; }
     | goto_stmt { $$ = $1; }
     ;
 
-assign_stmt: ID ASSIGN expression
-    | ID LB expression RB ASSIGN expression
-    | ID DOT ID ASSIGN expression
+assign_stmt: ID ASSIGN expression { $$ = make_node<AssignStmtNode>($1, $3, false); }
+    | ID LB expression RB ASSIGN expression { $$ = make_node<AssignStmtNode>(make_node<ArrayRefNode>($1, $3), $5, true); }
+    | ID DOT ID ASSIGN expression { $$ = make_node<AssignStmtNode>(make_node<ArrayRefNode>($1, $3), $5, true); } // TODO
 ;
-proc_stmt: ID
-    | ID LP args_list RP
-    | SYS_PROC
-    | SYS_PROC LP expression_list RP
-    | READ LP factor RP
+proc_stmt: ID   { $$ = make_node<ProcStmtNode>(cast_node<ProcCallNode>(make_node<ProcCallNode>($1))); }
+    | ID LP args_list RP { $$ = make_node<ProcStmtNode>(cast_node<ProcCallNode>(make_node<ProcCallNode>($1, $3))); }
+    | SYS_PROC { $$ = make_node<ProcStmtNode>(cast_node<SysProcCallNode>(make_node<SysProcCallNode>($1))); }
+    | SYS_PROC LP expression_list RP { $$ = make_node<ProcStmtNode>(cast_node<SysProcCallNode>(make_node<SysProcCallNode>($1, $3))); }
+    | READ LP factor RP { $$ = make_node<ProcStmtNode>(cast_node<SysProcCallNode>(make_node<SysProcCallNode>($1, $3))); }
 ;
-if_stmt: IF expression THEN stmt else_clause
+if_stmt: IF expression THEN stmt else_clause { $$ = make_node<IfStmtNode>($2, $4, $5); }
 ;
-else_clause: ELSE stmt
-|
+else_clause: ELSE stmt { $$ = $2; }
+| { $$ = make_node<DummyStmtNode>(); }
 ;
-repeat_stmt: REPEAT stmt_list UNTIL expression
+repeat_stmt: REPEAT stmt_list UNTIL expression { $$ = make_node<RepeatStmtNode>($2, $4); }
 ;
-while_stmt: WHILE expression DO stmt
+while_stmt: WHILE expression DO stmt { $$ = make_node<WhileStmtNode>($2, $4); }
 ;
-for_stmt: FOR ID ASSIGN expression direction expression DO stmt
+for_stmt: FOR ID ASSIGN expression direction expression DO stmt { $$ = make_node<ForStmtNode>(make_node<AssignStmtNode>($2, $4), $5, $6, $8); }
 ;
 direction: TO { $$ = make_node<DirectionNode>(false); } | DOWNTO { $$ = make_node<DirectionNode>(true); }
 ;
-case_stmt: CASE expression OF case_expr_list END
+case_stmt: CASE expression OF case_expr_list END { $$ = make_node<CaseStmtNode>($4, $2); }
 ;
-case_expr_list: case_expr_list case_expr
-    | case_expr
+case_expr_list: case_expr_list case_expr { $$ = $1; $$->add($2); }
+    | case_expr { $$ = make_node<ExprList>(); $$->add($1); }
 ;
 case_expr: const_value COLON stmt SEMI
 | ID COLON stmt SEMI
 ;
-goto_stmt: GOTO INTEGER
+goto_stmt: GOTO INTEGER { $$ = make_node<GotoStmtNode>($2); }
 ;
-expression_list: expression_list COMMA expression
-    | expression
+expression_list: expression_list COMMA expression { $$ = $1; $$->add($3); }
+    | expression    { $$ = make_node<ExprList>(); $$->add($1); }
 ;
 expression: expression GE expr
     | expression GT expr
@@ -262,8 +261,8 @@ factor: NAME
     | ID DOT ID
     | ID                            /* Add ID as one of the factors -- NOTICE */
 ;
-args_list: args_list COMMA expression
-    | expression
+args_list: args_list COMMA expression { $$ = $1; $$->add($3); }
+    | expression { $$ = make_node<ExprList>(); $$->add($1); }
 ;
 
 %%

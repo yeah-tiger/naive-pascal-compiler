@@ -19,8 +19,14 @@ namespace npc
     class TypePartNode;
     class TypeDefNode;
 
+    class ArrayRefNode;
+    class ExprNode;
+    class ExprList;
+
     class NameList : public DummyNode {};
     class VarDeclList : public DummyNode {};
+    class ExprNode : public DummyNode {};
+    class ExprList : public DummyNode {};
     class IdentifierNode : public DummyNode
     {
     public:
@@ -56,6 +62,13 @@ namespace npc
             assert(is_a_ptr_of<NameNode>(name));
             assert(is_a_ptr_of<TypeDeclNode>(type_decl));
         }
+    };
+    class ArrayRefNode : public DummyNode {
+    public:
+        ArrayRefNode(NodePtr Id, NodePtr index)
+                : ID(cast_node<IdentifierNode>(Id)), index(cast_node<ExprNode>(index)) {}
+        std::shared_ptr<IdentifierNode> ID;
+        std::shared_ptr<ExprNode> index;
     };
 }
 
