@@ -1,7 +1,19 @@
 # This makefile for flex and bison.
 
+UNAME := $(shell uname)
+
 YACC=bison -dy
 LEX=flex
+
+ifneq (,$(wildcard /usr/local/opt/bison/bin/bison))
+    YACC=/usr/local/opt/bison/bin/bison -dy
+    $(info YACC detected in /usr/local/opt/bison/bin/bison)
+endif
+
+ifneq (,$(wildcard /usr/local/opt/flex/bin/flex))
+    LEX=/usr/local/opt/flex/bin/flex
+    $(info LEX detected in /usr/local/opt/flex/bin/flex)
+endif
 
 all: src/scan.g.cpp src/parse.g.cpp
 

@@ -1,4 +1,4 @@
-%require "2.3"
+%require "3.0.4"
 
 %{
     #include <cstdio>
