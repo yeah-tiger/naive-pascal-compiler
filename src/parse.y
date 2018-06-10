@@ -229,37 +229,40 @@ goto_stmt: GOTO INTEGER { $$ = make_node<GotoStmtNode>($2); }
 expression_list: expression_list COMMA expression { $$ = $1; $$->add($3); }
     | expression    { $$ = make_node<ExprList>(); $$->add($1); }
 ;
-expression: expression GE expr
-    | expression GT expr
-    | expression LE expr
-    | expression LT expr
-    | expression EQUAL expr
-    | expression UNEQUAL expr
-    | expr
+expression: expression GE expr { $$ = make_node<BinopExprNode>(BinopExprNode::OP::ge, $1, $3); }
+    | expression GT expr { $$ = make_node<BinopExprNode>(BinopExprNode::OP::gt, $1, $3); }
+    | expression LE expr { $$ = make_node<BinopExprNode>(BinopExprNode::OP::le, $1, $3); }
+    | expression LT expr { $$ = make_node<BinopExprNode>(BinopExprNode::OP::lt, $1, $3); }
+    | expression EQUAL expr { $$ = make_node<BinopExprNode>(BinopExprNode::OP::eq, $1, $3); }
+    | expression UNEQUAL expr { $$ = make_node<BinopExprNode>(BinopExprNode::OP::neq, $1, $3); }
+    | expr { $$ = $1; }
 ;
-expr: expr PLUS term
-    | expr MINUS term
-    | expr OR term
-    | term
+expr: expr PLUS term { $$ = make_node<BinopExprNode>(BinopExprNode::OP::plus, $1, $3); }
+    | expr MINUS term { $$ = make_node<BinopExprNode>(BinopExprNode::OP::minus, $1, $3); }
+    | expr OR term { $$ = make_node<BinopExprNode>(BinopExprNode::OP::_or, $1, $3); }
+    | term { $$ = $1; }
 ;
-term: term MUL factor
-    | term DIV factor
-    | term MOD factor
-    | term AND factor
-    | factor
+term: term MUL factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::mult, $1, $3); }
+    | term DIV factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::div, $1, $3); }
+    | term MOD factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::mod, $1, $3); }
+    | term AND factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::_and, $1, $3); }
+    | factor { $$ = $1; }
 ;
-factor: NAME
+
+factor: /*NAME
     | NAME LP args_list RP
-    | ID LP args_list RP            /* FUNCTION is parsed as ID */
-    | SYS_FUNCT
-    | SYS_FUNCT LP args_list RP
-    | const_value
-    | LP expression RP
-    | NOT factor
-    | MINUS factor
-    | ID LB expression RB
-    | ID DOT ID
+    |*/ ID LP args_list RP            /* FUNCTION is parsed as ID */
+    { $$ = make_node<ProcCallNode>($1, $3); }
+    | SYS_FUNCT { $$ = make_node<SysProcCallNode>($1); }
+    | SYS_FUNCT LP args_list RP { $$ = make_node<SysProcCallNode>($1, $3); }
+    | const_value { $$ = $1; }
+    | LP expression RP { $$ = $2; }
+    | NOT factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::_xor, make_node<SysConNode>(SysConEnum::TRUE), $2); }
+    | MINUS factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::minus, make_node<IntegerNode>(0), $2); }
+    | ID LB expression RB { $$ = make_node<ArrayRefNode>($1, $3); }
+    | ID DOT ID { make_node<ArrayRefNode>($1, $3); }
     | ID                            /* Add ID as one of the factors -- NOTICE */
+    { $$ = $1; }
 ;
 args_list: args_list COMMA expression { $$ = $1; $$->add($3); }
     | expression { $$ = make_node<ExprList>(); $$->add($1); }

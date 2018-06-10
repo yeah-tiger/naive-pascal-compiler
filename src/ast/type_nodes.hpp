@@ -26,6 +26,16 @@ namespace npc
     class NameList : public DummyNode {};
     class VarDeclList : public DummyNode {};
     class ExprNode : public DummyNode {};
+    class BinopExprNode : public ExprNode {
+    public:
+        enum OP {gt, ge, lt, le, eq, neq, plus, minus, mult, div, mod, _and, _or, _xor };
+        OP op;
+        std::shared_ptr<ExprNode> lhs, rhs;
+
+        BinopExprNode(OP _Op, NodePtr _lhs, NodePtr &_rhs)
+                : op(_Op), lhs(cast_node<ExprNode>(_lhs)),
+                  rhs(cast_node<ExprNode>(_rhs)){}
+    };
     class ExprList : public DummyNode {};
     class IdentifierNode : public DummyNode
     {

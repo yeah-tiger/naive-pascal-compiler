@@ -19,6 +19,7 @@ namespace npc
     public:
         int64_t val;
 
+        IntegerNode(int64_t v) { val = v; }
         IntegerNode(const char *v)
         {
             std::stringstream ss;
