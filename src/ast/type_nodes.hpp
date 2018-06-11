@@ -12,50 +12,92 @@
 namespace npc
 {
     class NameList;
+
     class VarDeclList;
+
     class VarDeclNode;
+
     class IdentifierNode;
+
     class TypeDeclNode;
+
     class TypePartNode;
+
     class TypeDefNode;
 
     class ArrayRefNode;
+
     class ExprNode;
+
     class ExprList;
 
-    class NameList : public DummyNode {};
-    class VarDeclList : public DummyNode {};
-    class ExprNode : public DummyNode {};
-    class BinopExprNode : public ExprNode {
+    enum class Type
+    {
+        error, integer, real, character, boolean, array, record
+    };
+
+    class NameList : public DummyNode
+    {
+    };
+
+    class VarDeclList : public DummyNode
+    {
+    };
+
+    class ExprNode : public DummyNode
+    {
+    };
+
+    class BinopExprNode : public ExprNode
+    {
     public:
-        enum OP {gt, ge, lt, le, eq, neq, plus, minus, mult, div, mod, _and, _or, _xor };
+        enum class OP
+        {
+            gt, ge, lt, le, eq, neq, plus, minus, mult, div, mod, _and, _or, _xor
+        };
         OP op;
         std::shared_ptr<ExprNode> lhs, rhs;
 
-        BinopExprNode(OP _Op, NodePtr _lhs, NodePtr &_rhs)
+        BinopExprNode(OP _Op, const NodePtr &_lhs, const NodePtr &_rhs)
                 : op(_Op), lhs(cast_node<ExprNode>(_lhs)),
-                  rhs(cast_node<ExprNode>(_rhs)){}
+                  rhs(cast_node<ExprNode>(_rhs))
+        {}
     };
-    class ExprList : public DummyNode {};
+
+    class ExprList : public DummyNode
+    {
+    };
+
     class IdentifierNode : public DummyNode
     {
     public:
-        IdentifierNode(std::string s) : name(std::move(s)) {}
-        IdentifierNode(const char *c) : name(c) {}
+        IdentifierNode(std::string s) : name(std::move(s))
+        {}
+
+        IdentifierNode(const char *c) : name(c)
+        {}
+
         std::string name;
     };
+
     class TypeDeclNode : public DummyNode
     {
     public:
-        enum Type { error, integer, real, character, boolean, array, record };
-        TypeDeclNode(Type type) : type(type) {}
+
+        TypeDeclNode(Type type) : type(type)
+        {}
+
         Type type;
     };
+
     class VarDeclNode : public DummyNode
     {
     public:
         std::shared_ptr<AbstractNode> identifier, type;
-        VarDeclNode(std::shared_ptr<AbstractNode> i, std::shared_ptr<AbstractNode> t) : identifier(std::move(i)), type(std::move(t)) {}
+
+        VarDeclNode(std::shared_ptr<AbstractNode> i, std::shared_ptr<AbstractNode> t) : identifier(std::move(i)),
+                                                                                        type(std::move(t))
+        {}
     };
 
     class TypePartNode : public DummyNode
@@ -73,10 +115,14 @@ namespace npc
             assert(is_a_ptr_of<TypeDeclNode>(type_decl));
         }
     };
-    class ArrayRefNode : public DummyNode {
+
+    class ArrayRefNode : public DummyNode
+    {
     public:
-        ArrayRefNode(NodePtr Id, NodePtr index)
-                : ID(cast_node<IdentifierNode>(Id)), index(cast_node<ExprNode>(index)) {}
+        ArrayRefNode(const NodePtr &Id, const NodePtr &index)
+                : ID(cast_node<IdentifierNode>(Id)), index(cast_node<ExprNode>(index))
+        {}
+
         std::shared_ptr<IdentifierNode> ID;
         std::shared_ptr<ExprNode> index;
     };

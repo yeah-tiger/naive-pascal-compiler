@@ -71,9 +71,13 @@ namespace npc
     {
     public:
         ProcCallNode(NodePtr &_ID)
-                : ID(cast_node<IdentifierNode>(ID)) {}
+                : ID(cast_node<IdentifierNode>(ID))
+        {}
+
         ProcCallNode(NodePtr &_ID, NodePtr &_args)
-                : ID(cast_node<IdentifierNode>(ID)), args(cast_node<ExprList>(_args)) {}
+                : ID(cast_node<IdentifierNode>(ID)), args(cast_node<ExprList>(_args))
+        {}
+
         std::shared_ptr<IdentifierNode> ID;
         std::shared_ptr<ExprList> args;
     };
@@ -82,9 +86,13 @@ namespace npc
     {
     public:
         SysProcCallNode(NodePtr &_ID)
-        : ID(cast_node<IdentifierNode>(ID)) {}
+                : ID(cast_node<IdentifierNode>(ID))
+        {}
+
         SysProcCallNode(NodePtr &_ID, NodePtr &_args)
-        : ID(cast_node<IdentifierNode>(ID)), args(cast_node<ExprList>(_args)) {}
+                : ID(cast_node<IdentifierNode>(ID)), args(cast_node<ExprList>(_args))
+        {}
+
         std::shared_ptr<IdentifierNode> ID;
         std::shared_ptr<ExprList> args;
     };

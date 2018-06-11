@@ -5,6 +5,7 @@
 #ifndef NAIVE_PASCAL_COMPILER_STMT_NODES_HPP
 #define NAIVE_PASCAL_COMPILER_STMT_NODES_HPP
 
+#include <utility>
 #include "dummy_node.hpp"
 #include "type_nodes.hpp"
 #include "routine_nodes.hpp"
@@ -13,6 +14,7 @@
 namespace npc
 {
     class StmtNode;
+
     class AbstractStmtNode : public DummyNode
     {
     public:
@@ -74,8 +76,10 @@ namespace npc
     class AssignStmtNode : public AbstractStmtNode
     {
     public:
-        AssignStmtNode(NodePtr lhs, NodePtr rhs, bool compound=false)
-                : lhs(lhs), rhs(rhs), compound(compound) {}
+        AssignStmtNode(NodePtr lhs, NodePtr rhs, bool compound = false)
+                : lhs(std::move(lhs)), rhs(std::move(rhs)), compound(compound)
+        {}
+
         NodePtr lhs, rhs;
         bool compound;
     };
@@ -83,8 +87,13 @@ namespace npc
     class ProcStmtNode : public AbstractStmtNode
     {
     public:
-        ProcStmtNode(std::shared_ptr<ProcCallNode> proc_call) : proc_call(proc_call), syscall(false) {}
-        ProcStmtNode(std::shared_ptr<SysProcCallNode> sys_proc_call) : sys_proc_call(sys_proc_call), syscall(true) {}
+        ProcStmtNode(std::shared_ptr<ProcCallNode> proc_call) : proc_call(std::move(proc_call)), syscall(false)
+        {}
+
+        ProcStmtNode(std::shared_ptr<SysProcCallNode> sys_proc_call) : sys_proc_call(std::move(sys_proc_call)),
+                                                                       syscall(true)
+        {}
+
         std::shared_ptr<ProcCallNode> proc_call;
         std::shared_ptr<SysProcCallNode> sys_proc_call;
         bool syscall;
@@ -97,9 +106,11 @@ namespace npc
     class IfStmtNode : public AbstractStmtNode
     {
     public:
-        IfStmtNode(NodePtr &_expr, NodePtr &_stmt, NodePtr &_else_stmt)
-                : expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
-                , else_stmt(cast_node<StmtNode>(_else_stmt)) {}
+        IfStmtNode(const NodePtr &_expr, const NodePtr &_stmt, const NodePtr &_else_stmt)
+                : expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt)),
+                  else_stmt(cast_node<StmtNode>(_else_stmt))
+        {}
+
         std::shared_ptr<ExprNode> expr;
         std::shared_ptr<StmtNode> stmt;
         std::shared_ptr<StmtNode> else_stmt;
@@ -108,18 +119,22 @@ namespace npc
     class RepeatStmtNode : public AbstractStmtNode
     {
     public:
-        RepeatStmtNode(NodePtr &_stmts, NodePtr &_expr)
-                : expr(cast_node<ExprNode>(_expr)) {
+        RepeatStmtNode(const NodePtr &_stmts, const NodePtr &_expr)
+                : expr(cast_node<ExprNode>(_expr))
+        {
             this->merge_children(_stmts->children());
         }
+
         std::shared_ptr<ExprNode> expr;
     };
 
     class WhileStmtNode : public AbstractStmtNode
     {
     public:
-        WhileStmtNode(NodePtr &_expr, NodePtr &_stmt)
-        : expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt)) {}
+        WhileStmtNode(const NodePtr &_expr, const NodePtr &_stmt)
+                : expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
+        {}
+
         std::shared_ptr<ExprNode> expr;
         std::shared_ptr<StmtNode> stmt;
     };
@@ -127,9 +142,11 @@ namespace npc
     class ForStmtNode : public AbstractStmtNode
     {
     public:
-        ForStmtNode(NodePtr _assign, NodePtr &_dir, NodePtr &_expr, NodePtr &_stmt)
-        : assign(cast_node<AssignStmtNode>(_assign)), dir(cast_node<DirectionNode>(_dir))
-        , expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt)) {}
+        ForStmtNode(const NodePtr &_assign, const NodePtr &_dir, const NodePtr &_expr, const NodePtr &_stmt)
+                : assign(cast_node<AssignStmtNode>(_assign)), dir(cast_node<DirectionNode>(_dir)),
+                  expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
+        {}
+
         std::shared_ptr<AssignStmtNode> assign;
         std::shared_ptr<DirectionNode> dir;
         std::shared_ptr<ExprNode> expr;
@@ -139,17 +156,21 @@ namespace npc
     class CaseStmtNode : public AbstractStmtNode
     {
     public:
-        CaseStmtNode(NodePtr &_stmts, NodePtr &_expr)
-        : expr(cast_node<ExprNode>(_expr)) {
+        CaseStmtNode(const NodePtr &_stmts, const NodePtr &_expr)
+                : expr(cast_node<ExprNode>(_expr))
+        {
             this->merge_children(_stmts->children());
         }
+
         std::shared_ptr<ExprNode> expr;
     };
 
     class GotoStmtNode : public AbstractStmtNode
     {
     public:
-        GotoStmtNode(NodePtr &_integer) : integer(cast_node<IntegerNode>(_integer)) {}
+        GotoStmtNode(const NodePtr &_integer) : integer(cast_node<IntegerNode>(_integer))
+        {}
+
         std::shared_ptr<IntegerNode> integer;
     };
 
@@ -158,7 +179,8 @@ namespace npc
     };
 
     class StmtList : public DummyNode
-    {};
+    {
+    };
 }
 
 #endif //NAIVE_PASCAL_COMPILER_STMT_NODES_HPP
