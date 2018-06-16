@@ -86,6 +86,8 @@ namespace npc
     {
     public:
         ~AbstractTypeNode() override = 0;
+
+        virtual Type getTypeClass() const = 0;
     };
 
     inline AbstractTypeNode::~AbstractTypeNode() = default;
@@ -97,6 +99,11 @@ namespace npc
         {}
 
         Type type;
+
+        Type getTypeClass() const override
+        {
+            return this->type;
+        }
     };
 
     class VarDeclNode : public DummyNode
@@ -130,6 +137,12 @@ namespace npc
 
     class RecordTypeNode : public AbstractTypeNode  // TODO: check all children are FieldDeclNode
     {
+    public:
+        Type getTypeClass() const override
+        {
+            // TODO
+            assert(false);
+        }
     };
 
     class TypeDefNode : public AbstractTypeNode  // TODO: should it be designed like this?
@@ -141,6 +154,12 @@ namespace npc
             this->add(type_decl);
             assert(is_a_ptr_of<NameNode>(name));
             assert(is_a_ptr_of<TypeDeclNode>(type_decl));
+        }
+
+        Type getTypeClass() const override
+        {
+            // TODO
+            assert(false);
         }
     };
 

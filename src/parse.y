@@ -236,9 +236,12 @@ case_stmt: CASE expression OF case_expr_list END { $$ = make_node<CaseStmtNode>(
 case_expr_list: case_expr_list case_expr { $$ = $1; $$->add($2); }
     | case_expr { $$ = make_node<ExprListNode>(); $$->add($1); }
 ;
+
+// TODO:
 case_expr: const_value COLON stmt SEMI
 | ID COLON stmt SEMI
 ;
+
 goto_stmt: GOTO INTEGER { $$ = make_node<GotoStmtNode>($2); }
 ;
 expression_list: expression_list COMMA expression { $$ = $1; $$->add($3); }

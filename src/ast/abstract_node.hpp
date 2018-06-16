@@ -15,10 +15,11 @@
 
 namespace npc
 {
-    class AbstractNode
+class AbstractNode : public std::enable_shared_from_this<AbstractNode>
     {
     public:
-        virtual ~AbstractNode() = default;
+        // NOLINT
+        virtual ~AbstractNode() noexcept = default;  // the base template class has a trivial destructor.
 
         virtual void codegen(CodegenContext &context) const = 0;
 
