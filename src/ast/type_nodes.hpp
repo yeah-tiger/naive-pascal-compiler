@@ -21,7 +21,7 @@ namespace npc
 
     class IdentifierNode;
 
-    class TypeDeclNode;
+    class SimpleTypeDeclNode;
 
     class TypePartNode;
 
@@ -87,15 +87,21 @@ namespace npc
     public:
         ~AbstractTypeNode() override = 0;
 
-        virtual Type getTypeClass() const = 0;
+        virtual Type getTypeClass() const
+        {
+            return Type::error;  // TODO: should be pure virtual
+        }
     };
 
     inline AbstractTypeNode::~AbstractTypeNode() = default;
 
-    class TypeDeclNode : public AbstractTypeNode
+    /*
+     * for system built-in types
+     */
+    class SimpleTypeDeclNode : public AbstractTypeNode
     {
     public:
-        TypeDeclNode(Type type) : type(type)
+        SimpleTypeDeclNode(Type type) : type(type)
         {}
 
         Type type;
@@ -131,7 +137,7 @@ namespace npc
                   typeDecl(type_decl)
         {
             assert(is_a_ptr_of<NameListNode>(name_list));
-            assert(is_a_ptr_of<TypeDeclNode>(type_decl));
+            assert(is_a_ptr_of<SimpleTypeDeclNode>(type_decl));
         }
     };
 
@@ -153,7 +159,7 @@ namespace npc
             this->add(name);
             this->add(type_decl);
             assert(is_a_ptr_of<NameNode>(name));
-            assert(is_a_ptr_of<TypeDeclNode>(type_decl));
+            assert(is_a_ptr_of<SimpleTypeDeclNode>(type_decl));
         }
 
         Type getTypeClass() const override
@@ -161,6 +167,30 @@ namespace npc
             // TODO
             assert(false);
         }
+    };
+
+    class AliasTypeNode : public AbstractTypeNode
+    {
+    public:
+        AliasTypeNode(const NodePtr &name_node)
+                : _name(std::dynamic_pointer_cast<NameNode>(name_node)->name)
+        {}
+
+        const std::string &name() const noexcept
+        {
+            return this->_name;
+        }
+
+    private:
+        std::string _name;
+    };
+
+    class EnumTypeNode : public AbstractTypeNode
+    {
+    };
+
+    class ArrayTypeNode : public AbstractTypeNode
+    {
     };
 
     class ArrayRefNode : public DummyNode

@@ -102,19 +102,19 @@ NQUOTE [^']
 {W}{H}{I}{L}{E}             return WHILE;
 
 {I}{N}{T}{E}{G}{E}{R} {
-    yylval = make_node<TypeDeclNode>(Type::integer);
+    yylval = make_node<SimpleTypeDeclNode>(Type::integer);
     return SYS_TYPE;
 }
 {R}{E}{A}{L} {
-    yylval = make_node<TypeDeclNode>(Type::real);
+    yylval = make_node<SimpleTypeDeclNode>(Type::real);
     return SYS_TYPE;
 }
 {B}{O}{O}{L}{E}{A}{N} {
-    yylval = make_node<TypeDeclNode>(Type::boolean);
+    yylval = make_node<SimpleTypeDeclNode>(Type::boolean);
     return SYS_TYPE;
 }
 {C}{H}{A}{R} {
-    yylval = make_node<TypeDeclNode>(Type::character);
+    yylval = make_node<SimpleTypeDeclNode>(Type::character);
     return SYS_TYPE;
 }
 {F}{A}{L}{S}{E}|{T}{R}{U}{E}|{M}{A}{X}{I}{N}{T} {

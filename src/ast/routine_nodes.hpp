@@ -47,11 +47,11 @@ namespace npc
     public:
         std::shared_ptr<IdentifierNode> name;
         std::shared_ptr<ParametersNode> parameters;
-        std::shared_ptr<TypeDeclNode> type;
+        std::shared_ptr<SimpleTypeDeclNode> type;
 
         FunctionHeadNode(const NodePtr &_name, const NodePtr &params, const NodePtr &_type)
                 : parameters(cast_node<ParametersNode>(params)),
-                  type(cast_node<TypeDeclNode>(_type)), name(cast_node<IdentifierNode>(_name))
+                  type(cast_node<SimpleTypeDeclNode>(_type)), name(cast_node<IdentifierNode>(_name))
         {}
     };
 

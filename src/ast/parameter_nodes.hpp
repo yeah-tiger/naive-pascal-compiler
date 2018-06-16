@@ -18,10 +18,10 @@ namespace npc
     {
     public:
         ParameterNode(NodePtr &_namelist, NodePtr &_type)
-                : namelist(cast_node<NameListNode>(_namelist)), type(cast_node<TypeDeclNode>(_type))
+                : namelist(cast_node<NameListNode>(_namelist)), type(cast_node<SimpleTypeDeclNode>(_type))
         {}
         std::shared_ptr<NameListNode> namelist;
-        std::shared_ptr<TypeDeclNode> type;
+        std::shared_ptr<SimpleTypeDeclNode> type;
     };
 }
 

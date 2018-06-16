@@ -96,15 +96,15 @@ type_definition: NAME EQUAL type_decl SEMI
     ;
 
 // TODO
-type_decl: simple_type_decl {}
-    | array_type_decl {}
-    | record_type_decl {}
+type_decl: simple_type_decl { $$ = $1; }
+    | array_type_decl { $$ = $1; }
+    | record_type_decl { $$ = $1; }
     ;
 
-simple_type_decl: SYS_TYPE {}
-    | NAME {}
-    | LP name_list RP {}
-    | const_value DOTDOT const_value {}
+simple_type_decl: SYS_TYPE { $$ = $1; }
+    | NAME { $$ = make_node<AliasTypeNode>($1); }
+    | LP name_list RP { $$ = make_node<EnumTypeNode>(); $$->merge_children($2->children()); }
+    | const_value DOTDOT const_value {}  // TODO: checking type of both const_value is same.
     | MINUS const_value DOTDOT const_value {}
     | MINUS const_value DOTDOT MINUS const_value {}
     | NAME DOTDOT NAME {}
