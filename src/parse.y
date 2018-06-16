@@ -36,6 +36,7 @@
 %start program
 
 %%
+// TODO:
 program:
     program_head { printf("Finishing head parsing...\n"); }
     routine { printf("Finishing routine...\n"); }
@@ -81,12 +82,12 @@ type_part: TYPE type_decl_list
     {
         $$ = $2;
     }
-    |
+    |  // intended blank
     ;
 
 type_decl_list: type_decl_list type_definition { $$ = $1; $$->add($2); }
-|               type_definition { $$ = make_node<TypePartNode>(); $$->add($1); }
-;
+    | type_definition { $$ = make_node<TypePartNode>(); $$->add($1); }
+    ;
 
 type_definition: NAME EQUAL type_decl SEMI
     {
@@ -95,24 +96,37 @@ type_definition: NAME EQUAL type_decl SEMI
     ;
 
 // TODO
-type_decl: simple_type_decl | array_type_decl | record_type_decl
-;
+type_decl: simple_type_decl {}
+    | array_type_decl {}
+    | record_type_decl {}
+    ;
 
-simple_type_decl: SYS_TYPE | NAME | LP name_list RP
-    | const_value DOTDOT const_value
-    | MINUS const_value DOTDOT const_value
-    | MINUS const_value DOTDOT MINUS const_value
-    | NAME DOTDOT NAME
-;
+simple_type_decl: SYS_TYPE {}
+    | NAME {}
+    | LP name_list RP {}
+    | const_value DOTDOT const_value {}
+    | MINUS const_value DOTDOT const_value {}
+    | MINUS const_value DOTDOT MINUS const_value {}
+    | NAME DOTDOT NAME {}
+    ;
+
 array_type_decl: ARRAY LB simple_type_decl RB OF type_decl
-;
+    {
+    }
+    ;
+
 record_type_decl: RECORD field_decl_list END
-;
-field_decl_list: field_decl_list field_decl
-    | field_decl
-;
-field_decl: name_list COLON type_decl SEMI
-;
+    {
+    }
+    ;
+
+field_decl_list: field_decl_list field_decl {}
+    | field_decl {}
+    ;
+
+field_decl: name_list COLON type_decl SEMI {}
+    ;
+
 name_list: name_list COMMA ID { $$ = $1; $$->add($3); }
     | ID { $$ = make_node<NameList>(); $$->add($1); }
 ;

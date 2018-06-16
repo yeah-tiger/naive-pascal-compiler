@@ -83,7 +83,6 @@ namespace npc
     class TypeDeclNode : public DummyNode
     {
     public:
-
         TypeDeclNode(Type type) : type(type)
         {}
 
