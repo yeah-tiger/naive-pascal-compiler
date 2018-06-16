@@ -117,21 +117,22 @@ array_type_decl: ARRAY LB simple_type_decl RB OF type_decl
 
 record_type_decl: RECORD field_decl_list END
     {
+        $$ = $2;
     }
     ;
 
-field_decl_list: field_decl_list field_decl {}
-    | field_decl {}
+field_decl_list: field_decl_list field_decl { $1->add($2); $$ = $1; }
+    | field_decl { $$ = make_node<RecordTypeNode>(); $$->add($1); }
     ;
 
-field_decl: name_list COLON type_decl SEMI {}
+field_decl: name_list COLON type_decl SEMI { $$ = make_node<FieldDeclNode>($1, $3); }
     ;
 
 name_list: name_list COMMA ID { $$ = $1; $$->add($3); }
-    | ID { $$ = make_node<NameList>(); $$->add($1); }
+    | ID { $$ = make_node<NameListNode>(); $$->add($1); }
 ;
 var_part: VAR var_decl_list { $$ = $2; }
-| { $$ = make_node<VarDeclList>(); }
+| { $$ = make_node<VarDeclListNode>(); }
 ;
 var_decl_list: var_decl_list var_decl {
     $$ = $1;
@@ -140,7 +141,7 @@ var_decl_list: var_decl_list var_decl {
     | var_decl { $$ = $1; }
 ;
 var_decl: name_list COLON type_decl SEMI {
-    $$ = make_node<VarDeclList>();
+    $$ = make_node<VarDeclListNode>();
     for (const auto node : $1->children()) {
         $$->add(make_node<VarDeclNode>(node, $3));
     }
@@ -233,7 +234,7 @@ direction: TO { $$ = make_node<DirectionNode>(false); } | DOWNTO { $$ = make_nod
 case_stmt: CASE expression OF case_expr_list END { $$ = make_node<CaseStmtNode>($4, $2); }
 ;
 case_expr_list: case_expr_list case_expr { $$ = $1; $$->add($2); }
-    | case_expr { $$ = make_node<ExprList>(); $$->add($1); }
+    | case_expr { $$ = make_node<ExprListNode>(); $$->add($1); }
 ;
 case_expr: const_value COLON stmt SEMI
 | ID COLON stmt SEMI
@@ -241,7 +242,7 @@ case_expr: const_value COLON stmt SEMI
 goto_stmt: GOTO INTEGER { $$ = make_node<GotoStmtNode>($2); }
 ;
 expression_list: expression_list COMMA expression { $$ = $1; $$->add($3); }
-    | expression    { $$ = make_node<ExprList>(); $$->add($1); }
+    | expression    { $$ = make_node<ExprListNode>(); $$->add($1); }
 ;
 expression: expression GE expr { $$ = make_node<BinopExprNode>(BinopExprNode::OP::ge, $1, $3); }
     | expression GT expr { $$ = make_node<BinopExprNode>(BinopExprNode::OP::gt, $1, $3); }
@@ -279,7 +280,7 @@ factor: /*NAME
     { $$ = $1; }
 ;
 args_list: args_list COMMA expression { $$ = $1; $$->add($3); }
-    | expression { $$ = make_node<ExprList>(); $$->add($1); }
+    | expression { $$ = make_node<ExprListNode>(); $$->add($1); }
 ;
 
 %%

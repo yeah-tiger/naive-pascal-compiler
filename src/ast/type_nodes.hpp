@@ -11,9 +11,11 @@
 
 namespace npc
 {
-    class NameList;
+    // TODO: rearrange file structure.
 
-    class VarDeclList;
+    class NameListNode;
+
+    class VarDeclListNode;
 
     class VarDeclNode;
 
@@ -29,18 +31,18 @@ namespace npc
 
     class ExprNode;
 
-    class ExprList;
+    class ExprListNode;
 
     enum class Type
     {
         error, integer, real, character, boolean, array, record
     };
 
-    class NameList : public DummyNode
+    class NameListNode : public DummyNode
     {
     };
 
-    class VarDeclList : public DummyNode
+    class VarDeclListNode : public DummyNode
     {
     };
 
@@ -64,7 +66,7 @@ namespace npc
         {}
     };
 
-    class ExprList : public DummyNode
+    class ExprListNode : public DummyNode
     {
     };
 
@@ -80,7 +82,15 @@ namespace npc
         std::string name;
     };
 
-    class TypeDeclNode : public DummyNode
+    class AbstractTypeNode : public DummyNode
+    {
+    public:
+        ~AbstractTypeNode() override = 0;
+    };
+
+    inline AbstractTypeNode::~AbstractTypeNode() = default;
+
+    class TypeDeclNode : public AbstractTypeNode
     {
     public:
         TypeDeclNode(Type type) : type(type)
@@ -103,7 +113,26 @@ namespace npc
     {
     };
 
-    class TypeDefNode : public DummyNode
+    class FieldDeclNode : public DummyNode
+    {
+    public:
+        NodePtr nameList;
+        NodePtr typeDecl;
+
+        FieldDeclNode(const NodePtr &name_list, const NodePtr &type_decl)
+                : nameList(name_list),
+                  typeDecl(type_decl)
+        {
+            assert(is_a_ptr_of<NameListNode>(name_list));
+            assert(is_a_ptr_of<TypeDeclNode>(type_decl));
+        }
+    };
+
+    class RecordTypeNode : public AbstractTypeNode  // TODO: check all children are FieldDeclNode
+    {
+    };
+
+    class TypeDefNode : public AbstractTypeNode  // TODO: should it be designed like this?
     {
     public:
         TypeDefNode(const NodePtr &name, const NodePtr &type_decl)
