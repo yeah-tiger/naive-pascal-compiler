@@ -12,6 +12,8 @@ namespace npc
 {
     class ConstValueNode : public DummyNode
     {
+    public:
+        virtual NodePtr negative() const = 0;
     };
 
     class IntegerNode : public ConstValueNode
@@ -19,12 +21,19 @@ namespace npc
     public:
         int64_t val;
 
-        IntegerNode(int64_t v) { val = v; }
+        IntegerNode(int64_t v)
+        { val = v; }
+
         IntegerNode(const char *v)
         {
             std::stringstream ss;
             ss << v;
             ss >> this->val;
+        }
+
+        NodePtr negative() const override
+        {
+            return make_node<IntegerNode>(-val);
         }
     };
 
@@ -39,6 +48,14 @@ namespace npc
             ss << v;
             ss >> this->val;
         }
+
+        RealNode(const double v) : val(v)
+        {}
+
+        NodePtr negative() const override
+        {
+            return make_node<RealNode>(-val);
+        }
     };
 
     class CharNode : public ConstValueNode
@@ -52,6 +69,14 @@ namespace npc
             ss << v;
             ss >> this->val;
         }
+
+        CharNode(const char v) : val(v)
+        {}
+
+        NodePtr negative() const override
+        {
+            return make_node<CharNode>(-val);
+        }
     };
 
     class StringNode : public ConstValueNode
@@ -62,6 +87,12 @@ namespace npc
         StringNode(const char *sz)
                 : val(std::string(sz))
         {}
+
+        NodePtr negative() const override
+        {
+            assert(false);
+            return make_node<DummyNode>();
+        }
     };
 
     enum class SysConEnum
@@ -79,6 +110,12 @@ namespace npc
         SysConNode(SysConEnum v)
                 : val(v)
         {}
+
+        NodePtr negative() const override
+        {
+            assert(false);
+            return make_node<DummyNode>();
+        }
     };
 }
 

@@ -189,6 +189,16 @@ namespace npc
     {
     };
 
+    class RangeTypeNode : public AbstractTypeNode
+    {
+    public:
+        const NodePtr &min, &max;
+
+        RangeTypeNode(const NodePtr &min, const NodePtr &max)
+                : min(min), max(max)
+        {}
+    };
+
     class ArrayTypeNode : public AbstractTypeNode
     {
     };

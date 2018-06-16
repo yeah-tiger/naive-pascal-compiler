@@ -95,7 +95,6 @@ type_definition: NAME EQUAL type_decl SEMI
     }
     ;
 
-// TODO
 type_decl: simple_type_decl { $$ = $1; }
     | array_type_decl { $$ = $1; }
     | record_type_decl { $$ = $1; }
@@ -104,12 +103,34 @@ type_decl: simple_type_decl { $$ = $1; }
 simple_type_decl: SYS_TYPE { $$ = $1; }
     | NAME { $$ = make_node<AliasTypeNode>($1); }
     | LP name_list RP { $$ = make_node<EnumTypeNode>(); $$->merge_children($2->children()); }
-    | const_value DOTDOT const_value {}  // TODO: checking type of both const_value is same.
-    | MINUS const_value DOTDOT const_value {}
-    | MINUS const_value DOTDOT MINUS const_value {}
-    | NAME DOTDOT NAME {}
+    // TODO: checking type of both const_value is same.
+    | const_value DOTDOT const_value
+    {
+        auto lhs = std::dynamic_pointer_cast<ConstValueNode>($1);
+        auto rhs = std::dynamic_pointer_cast<ConstValueNode>($3);
+        $$ = make_node<RangeTypeNode>(lhs, rhs);
+    }
+    | MINUS const_value DOTDOT const_value
+    {
+        auto lhs = std::dynamic_pointer_cast<ConstValueNode>($2)->negative();
+        auto rhs = std::dynamic_pointer_cast<ConstValueNode>($4);
+        $$ = make_node<RangeTypeNode>(lhs, rhs);
+    }
+    | MINUS const_value DOTDOT MINUS const_value
+    {
+        auto lhs = std::dynamic_pointer_cast<ConstValueNode>($2)->negative();
+        auto rhs = std::dynamic_pointer_cast<ConstValueNode>($5)->negative();
+        $$ = make_node<RangeTypeNode>(lhs, rhs);
+    }
+    | NAME DOTDOT NAME
+    {
+        auto lhs = std::dynamic_pointer_cast<ConstValueNode>($1);
+        auto rhs = std::dynamic_pointer_cast<ConstValueNode>($3);
+        $$ = make_node<RangeTypeNode>(lhs, rhs);
+    }
     ;
 
+// TODO
 array_type_decl: ARRAY LB simple_type_decl RB OF type_decl
     {
     }
