@@ -35,7 +35,7 @@ namespace npc
     cast_node(const std::shared_ptr<AbstractNode> &node)
     {
         assert(is_a_ptr_of<TNode>(node));
-        return std::shared_ptr<TNode>(dynamic_cast<TNode *>(node.get()));
+        return std::dynamic_pointer_cast<TNode>(node);
     }
 
     template<typename NodeType, typename...Args>
