@@ -261,8 +261,12 @@ case_expr_list: case_expr_list case_expr { $$ = $1; $$->add($2); }
 
 // TODO:
 case_expr: const_value COLON stmt SEMI
-| ID COLON stmt SEMI
-;
+    {
+    }
+    | ID COLON stmt SEMI
+    {
+    }
+    ;
 
 goto_stmt: GOTO INTEGER { $$ = make_node<GotoStmtNode>($2); }
 ;

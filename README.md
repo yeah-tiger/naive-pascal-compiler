@@ -11,3 +11,7 @@ For ZJU course project.
 - [ ] symbol table
 
 - [ ] CHAR const value, is it defined in lexer?
+
+- [ ] C++ and advanced error report in flex and bison.
+
+- [ ] refactor file structure.
