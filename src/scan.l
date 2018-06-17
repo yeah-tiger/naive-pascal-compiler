@@ -137,7 +137,12 @@ NQUOTE [^']
     }
     return SYS_CON;
 }
-{A}{B}{S}|{C}{H}{R}|{O}{R}{D}|{P}{R}{E}{D}|{S}{Q}{R}|{S}{U}{C}{C}       return SYS_FUNCT;
+{A}{B}{S} { yylval = make_node<SysFunctionNode>(SysFunction::ABS); return SYS_FUNCT; }
+{C}{H}{R} { yylval = make_node<SysFunctionNode>(SysFunction::CHR); return SYS_FUNCT; }
+{O}{R}{D} { yylval = make_node<SysFunctionNode>(SysFunction::ORD); return SYS_FUNCT; }
+{P}{R}{E}{D} { yylval = make_node<SysFunctionNode>(SysFunction::PRED); return SYS_FUNCT; }
+{S}{Q}{R} { yylval = make_node<SysFunctionNode>(SysFunction::SQR); return SYS_FUNCT; }
+{S}{U}{C}{C} { yylval = make_node<SysFunctionNode>(SysFunction::SUCC); return SYS_FUNCT; }
 {R}{E}{A}{D}|{R}{E}{A}{D}{L}{N}                                         return READ;
 {W}{R}{I}{T}{E}|{W}{R}{I}{T}{E}{L}{N}                                   return SYS_PROC;
 

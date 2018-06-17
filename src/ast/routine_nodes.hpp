@@ -82,6 +82,31 @@ namespace npc
         std::shared_ptr<ExprListNode> args;
     };
 
+    enum class SysFunction
+    {
+        ABS, CHR, ORD, PRED, SQR, SUCC
+    };
+
+    class SysFunctionNode : public DummyNode
+    {
+    public:
+        SysFunction funct;
+
+        SysFunctionNode(SysFunction _funct)
+                : funct(_funct)
+        {}
+    };
+
+    enum class ReadFunction
+    {
+        READ, READLN
+    };
+
+    enum class WriteFunction
+    {
+        WRITE, WRITELN
+    };
+
     class SysProcCallNode : public DummyNode
     {
     public:
