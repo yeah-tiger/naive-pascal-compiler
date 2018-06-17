@@ -6,6 +6,7 @@
 #define NAIVE_PASCAL_COMPILER_TYPE_NODES_HPP
 
 #include <cassert>
+#include <utility>
 #include <vector>
 #include "dummy_node.hpp"
 
@@ -29,7 +30,7 @@ namespace npc
 
     class ArrayRefNode;
 
-    class ExprNode;
+    class AbstractExprNode;
 
     class ExprListNode;
 
@@ -46,11 +47,11 @@ namespace npc
     {
     };
 
-    class ExprNode : public DummyNode
+    class AbstractExprNode : public DummyNode
     {
     };
 
-    class BinopExprNode : public ExprNode
+    class BinopExprNode : public AbstractExprNode
     {
     public:
         enum class OP
@@ -58,15 +59,15 @@ namespace npc
             gt, ge, lt, le, eq, neq, plus, minus, mult, div, mod, _and, _or, _xor
         };
         OP op;
-        std::shared_ptr<ExprNode> lhs, rhs;
+        NodePtr lhs, rhs;
 
-        BinopExprNode(OP _Op, const NodePtr &_lhs, const NodePtr &_rhs)
-                : op(_Op), lhs(cast_node<ExprNode>(_lhs)),
-                  rhs(cast_node<ExprNode>(_rhs))
+        BinopExprNode(OP _Op, NodePtr _lhs, NodePtr _rhs)
+                : op(_Op), lhs(std::move(_lhs)),
+                  rhs(std::move(_rhs))
         {}
     };
 
-    class ExprListNode : public DummyNode
+    class ExprListNode : public AbstractExprNode
     {
     };
 
@@ -203,15 +204,15 @@ namespace npc
     {
     };
 
-    class ArrayRefNode : public DummyNode
+    class ArrayRefNode : public AbstractExprNode
     {
     public:
         ArrayRefNode(const NodePtr &Id, const NodePtr &index)
-                : ID(cast_node<IdentifierNode>(Id)), index(cast_node<ExprNode>(index))
+                : ID(cast_node<IdentifierNode>(Id)), index(cast_node<AbstractExprNode>(index))
         {}
 
         std::shared_ptr<IdentifierNode> ID;
-        std::shared_ptr<ExprNode> index;
+        std::shared_ptr<AbstractExprNode> index;
     };
 }
 

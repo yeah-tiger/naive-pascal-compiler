@@ -107,11 +107,11 @@ namespace npc
     {
     public:
         IfStmtNode(const NodePtr &_expr, const NodePtr &_stmt, const NodePtr &_else_stmt)
-                : expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt)),
+                : expr(cast_node<AbstractExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt)),
                   else_stmt(cast_node<StmtNode>(_else_stmt))
         {}
 
-        std::shared_ptr<ExprNode> expr;
+        std::shared_ptr<AbstractExprNode> expr;
         std::shared_ptr<StmtNode> stmt;
         std::shared_ptr<StmtNode> else_stmt;
     };
@@ -120,22 +120,22 @@ namespace npc
     {
     public:
         RepeatStmtNode(const NodePtr &_stmts, const NodePtr &_expr)
-                : expr(cast_node<ExprNode>(_expr))
+                : expr(cast_node<AbstractExprNode>(_expr))
         {
             this->merge_children(_stmts->children());
         }
 
-        std::shared_ptr<ExprNode> expr;
+        std::shared_ptr<AbstractExprNode> expr;
     };
 
     class WhileStmtNode : public AbstractStmtNode
     {
     public:
         WhileStmtNode(const NodePtr &_expr, const NodePtr &_stmt)
-                : expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
+                : expr(cast_node<AbstractExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
         {}
 
-        std::shared_ptr<ExprNode> expr;
+        std::shared_ptr<AbstractExprNode> expr;
         std::shared_ptr<StmtNode> stmt;
     };
 
@@ -144,12 +144,12 @@ namespace npc
     public:
         ForStmtNode(const NodePtr &_assign, const NodePtr &_dir, const NodePtr &_expr, const NodePtr &_stmt)
                 : assign(cast_node<AssignStmtNode>(_assign)), dir(cast_node<DirectionNode>(_dir)),
-                  expr(cast_node<ExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
+                  expr(cast_node<AbstractExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
         {}
 
         std::shared_ptr<AssignStmtNode> assign;
         std::shared_ptr<DirectionNode> dir;
-        std::shared_ptr<ExprNode> expr;
+        std::shared_ptr<AbstractExprNode> expr;
         std::shared_ptr<StmtNode> stmt;
     };
 
@@ -157,12 +157,12 @@ namespace npc
     {
     public:
         CaseStmtNode(const NodePtr &_stmts, const NodePtr &_expr)
-                : expr(cast_node<ExprNode>(_expr))
+                : expr(cast_node<AbstractExprNode>(_expr))
         {
             this->merge_children(_stmts->children());
         }
 
-        std::shared_ptr<ExprNode> expr;
+        std::shared_ptr<AbstractExprNode> expr;
     };
 
     class GotoStmtNode : public AbstractStmtNode
