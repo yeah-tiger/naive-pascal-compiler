@@ -70,11 +70,11 @@ namespace npc
     class ProcCallNode : public DummyNode
     {
     public:
-        ProcCallNode(NodePtr &_ID)
+        ProcCallNode(const NodePtr &_ID)
                 : ID(cast_node<IdentifierNode>(_ID))
         {}
 
-        ProcCallNode(NodePtr &_ID, NodePtr &_args)
+        ProcCallNode(const NodePtr &_ID, const NodePtr &_args)
                 : ID(cast_node<IdentifierNode>(_ID)), args(cast_node<ExprListNode>(_args))
         {}
 
@@ -84,7 +84,9 @@ namespace npc
 
     enum class SysFunction
     {
-        ABS, CHR, ORD, PRED, SQR, SUCC
+        ABS, CHR, ORD, PRED, SQR, SUCC,
+        READ_FUN, READLN,  // READ is occupied by flex part.
+        WRITE, WRITELN
     };
 
     class SysFunctionNode : public DummyNode
@@ -97,12 +99,12 @@ namespace npc
         {}
     };
 
-    enum class ReadFunction
+    enum class [[deprecated]] ReadFunction
     {
         READ, READLN
     };
 
-    enum class WriteFunction
+    enum class [[deprecated]] WriteFunction
     {
         WRITE, WRITELN
     };
@@ -110,15 +112,15 @@ namespace npc
     class SysProcCallNode : public DummyNode
     {
     public:
-        SysProcCallNode(NodePtr &_ID)
-                : ID(cast_node<IdentifierNode>(_ID))
+        SysProcCallNode(const NodePtr &_ID)
+                : ID(cast_node<SysFunctionNode>(_ID))
         {}
 
-        SysProcCallNode(NodePtr &_ID, NodePtr &_args)
-                : ID(cast_node<IdentifierNode>(_ID)), args(cast_node<ExprListNode>(_args))
+        SysProcCallNode(const NodePtr &_ID, const NodePtr &_args)
+                : ID(cast_node<SysFunctionNode>(_ID)), args(cast_node<ExprListNode>(_args))
         {}
 
-        std::shared_ptr<IdentifierNode> ID;
+        std::shared_ptr<SysFunctionNode> ID;
         std::shared_ptr<ExprListNode> args;
     };
 }

@@ -237,8 +237,9 @@ proc_stmt: ID   { $$ = make_node<ProcStmtNode>(cast_node<ProcCallNode>(make_node
     | ID LP args_list RP { $$ = make_node<ProcStmtNode>(cast_node<ProcCallNode>(make_node<ProcCallNode>($1, $3))); }
     | SYS_PROC { $$ = make_node<ProcStmtNode>(cast_node<SysProcCallNode>(make_node<SysProcCallNode>($1))); }
     | SYS_PROC LP expression_list RP { $$ = make_node<ProcStmtNode>(cast_node<SysProcCallNode>(make_node<SysProcCallNode>($1, $3))); }
-    | READ LP factor RP { $$ = make_node<ProcStmtNode>(cast_node<SysProcCallNode>(make_node<SysProcCallNode>($1, $3))); }
-;
+    | READ LP factor RP { $$ = make_node<ProcStmtNode>(cast_node<SysProcCallNode>(make_node<SysProcCallNode>($1, $3))); }  // FIXME on factor or expression_list
+    ;
+
 if_stmt: IF expression THEN stmt else_clause { $$ = make_node<IfStmtNode>($2, $4, $5); }
 ;
 else_clause: ELSE stmt { $$ = $2; }
