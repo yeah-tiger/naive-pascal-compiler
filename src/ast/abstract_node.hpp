@@ -15,7 +15,7 @@
 
 namespace npc
 {
-class AbstractNode : public std::enable_shared_from_this<AbstractNode>
+    class AbstractNode : public std::enable_shared_from_this<AbstractNode>
     {
     public:
         // NOLINT
@@ -30,29 +30,40 @@ class AbstractNode : public std::enable_shared_from_this<AbstractNode>
 
         virtual std::string toString() const = 0;
 
-        std::list<std::shared_ptr<AbstractNode>> &children()
+        std::list<std::shared_ptr<AbstractNode>> &children() noexcept
         {
             return this->_children;
+        }
+
+        auto &parent() noexcept
+        {
+            return this->_parent;
         }
 
         void add(const std::shared_ptr<AbstractNode> &node)
         {
             this->_children.push_back(node);
+            node->parent() = this->weak_from_this();
         }
 
         void add(std::shared_ptr<AbstractNode> &&node)
         {
             this->_children.push_back(node);
+            node->parent() = this->weak_from_this();
         }
 
-        void merge_children(const std::list<std::shared_ptr<AbstractNode>> &children) {
-            for (const auto &e : children) {
+        void merge_children(const std::list<std::shared_ptr<AbstractNode>> &children)
+        {
+            for (const auto &e : children)
+            {
                 this->add(e);
             }
         }
 
     protected:
         std::list<std::shared_ptr<AbstractNode>> _children;
+
+        std::weak_ptr<AbstractNode> _parent;
     };
 }
 
