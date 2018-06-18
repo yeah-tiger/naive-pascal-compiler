@@ -41,8 +41,9 @@ namespace npc
     template<typename NodeType, typename...Args>
     std::shared_ptr<AbstractNode> make_node(Args &&...args)
     {
-        auto *node = new NodeType(std::forward<Args &&>(args)...);
-        return std::shared_ptr<AbstractNode>(node);
+        return std::static_pointer_cast<AbstractNode>(
+                std::make_shared<NodeType>(std::forward<Args &&>(args)...)
+        );
     };
 
     using NodePtr = std::shared_ptr<AbstractNode>;
