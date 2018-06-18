@@ -7,17 +7,24 @@
 
 #include <string>
 #include <unordered_map>
+#include "type_nodes.hpp"
 
 namespace npc
 {
-    // TODO
-    using Variable = std::string;
+    // TODO: modify fields of variable.
+    class Variable
+    {
+    public:
+        std::string name;
+        Type type;
+    };
+
     using SymbolTable = std::unordered_map<std::string, Variable>;
 
     class EnableSymbolTable
     {
     public:
-        SymbolTable &symbolTable()
+        SymbolTable &symbolTable() noexcept
         {
             return _symbolTable;
         }
