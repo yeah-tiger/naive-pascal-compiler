@@ -296,9 +296,9 @@ term: term MUL factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::mult, $
     | factor { $$ = $1; }
 ;
 
-factor: /*NAME
-    | NAME LP args_list RP
-    |*/ ID LP args_list RP            /* FUNCTION is parsed as ID */
+factor: NAME { $$ = $1; }
+    /*| NAME LP args_list RP*/
+    | ID LP args_list RP            /* FUNCTION is parsed as ID */
     { $$ = make_node<ProcCallNode>($1, $3); }
     | SYS_FUNCT { $$ = make_node<SysProcCallNode>($1); }
     | SYS_FUNCT LP args_list RP { $$ = make_node<SysProcCallNode>($1, $3); }
