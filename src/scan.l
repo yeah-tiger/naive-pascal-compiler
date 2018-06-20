@@ -22,6 +22,7 @@
     // int yywrap();
     int yyerror(const char *s);
 
+    // TODO: remove it.
     #define HASH_TABLE_SIZE 2000
     char* dummy_hash_table[HASH_TABLE_SIZE];
     int hash_size = 0;
@@ -153,6 +154,7 @@ NQUOTE [^']
     if (naming) {
         add_to_hash_table(yytext);
         yylval = make_node<NameNode>(std::string(yytext));
+/* TODO: meaning between NAME and ID? */
         return NAME;
     }
     if (in_hash_table(yytext)) {
