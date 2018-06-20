@@ -47,10 +47,6 @@ namespace npc
     {
     };
 
-    class AbstractExprNode : public DummyNode
-    {
-    };
-
     class BinopExprNode : public AbstractExprNode
     {
     public:

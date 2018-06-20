@@ -7,10 +7,11 @@
 
 #include <sstream>
 #include "dummy_node.hpp"
+#include "abstract_expr_node.hpp"
 
 namespace npc
 {
-    class ConstValueNode : public DummyNode
+    class ConstValueNode : public AbstractExprNode
     {
     public:
         virtual NodePtr negative() const = 0;

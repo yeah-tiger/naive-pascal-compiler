@@ -23,7 +23,7 @@ namespace npc
 
     inline AbstractStmtNode::~AbstractStmtNode() = default;
 
-    class StmtNode : public DummyNode
+    class StmtNode : public AbstractStmtNode
     {
     public:
         StmtNode(uint32_t label, const NodePtr &stmt)
@@ -178,7 +178,7 @@ namespace npc
     {
     };
 
-    class StmtList : public DummyNode
+    class StmtList : public AbstractStmtNode
     {
     };
 }
