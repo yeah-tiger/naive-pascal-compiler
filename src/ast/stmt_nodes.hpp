@@ -107,13 +107,13 @@ namespace npc
     {
     public:
         IfStmtNode(const NodePtr &_expr, const NodePtr &_stmt, const NodePtr &_else_stmt)
-                : expr(cast_node<AbstractExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt)),
-                  else_stmt(cast_node<StmtNode>(_else_stmt))
+                : expr(cast_node<AbstractExprNode>(_expr)), stmt(cast_node<AbstractStmtNode>(_stmt)),
+                  else_stmt(cast_node<AbstractStmtNode>(_else_stmt))
         {}
 
         std::shared_ptr<AbstractExprNode> expr;
-        std::shared_ptr<StmtNode> stmt;
-        std::shared_ptr<StmtNode> else_stmt;
+        std::shared_ptr<AbstractStmtNode> stmt;
+        std::shared_ptr<AbstractStmtNode> else_stmt;
     };
 
     class RepeatStmtNode : public AbstractStmtNode

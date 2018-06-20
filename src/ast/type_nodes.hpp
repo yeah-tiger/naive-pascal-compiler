@@ -203,12 +203,15 @@ namespace npc
     class ArrayRefNode : public AbstractExprNode
     {
     public:
+        ///
+        /// \param Id
+        /// \param index AbstractExprNode or IdentifierNode
         ArrayRefNode(const NodePtr &Id, const NodePtr &index)
-                : ID(cast_node<IdentifierNode>(Id)), index(cast_node<AbstractExprNode>(index))
+                : ID(cast_node<IdentifierNode>(Id)), index(index)
         {}
 
         std::shared_ptr<IdentifierNode> ID;
-        std::shared_ptr<AbstractExprNode> index;
+        std::shared_ptr<AbstractNode> index;
     };
 }
 
