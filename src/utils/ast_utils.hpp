@@ -41,7 +41,7 @@ namespace npc
     template<typename NodeType, typename...Args>
     std::shared_ptr<AbstractNode> make_node(Args &&...args)
     {
-        return std::static_pointer_cast<AbstractNode>(
+        return std::dynamic_pointer_cast<AbstractNode>(
                 std::make_shared<NodeType>(std::forward<Args>(args)...)
         );
     };
