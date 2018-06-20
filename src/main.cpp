@@ -86,9 +86,7 @@ end.
     )EOF";
 
     yy_scan_string(s);
-
-#else
-    yyparse();
 #endif
+    yyparse();
     return 0;
 }
