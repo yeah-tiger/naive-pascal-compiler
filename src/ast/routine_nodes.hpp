@@ -117,11 +117,11 @@ namespace npc
         {}
 
         SysProcCallNode(const NodePtr &_ID, const NodePtr &_args)
-                : ID(cast_node<SysFunctionNode>(_ID)), args(cast_node<ExprListNode>(_args))
+                : ID(cast_node<SysFunctionNode>(_ID)), args(_args)
         {}
 
         std::shared_ptr<SysFunctionNode> ID;
-        std::shared_ptr<ExprListNode> args;
+        std::shared_ptr<AbstractNode> args;  // ExprListNode or FActor
     };
 }
 
