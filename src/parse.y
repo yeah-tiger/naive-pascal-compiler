@@ -25,6 +25,9 @@
     #include "y.tab.h"
 %}
 
+%define parse.error verbose
+%define parse.lac full
+
 %token PROGRAM ID CONST NAME ARRAY VAR FUNCTION PROCEDURE _BEGIN END TYPE READ RECORD
 %token INTEGER REAL CHAR STRING
 %token SYS_CON SYS_FUNCT SYS_PROC SYS_TYPE

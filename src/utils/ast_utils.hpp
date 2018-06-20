@@ -42,7 +42,7 @@ namespace npc
     std::shared_ptr<AbstractNode> make_node(Args &&...args)
     {
         return std::static_pointer_cast<AbstractNode>(
-                std::make_shared<NodeType>(std::forward<Args &&>(args)...)
+                std::make_shared<NodeType>(std::forward<Args>(args)...)
         );
     };
 

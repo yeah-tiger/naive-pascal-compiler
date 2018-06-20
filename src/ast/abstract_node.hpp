@@ -43,13 +43,13 @@ namespace npc
         void add(const std::shared_ptr<AbstractNode> &node)
         {
             this->_children.push_back(node);
-            node->parent() = this->weak_from_this();
+            node->parent() = this;
         }
 
         void add(std::shared_ptr<AbstractNode> &&node)
         {
             this->_children.push_back(node);
-            node->parent() = this->weak_from_this();
+            node->parent() = this;
         }
 
         void merge_children(const std::list<std::shared_ptr<AbstractNode>> &children)
@@ -63,7 +63,7 @@ namespace npc
     protected:
         std::list<std::shared_ptr<AbstractNode>> _children;
 
-        std::weak_ptr<AbstractNode> _parent;
+        AbstractNode *_parent;
     };
 }
 
