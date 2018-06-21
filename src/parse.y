@@ -248,7 +248,7 @@ if_stmt: IF expression THEN stmt else_clause { $$ = make_node<IfStmtNode>($2, $4
 else_clause: ELSE stmt { $$ = $2; }
 | { $$ = make_node<DummyStmtNode>(); }
 ;
-repeat_stmt: REPEAT stmt_list UNTIL expression { $$ = make_node<RepeatStmtNode>($2, $4); }
+repeat_stmt: REPEAT stmt_list UNTIL expression { $$ = make_node<RepeatStmtNode>($4); $$->lift_children($2); }
 ;
 while_stmt: WHILE expression DO stmt { $$ = make_node<WhileStmtNode>($2, $4); }
 ;
@@ -256,7 +256,7 @@ for_stmt: FOR ID ASSIGN expression direction expression DO stmt { $$ = make_node
 ;
 direction: TO { $$ = make_node<DirectionNode>(false); } | DOWNTO { $$ = make_node<DirectionNode>(true); }
 ;
-case_stmt: CASE expression OF case_expr_list END { $$ = make_node<CaseStmtNode>($4, $2); }
+case_stmt: CASE expression OF case_expr_list END { $$ = make_node<CaseStmtNode>($2); $$->lift_children($4); }
 ;
 case_expr_list: case_expr_list case_expr { $$ = $1; $$->add($2); }
     | case_expr { $$ = make_node<ExprListNode>(); $$->add($1); }

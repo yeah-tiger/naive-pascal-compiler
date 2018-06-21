@@ -131,13 +131,13 @@ namespace npc
     class TypeDefNode : public AbstractTypeNode  // TODO: should it be designed like this?
     {
     public:
+        std::shared_ptr<NameNode> name;
+        std::shared_ptr<SimpleTypeDeclNode> typeDecl;
+
         TypeDefNode(const NodePtr &name, const NodePtr &type_decl)
-        {
-            this->add(name);
-            this->add(type_decl);
-            assert(is_a_ptr_of<NameNode>(name));
-            assert(is_a_ptr_of<SimpleTypeDeclNode>(type_decl));
-        }
+                : name(cast_node<NameNode>(name)),
+                  typeDecl(cast_node<SimpleTypeDeclNode>(type_decl))
+        {}
 
         Type getTypeClass() const override
         {

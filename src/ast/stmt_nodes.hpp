@@ -118,10 +118,9 @@ namespace npc
     class RepeatStmtNode : public AbstractStmtNode
     {
     public:
-        RepeatStmtNode(const NodePtr &_stmts, const NodePtr &_expr)
+        RepeatStmtNode(const NodePtr &_expr)
                 : expr(cast_node<AbstractExprNode>(_expr))
         {
-            this->merge_children(_stmts->children());
         }
 
         std::shared_ptr<AbstractExprNode> expr;
@@ -169,11 +168,9 @@ namespace npc
     class CaseStmtNode : public AbstractStmtNode
     {
     public:
-        CaseStmtNode(const NodePtr &_stmts, const NodePtr &_expr)
+        CaseStmtNode(const NodePtr &_expr)
                 : expr(cast_node<AbstractExprNode>(_expr))
-        {
-            this->merge_children(_stmts->children());
-        }
+        {}
 
         std::shared_ptr<AbstractExprNode> expr;
     };
