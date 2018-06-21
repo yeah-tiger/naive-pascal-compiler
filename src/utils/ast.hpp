@@ -13,7 +13,6 @@
 #include "../ast/const_expr_node.hpp"
 #include "../ast/const_part_node.hpp"
 #include "../ast/const_value_nodes.hpp"
-#include "../ast/name_node.hpp"
 #include "../ast/type_nodes.hpp"
 #include "../ast/routine_nodes.hpp"
 #include "../ast/stmt_nodes.hpp"

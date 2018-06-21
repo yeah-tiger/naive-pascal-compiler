@@ -1,35 +1,23 @@
-%require "3.0.4"
+%require "3.0"
 
 %{
     #include <cstdio>
-    #include <iostream>
-    #include <cstdlib>
     #include <memory>
-    #include <utility>
-    int yylex();
-    int yyerror(const char *s);
-
     #include "utils/ast.hpp"
     #include "utils/ast_utils.hpp"
+    #include "y.tab.h"
 
     using namespace npc;
 
-    #ifdef YYSTYPE
-    #undef YYSTYPE
-    #endif  // YYSTYPE
-
-    #define YYSTYPE_IS_DECLARED
-
-    using YYSTYPE = std::shared_ptr<AbstractNode>;
-
-    // must be placed here, avoiding conflict with YYSTYPE
-    #include "y.tab.h"
+    int yylex();
+    int yyerror(const char *s);
 %}
 
+%define api.value.type {std::shared_ptr<npc::AbstractNode>}
 %define parse.error verbose
 %define parse.lac full
 
-%token PROGRAM ID CONST NAME ARRAY VAR FUNCTION PROCEDURE _BEGIN END TYPE READ RECORD
+%token PROGRAM ID CONST ARRAY VAR FUNCTION PROCEDURE _BEGIN END TYPE READ RECORD
 %token INTEGER REAL CHAR STRING
 %token SYS_CON SYS_FUNCT SYS_PROC SYS_TYPE
 %token IF THEN ELSE REPEAT UNTIL WHILE DO FOR TO DOWNTO CASE OF GOTO
@@ -42,19 +30,9 @@
 %%
 // TODO:
 program:
-    program_head
-    {
-        std::cout << "Finishing head parsing..." << std::endl;
-    }
-    routine
-    {
-        std::cout << "Finishing routine...\n" << std::endl;
-    }
-    DOT
-    {
-        std::cout << "End parsing\n" << std::endl;
-    }
-    ;
+    program_head { puts("Finishing head parsing..."); }
+    routine { puts("Finishing routine..."); }
+    DOT { puts("End parsing"); }
 
 program_head: PROGRAM ID SEMI
 ;
@@ -74,12 +52,12 @@ const_part: CONST const_expr_list
     | { $$ = make_node<ConstPartNode>(); }
     ;
 
-const_expr_list: const_expr_list NAME EQUAL const_value SEMI
+const_expr_list: const_expr_list ID EQUAL const_value SEMI
     {
         $$ = $1;
         $$->add(make_node<ConstExprNode>($2, $4));
     }
-    | NAME EQUAL const_value SEMI
+    | ID EQUAL const_value SEMI
     {
         $$ = make_node<ConstPartNode>();
         $$->add(make_node<ConstExprNode>($1, $3));
@@ -104,7 +82,7 @@ type_decl_list: type_decl_list type_definition { $$ = $1; $$->add($2); }
     | type_definition { $$ = make_node<TypePartNode>(); $$->add($1); }
     ;
 
-type_definition: NAME EQUAL type_decl SEMI
+type_definition: ID EQUAL type_decl SEMI
     {
         $$ = make_node<TypeDefNode>($1, $3);
     }
@@ -116,7 +94,7 @@ type_decl: simple_type_decl { $$ = $1; }
     ;
 
 simple_type_decl: SYS_TYPE { $$ = $1; }
-    | NAME { $$ = make_node<AliasTypeNode>($1); }
+    | ID { $$ = make_node<AliasTypeNode>($1); }
     | LP name_list RP { $$ = make_node<EnumTypeNode>(); $$->merge_children($2->children()); }
     // TODO: checking type of both const_value is same.
     | const_value DOTDOT const_value
@@ -137,7 +115,7 @@ simple_type_decl: SYS_TYPE { $$ = $1; }
         auto rhs = std::dynamic_pointer_cast<ConstValueNode>($5)->negative();
         $$ = make_node<RangeTypeNode>(lhs, rhs);
     }
-    | NAME DOTDOT NAME
+    | ID DOTDOT ID
     {
         auto lhs = std::dynamic_pointer_cast<ConstValueNode>($1);
         auto rhs = std::dynamic_pointer_cast<ConstValueNode>($3);
@@ -309,8 +287,8 @@ term: term MUL factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::mult, $
     | factor { $$ = $1; }
 ;
 
-factor: NAME { $$ = $1; }
-    /*| NAME LP args_list RP*/
+factor: ID { $$ = $1; }
+    /*| ID LP args_list RP*/
     | ID LP args_list RP            /* FUNCTION is parsed as ID */
     { $$ = make_node<ProcCallNode>($1, $3); }
     | SYS_FUNCT { $$ = make_node<SysProcCallNode>($1); }
@@ -321,7 +299,6 @@ factor: NAME { $$ = $1; }
     | MINUS factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::minus, make_node<IntegerNode>(0), $2); }
     | ID LB expression RB { $$ = make_node<ArrayRefNode>($1, $3); }
     | ID DOT ID { make_node<ArrayRefNode>($1, $3); }
-    | ID                            /* Add ID as one of the factors -- NOTICE */
     { $$ = $1; }
 ;
 args_list: args_list COMMA expression { $$ = $1; $$->add($3); }
@@ -329,12 +306,6 @@ args_list: args_list COMMA expression { $$ = $1; $$->add($3); }
 ;
 
 %%
-
-/*
-int main() {
-    yyparse();
-}
-*/
 
 inline int yyerror(const char *s) {
     fprintf(stderr, "Yacc Error: %s\n", s);

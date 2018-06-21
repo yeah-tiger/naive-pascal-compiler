@@ -131,11 +131,11 @@ namespace npc
     class TypeDefNode : public AbstractTypeNode  // TODO: should it be designed like this?
     {
     public:
-        std::shared_ptr<NameNode> name;
+        std::shared_ptr<IdentifierNode> name;
         std::shared_ptr<SimpleTypeDeclNode> typeDecl;
 
         TypeDefNode(const NodePtr &name, const NodePtr &type_decl)
-                : name(cast_node<NameNode>(name)),
+                : name(cast_node<IdentifierNode>(name)),
                   typeDecl(cast_node<SimpleTypeDeclNode>(type_decl))
         {}
 
@@ -150,7 +150,7 @@ namespace npc
     {
     public:
         AliasTypeNode(const NodePtr &name_node)
-                : _name(std::dynamic_pointer_cast<NameNode>(name_node)->name)
+                : _name(std::dynamic_pointer_cast<IdentifierNode>(name_node)->name)
         {}
 
         const std::string &name() const noexcept
