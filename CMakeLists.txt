@@ -2,18 +2,25 @@ cmake_minimum_required(VERSION 3.7)
 project(naive-pascal-compiler)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "-Wno-deprecated-register")
 
-add_custom_target(
-        LexYaccMakefile
-        COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR} && make -f parser.make
+find_package(BISON)
+find_package(FLEX)
+
+BISON_TARGET(Parse src/parse.y ${CMAKE_BINARY_DIR}/y.tab.cpp
+             DEFINES_FILE ${CMAKE_BINARY_DIR}/y.tab.h)
+FLEX_TARGET(Scan src/scan.l ${CMAKE_BINARY_DIR}/lex.yy.cpp)
+ADD_FLEX_BISON_DEPENDENCY(Scan Parse)
+
+include_directories(src ${CMAKE_BINARY_DIR})
+
+file(GLOB SOURCE_FILES
+    "src/main.cpp"
+    "src/*/*.hpp"
 )
 
-set(SOURCE_FILES
-        src/main.cpp
-        src/scan.g.cpp
-        src/parse.g.cpp
-        src/ast/abstract_node.hpp
-        src/ast/program_node.hpp src/ast/codegen_context.cpp src/ast/codegen_context.hpp src/ast/dummy_node.hpp src/ast/const_part_node.hpp src/ast/const_expr_node.hpp src/utils/ast_utils.hpp src/utils/ast.hpp src/exceptions/codegen_exception.hpp src/ast/const_value_nodes.hpp src/ast/name_node.hpp src/ast/type_nodes.hpp src/ast/stmt_nodes.hpp src/ast/routine_nodes.hpp src/ast/parameter_nodes.hpp src/ast/symbol_table.hpp src/ast/abstract_expr_node.hpp src/ast/expr_nodes.hpp)
-
-add_executable(npc ${SOURCE_FILES})
-add_dependencies(npc LexYaccMakefile)
+add_executable(npc
+    ${BISON_Parse_OUTPUTS}
+    ${FLEX_Scan_OUTPUTS}
+    ${SOURCE_FILES}
+)

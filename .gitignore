@@ -6,6 +6,7 @@ y.tab.h
 
 .idea/
 cmake-build-debug/
+
 \#*\#
 .\#*
-*.g.cpp
+.DS_Store
