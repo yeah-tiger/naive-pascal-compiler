@@ -14,4 +14,4 @@ For ZJU course project.
 
 - [ ] C++ and advanced error report in flex and bison.
 
-- [ ] refactor file structure.
+- [X] refactor file structure.

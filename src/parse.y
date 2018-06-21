@@ -2,6 +2,7 @@
 
 %{
     #include <cstdio>
+    #include <iostream>
     #include <cstdlib>
     #include <memory>
     #include <utility>
@@ -41,10 +42,20 @@
 %%
 // TODO:
 program:
-    program_head { printf("Finishing head parsing...\n"); }
-    routine { printf("Finishing routine...\n"); }
-    DOT { printf("End parsing\n"); exit(0); }
-;
+    program_head
+    {
+        std::cout << "Finishing head parsing..." << std::endl;
+    }
+    routine
+    {
+        std::cout << "Finishing routine...\n" << std::endl;
+    }
+    DOT
+    {
+        std::cout << "End parsing\n" << std::endl;
+    }
+    ;
+
 program_head: PROGRAM ID SEMI
 ;
 routine: routine_head routine_body
@@ -55,6 +66,7 @@ routine_head: label_part const_part type_part var_part routine_part
 ;
 label_part:
 ;
+
 const_part: CONST const_expr_list
     {
         $$ = $2;
