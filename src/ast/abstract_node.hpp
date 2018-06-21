@@ -32,6 +32,7 @@ namespace npc
 
         std::list<std::shared_ptr<AbstractNode>> &children() noexcept
         {
+            assert(this->should_have_children());
             return this->_children;
         }
 
@@ -64,6 +65,9 @@ namespace npc
         std::list<std::shared_ptr<AbstractNode>> _children;
 
         AbstractNode *_parent;
+
+        virtual const bool should_have_children() const
+        { return true; }
     };
 }
 
