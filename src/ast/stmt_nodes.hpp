@@ -8,7 +8,6 @@
 #include <utility>
 #include "dummy_node.hpp"
 #include "type_nodes.hpp"
-#include "routine_nodes.hpp"
 #include "const_value_nodes.hpp"
 
 namespace npc
@@ -151,6 +150,17 @@ namespace npc
         std::shared_ptr<DirectionNode> dir;
         std::shared_ptr<AbstractExprNode> expr;
         std::shared_ptr<StmtNode> stmt;
+    };
+
+    class CaseExprNode : public AbstractStmtNode
+    {
+    public:
+        std::shared_ptr<AbstractNode> label;
+        std::shared_ptr<AbstractStmtNode> stmt;
+
+        CaseExprNode(const NodePtr &_label, const NodePtr &_stmt)
+                : label(_label), stmt(cast_node<AbstractStmtNode>(_stmt))
+        {}
     };
 
     class CaseStmtNode : public AbstractStmtNode

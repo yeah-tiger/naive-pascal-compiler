@@ -262,12 +262,13 @@ case_expr_list: case_expr_list case_expr { $$ = $1; $$->add($2); }
     | case_expr { $$ = make_node<ExprListNode>(); $$->add($1); }
 ;
 
-// TODO:
 case_expr: const_value COLON stmt SEMI
     {
+        $$ = make_node<CaseExprNode>($1, $3);
     }
     | ID COLON stmt SEMI
     {
+        $$ = make_node<CaseExprNode>($1, $3);
     }
     ;
 
