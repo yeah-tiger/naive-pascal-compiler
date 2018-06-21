@@ -158,6 +158,9 @@ namespace npc
         std::shared_ptr<AbstractNode> label;
         std::shared_ptr<AbstractStmtNode> stmt;
 
+        ///
+        /// \param _label should be const_value or ID.
+        /// \param _stmt
         CaseExprNode(const NodePtr &_label, const NodePtr &_stmt)
                 : label(_label), stmt(cast_node<AbstractStmtNode>(_stmt))
         {}

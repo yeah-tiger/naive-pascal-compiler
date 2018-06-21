@@ -8,6 +8,7 @@
 #include "dummy_node.hpp"
 #include "parameter_nodes.hpp"
 #include "type_nodes.hpp"
+#include "expr_nodes.hpp"
 
 namespace npc
 {
