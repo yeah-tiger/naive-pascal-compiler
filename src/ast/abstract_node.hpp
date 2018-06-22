@@ -41,25 +41,23 @@ namespace npc
             return this->_parent;
         }
 
-        void add(const std::shared_ptr<AbstractNode> &node)
+        void add_child(const std::shared_ptr<AbstractNode> &node)
         {
             this->_children.push_back(node);
             node->parent() = this->shared_from_this();
         }
 
-        void add(std::shared_ptr<AbstractNode> &&node)
+        void add_child(std::shared_ptr<AbstractNode> &&node)
         {
             this->_children.push_back(node);
             node->parent() = this->shared_from_this();
         }
 
-        /// NEVER call it from ctor.
-        /// \param children
         void merge_children(const std::list<std::shared_ptr<AbstractNode>> &children)
         {
             for (const auto &e : children)
             {
-                this->add(e);
+                this->add_child(e);
             }
         }
 
@@ -68,13 +66,16 @@ namespace npc
             this->merge_children(node->children());
         }
 
+        void move_children(const std::shared_ptr<AbstractNode> &node)
+        {
+            this->children() = std::move(node->children());
+        }
+
     protected:
         std::list<std::shared_ptr<AbstractNode>> _children;
-
         std::weak_ptr<AbstractNode> _parent;
 
-        virtual const bool should_have_children() const
-        { return true; }
+        virtual const bool should_have_children() const { return true; }
     };
 }
 

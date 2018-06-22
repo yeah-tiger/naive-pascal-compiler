@@ -6,23 +6,33 @@
 #define NAIVE_PASCAL_COMPILER_SYS_ROUTINE_NODES_HPP
 
 #include "dummy_node.hpp"
+#include "expr_nodes.hpp"
 
 namespace npc
 {
-    enum class SysFunction
+    enum class SysRoutine
     {
         ABS, CHR, ORD, PRED, SQR, SQRT, SUCC,
         READ_FUN, READLN,  // READ is occupied by flex part.
         WRITE, WRITELN
     };
 
-    class SysFunctionNode : public DummyNode
+    class SysRoutineNode : public DummyNode
     {
     public:
-        SysFunction function;
+        SysRoutine routine;
 
-        SysFunctionNode(SysFunction _function)
-                : function(_function)
+        explicit SysRoutineNode(SysRoutine routine) : routine(routine) {}
+    };
+
+    class SysCallNode : public DummyNode
+    {
+    public:
+        std::shared_ptr<SysRoutineNode> routine;
+        std::shared_ptr<ExprListNode> args;
+
+        SysCallNode(const NodePtr &routine, const NodePtr &args)
+                : routine(cast_node<SysRoutineNode>(routine)), args(cast_node<ExprListNode>(args))
         {}
     };
 }

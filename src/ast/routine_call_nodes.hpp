@@ -6,39 +6,36 @@
 #define NAIVE_PASCAL_COMPILER_ROUTINE_CALL_NODES_HPP
 
 #include "dummy_node.hpp"
-#include "type_nodes.hpp"
-#include "sys_routine_nodes.hpp"
+#include "identifier_node.hpp"
+#include "expr_nodes.hpp"
 
 namespace npc
 {
-    class ProcCallNode : public DummyNode
+    class RoutineCallNode : public DummyNode
     {
     public:
-        explicit ProcCallNode(const NodePtr &_ID)
-                : ID(cast_node<IdentifierNode>(_ID))
-        {}
-
-        ProcCallNode(const NodePtr &_ID, const NodePtr &_args)
-                : ID(cast_node<IdentifierNode>(_ID)), args(cast_node<ExprListNode>(_args))
-        {}
-
-        std::shared_ptr<IdentifierNode> ID;
+        std::shared_ptr<IdentifierNode> identifier;
         std::shared_ptr<ExprListNode> args;
+
+        RoutineCallNode(const NodePtr &identifier, const NodePtr &args)
+                : identifier(cast_node<IdentifierNode>(identifier)), args(cast_node<ExprListNode>(args))
+        {}
+
+        explicit RoutineCallNode(const NodePtr &identifier)
+                : RoutineCallNode(identifier, make_node<ExprListNode>())
+        {}
     };
 
-    class SysProcCallNode : public DummyNode
+    class ProcCallNode : public RoutineCallNode
     {
     public:
-        explicit SysProcCallNode(const NodePtr &_ID)
-                : ID(cast_node<SysFunctionNode>(_ID))
-        {}
+        using RoutineCallNode::RoutineCallNode;
+    };
 
-        SysProcCallNode(const NodePtr &_ID, const NodePtr &_args)
-                : ID(cast_node<SysFunctionNode>(_ID)), args(_args)
-        {}
-
-        std::shared_ptr<SysFunctionNode> ID;
-        std::shared_ptr<AbstractNode> args;  // ExprListNode or FActor
+    class FuncCallNode : public RoutineCallNode
+    {
+    public:
+        using RoutineCallNode::RoutineCallNode;
     };
 }
 

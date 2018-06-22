@@ -13,183 +13,121 @@
 
 namespace npc
 {
-    class StmtNode;
 
-    class AbstractStmtNode : public DummyNode
+    class StmtNode : public DummyNode
     {
-    public:
-        ~AbstractStmtNode() override = 0;
     };
 
-    inline AbstractStmtNode::~AbstractStmtNode() = default;
+    class CompoundStmtNode : public StmtNode
+    {
+    };
 
-    class StmtNode : public AbstractStmtNode
+
+    class AssignStmtNode : public StmtNode
     {
     public:
-        StmtNode(uint32_t label, const NodePtr &stmt)
-                : _labeled(true),
-                  _label(label),
-                  stmt(cast_node<AbstractStmtNode>(stmt))
+        std::shared_ptr<ExprNode> lhs;
+        std::shared_ptr<ExprNode> rhs;
+
+        AssignStmtNode(const NodePtr &lhs, const NodePtr &rhs)
+                : lhs(cast_node<ExprNode>(lhs)), rhs(cast_node<ExprNode>(rhs))
         {
+            assert(is_a_ptr_of<IdentifierNode>(lhs)
+                || is_a_ptr_of<ArrayRefNode>(lhs) || is_a_ptr_of<RecordRefNode>(lhs));
         }
 
-        StmtNode(const NodePtr &stmt)
-                : _labeled(false),
-                  _label(0),
-                  stmt(cast_node<AbstractStmtNode>(stmt))
+    };
+
+    class ProcStmtNode : public StmtNode
+    {
+    public:
+        NodePtr proc_call;
+
+        ProcStmtNode(const NodePtr &proc_call) : proc_call(proc_call)
         {
+            assert(is_a_ptr_of<ProcCallNode>(proc_call) || is_a_ptr_of<SysCallNode>(proc_call));
         }
+    };
 
-        std::shared_ptr<AbstractStmtNode> stmt;
+    class IfStmtNode : public StmtNode
+    {
+    public:
+        std::shared_ptr<ExprNode> expr;
+        std::shared_ptr<StmtNode> stmt;
+        std::shared_ptr<StmtNode> else_stmt;
 
-        bool isLabeled()
-        {
-            return this->_labeled;
-        }
+        IfStmtNode(const NodePtr &expr, const NodePtr &stmt, const NodePtr &else_stmt)
+                : expr(cast_node<ExprNode>(expr)), stmt(cast_node<StmtNode>(stmt)),
+                  else_stmt(cast_node<StmtNode>(else_stmt))
+        {}
+    };
 
-        uint32_t label()
-        {
-            return _label;
-        }
+    class RepeatStmtNode : public StmtNode
+    {
+    public:
+        std::shared_ptr<ExprNode> expr;
 
-    private:
-        bool _labeled;
-        uint32_t _label;
+        RepeatStmtNode(const NodePtr &expr) : expr(cast_node<ExprNode>(expr)) {}
+    };
+
+    class WhileStmtNode : public StmtNode
+    {
+    public:
+        std::shared_ptr<ExprNode> expr;
+        std::shared_ptr<StmtNode> stmt;
+
+        WhileStmtNode(const NodePtr &expr, const NodePtr &stmt)
+                : expr(cast_node<ExprNode>(expr)), stmt(cast_node<StmtNode>(stmt))
+        {}
     };
 
     enum class DirectionEnum
     {
-        TO,
-        DOWNTO
+        TO, DOWNTO
     };
 
-    class DirectionNode : public DummyNode
+    class ForStmtNode : public StmtNode
     {
     public:
-        DirectionEnum val;
+        DirectionEnum direction;
+        std::shared_ptr<IdentifierNode> identifier;
+        std::shared_ptr<ExprNode> start;
+        std::shared_ptr<ExprNode> finish;
+        std::shared_ptr<StmtNode> stmt;
 
-        DirectionNode(bool isDownTo)
-                : val(isDownTo ? DirectionEnum::DOWNTO : DirectionEnum::TO)
+        ForStmtNode(DirectionEnum direction, const NodePtr &identifier,
+                    const NodePtr &start, const NodePtr &finish, const NodePtr &stmt)
+                : direction(direction), identifier(cast_node<IdentifierNode>(identifier)),
+                  start(cast_node<ExprNode>(start)), finish(cast_node<ExprNode>(finish)),
+                  stmt(cast_node<StmtNode>(stmt))
         {}
     };
 
-    class AssignStmtNode : public AbstractStmtNode
+    class CaseExprNode : public StmtNode
     {
     public:
-        AssignStmtNode(NodePtr lhs, NodePtr rhs, bool compound = false)
-                : lhs(std::move(lhs)), rhs(std::move(rhs)), compound(compound)
-        {}
+        std::shared_ptr<ExprNode> branch;
+        std::shared_ptr<StmtNode> stmt;
 
-        NodePtr lhs, rhs;
-        bool compound;
-    };
-
-    class ProcStmtNode : public AbstractStmtNode
-    {
-    public:
-        ProcStmtNode(std::shared_ptr<ProcCallNode> proc_call) : proc_call(std::move(proc_call)), syscall(false)
-        {}
-
-        ProcStmtNode(std::shared_ptr<SysProcCallNode> sys_proc_call) : sys_proc_call(std::move(sys_proc_call)),
-                                                                       syscall(true)
-        {}
-
-        std::shared_ptr<ProcCallNode> proc_call;
-        std::shared_ptr<SysProcCallNode> sys_proc_call;
-        bool syscall;
-    };
-
-    class CompoundStmtNode : public AbstractStmtNode
-    {
-    };
-
-    class IfStmtNode : public AbstractStmtNode
-    {
-    public:
-        IfStmtNode(const NodePtr &_expr, const NodePtr &_stmt, const NodePtr &_else_stmt)
-                : expr(cast_node<AbstractExprNode>(_expr)), stmt(cast_node<AbstractStmtNode>(_stmt)),
-                  else_stmt(cast_node<AbstractStmtNode>(_else_stmt))
-        {}
-
-        std::shared_ptr<AbstractExprNode> expr;
-        std::shared_ptr<AbstractStmtNode> stmt;
-        std::shared_ptr<AbstractStmtNode> else_stmt;
-    };
-
-    class RepeatStmtNode : public AbstractStmtNode
-    {
-    public:
-        RepeatStmtNode(const NodePtr &_expr)
-                : expr(cast_node<AbstractExprNode>(_expr))
+        CaseExprNode(const NodePtr &branch, const NodePtr &stmt)
+                : branch(cast_node<ExprNode>(branch)), stmt(cast_node<StmtNode>(stmt))
         {
+            assert(is_a_ptr_of<IdentifierNode>(branch) || is_a_ptr_of<ConstValueNode>(branch));
         }
-
-        std::shared_ptr<AbstractExprNode> expr;
     };
 
-    class WhileStmtNode : public AbstractStmtNode
+    class CaseStmtNode : public StmtNode
     {
     public:
-        WhileStmtNode(const NodePtr &_expr, const NodePtr &_stmt)
-                : expr(cast_node<AbstractExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
-        {}
+        std::shared_ptr<ExprNode> expr;
 
-        std::shared_ptr<AbstractExprNode> expr;
-        std::shared_ptr<StmtNode> stmt;
+        void add_expr(const NodePtr &expr)
+        {
+            this->expr = cast_node<ExprNode>(expr);
+        }
     };
 
-    class ForStmtNode : public AbstractStmtNode
-    {
-    public:
-        ForStmtNode(const NodePtr &_assign, const NodePtr &_dir, const NodePtr &_expr, const NodePtr &_stmt)
-                : assign(cast_node<AssignStmtNode>(_assign)), dir(cast_node<DirectionNode>(_dir)),
-                  expr(cast_node<AbstractExprNode>(_expr)), stmt(cast_node<StmtNode>(_stmt))
-        {}
-
-        std::shared_ptr<AssignStmtNode> assign;
-        std::shared_ptr<DirectionNode> dir;
-        std::shared_ptr<AbstractExprNode> expr;
-        std::shared_ptr<StmtNode> stmt;
-    };
-
-    class CaseExprNode : public AbstractStmtNode
-    {
-    public:
-        std::shared_ptr<AbstractNode> label;
-        std::shared_ptr<AbstractStmtNode> stmt;
-
-        ///
-        /// \param _label should be const_value or ID.
-        /// \param _stmt
-        CaseExprNode(const NodePtr &_label, const NodePtr &_stmt)
-                : label(_label), stmt(cast_node<AbstractStmtNode>(_stmt))
-        {}
-    };
-
-    class CaseStmtNode : public AbstractStmtNode
-    {
-    public:
-        CaseStmtNode(const NodePtr &_expr)
-                : expr(cast_node<AbstractExprNode>(_expr))
-        {}
-
-        std::shared_ptr<AbstractExprNode> expr;
-    };
-
-    class GotoStmtNode : public AbstractStmtNode
-    {
-    public:
-        GotoStmtNode(const NodePtr &_integer) : integer(cast_node<IntegerNode>(_integer))
-        {}
-
-        std::shared_ptr<IntegerNode> integer;
-    };
-
-    class DummyStmtNode : public AbstractStmtNode
-    {
-    };
-
-    class StmtList : public AbstractStmtNode
+    class StmtList : public StmtNode
     {
     };
 }

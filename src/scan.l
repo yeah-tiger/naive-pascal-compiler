@@ -9,7 +9,6 @@
 
     int line_no;
     void commenteof();
-    int yyerror(const char *s);
 %}
 
 A [aA]
@@ -73,19 +72,19 @@ NQUOTE [^']
 {W}{H}{I}{L}{E}             return WHILE;
 
 {I}{N}{T}{E}{G}{E}{R} {
-    yylval = make_node<SimpleTypeDeclNode>(Type::integer);
+    yylval = make_node<SimpleTypeNode>(Type::integer);
     return SYS_TYPE;
 }
 {R}{E}{A}{L} {
-    yylval = make_node<SimpleTypeDeclNode>(Type::real);
+    yylval = make_node<SimpleTypeNode>(Type::real);
     return SYS_TYPE;
 }
 {B}{O}{O}{L}{E}{A}{N} {
-    yylval = make_node<SimpleTypeDeclNode>(Type::boolean);
+    yylval = make_node<SimpleTypeNode>(Type::boolean);
     return SYS_TYPE;
 }
 {C}{H}{A}{R} {
-    yylval = make_node<SimpleTypeDeclNode>(Type::character);
+    yylval = make_node<SimpleTypeNode>(Type::character);
     return SYS_TYPE;
 }
 {F}{A}{L}{S}{E}|{T}{R}{U}{E}|{M}{A}{X}{I}{N}{T} {
@@ -109,28 +108,31 @@ NQUOTE [^']
     return SYS_CON;
 }
 
-{A}{B}{S} { yylval = make_node<SysFunctionNode>(SysFunction::ABS); return SYS_FUNC; }
-{C}{H}{R} { yylval = make_node<SysFunctionNode>(SysFunction::CHR); return SYS_FUNC; }
-{O}{R}{D} { yylval = make_node<SysFunctionNode>(SysFunction::ORD); return SYS_FUNC; }
-{P}{R}{E}{D} { yylval = make_node<SysFunctionNode>(SysFunction::PRED); return SYS_FUNC; }
-{S}{Q}{R} { yylval = make_node<SysFunctionNode>(SysFunction::SQR); return SYS_FUNC; }
-{S}{Q}{R}{T} { yylval = make_node<SysFunctionNode>(SysFunction::SQRT); return SYS_FUNC; }
-{S}{U}{C}{C} { yylval = make_node<SysFunctionNode>(SysFunction::SUCC); return SYS_FUNC; }
-{R}{E}{A}{D} { yylval = make_node<SysFunctionNode>(SysFunction::READ_FUN); return READ; }
-{R}{E}{A}{D}{L}{N} { yylval = make_node<SysFunctionNode>(SysFunction::READLN); return READ; }
-{W}{R}{I}{T}{E} { yylval = make_node<SysFunctionNode>(SysFunction::WRITE); return SYS_PROC; }
-{W}{R}{I}{T}{E}{L}{N} { yylval = make_node<SysFunctionNode>(SysFunction::WRITELN); return SYS_PROC; }
+{A}{B}{S} { yylval = make_node<SysRoutineNode>(SysRoutine::ABS); return SYS_FUNC; }
+{C}{H}{R} { yylval = make_node<SysRoutineNode>(SysRoutine::CHR); return SYS_FUNC; }
+{O}{R}{D} { yylval = make_node<SysRoutineNode>(SysRoutine::ORD); return SYS_FUNC; }
+{P}{R}{E}{D} { yylval = make_node<SysRoutineNode>(SysRoutine::PRED); return SYS_FUNC; }
+{S}{Q}{R} { yylval = make_node<SysRoutineNode>(SysRoutine::SQR); return SYS_FUNC; }
+{S}{Q}{R}{T} { yylval = make_node<SysRoutineNode>(SysRoutine::SQRT); return SYS_FUNC; }
+{S}{U}{C}{C} { yylval = make_node<SysRoutineNode>(SysRoutine::SUCC); return SYS_FUNC; }
+{R}{E}{A}{D} { yylval = make_node<SysRoutineNode>(SysRoutine::READ_FUN); return READ; }
+{R}{E}{A}{D}{L}{N} { yylval = make_node<SysRoutineNode>(SysRoutine::READLN); return READ; }
+{W}{R}{I}{T}{E} { yylval = make_node<SysRoutineNode>(SysRoutine::WRITE); return SYS_PROC; }
+{W}{R}{I}{T}{E}{L}{N} { yylval = make_node<SysRoutineNode>(SysRoutine::WRITELN); return SYS_PROC; }
 
 [a-zA-Z]([a-zA-Z0-9])* {
     yylval = make_node<IdentifierNode>(std::string(yytext));
     return ID;
 }
 
-":="                return ASSIGN;
+[0-9]+              { yylval = make_node<IntegerNode>(yytext); return INTEGER; }
+[0-9]+"."[0-9]+     { yylval = make_node<RealNode>(yytext); return REAL; }
 '({NQUOTE}|'')+'    { yylval = make_node<StringNode>(yytext); return STRING; }
+ /* TODO: CHAR */
+
+":="                return ASSIGN;
 ":"                 return COLON;
 ","                 return COMMA;
-[0-9]+              { yylval = make_node<IntegerNode>(yytext); return INTEGER; }
 "."                 return DOT;
 ".."                return DOTDOT;
 "="                 return EQUAL;
@@ -144,7 +146,6 @@ NQUOTE [^']
 "<>"                return UNEQUAL;
 "+"                 return PLUS;
 "]"                 return RB;
-[0-9]+"."[0-9]+     { yylval = make_node<RealNode>(yytext); return REAL; }
 ")"                 return RP;
 ";"                 return SEMI;
 "/"                 return DIV;
@@ -175,9 +176,4 @@ NQUOTE [^']
 inline void commenteof() {
     fprintf(stderr, "unexpected EOF inside comment at line %d\n", line_no);
     exit(1);
-}
-
-inline int yyerror(const char *s) {
-    fprintf(stderr, "Yacc Error: %s\n", s);
-    exit(-1);
 }

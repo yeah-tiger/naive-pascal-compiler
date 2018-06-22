@@ -9,6 +9,9 @@
 #include <utility>
 #include <vector>
 #include "dummy_node.hpp"
+#include "identifier_node.hpp"
+
+// TODO: Refactor all these type nodes
 
 namespace npc
 {
@@ -17,26 +20,10 @@ namespace npc
         error, integer, real, character, boolean, array, record
     };
 
-    class NameListNode : public DummyNode
-    {
-    };
-
-    class IdentifierNode : public DummyNode
+    class TypeNode : public DummyNode
     {
     public:
-        IdentifierNode(std::string s) : name(std::move(s))
-        {}
-
-        IdentifierNode(const char *c) : name(c)
-        {}
-
-        std::string name;
-    };
-
-    class AbstractTypeNode : public DummyNode
-    {
-    public:
-        ~AbstractTypeNode() override = 0;
+        ~TypeNode() override = 0;
 
         virtual Type getTypeClass() const
         {
@@ -44,15 +31,15 @@ namespace npc
         }
     };
 
-    inline AbstractTypeNode::~AbstractTypeNode() = default;
+    inline TypeNode::~TypeNode() = default;
 
     /*
      * for system built-in types
      */
-    class SimpleTypeDeclNode : public AbstractTypeNode
+    class SimpleTypeNode : public TypeNode
     {
     public:
-        SimpleTypeDeclNode(Type type) : type(type)
+        SimpleTypeNode(Type type) : type(type)
         {}
 
         Type type;
@@ -63,38 +50,7 @@ namespace npc
         }
     };
 
-    class VarDeclNode : public DummyNode
-    {
-    public:
-        std::shared_ptr<IdentifierNode> identifier;
-        // TODO: should be type node
-        std::shared_ptr<AbstractNode> type;
-
-        VarDeclNode(const NodePtr &i, const NodePtr &t)
-                : identifier(cast_node<IdentifierNode>(i)), type(t)
-        {}
-    };
-
-    class TypePartNode : public DummyNode
-    {
-    };
-
-    class FieldDeclNode : public DummyNode
-    {
-    public:
-        NodePtr nameList;
-        NodePtr typeDecl;
-
-        FieldDeclNode(const NodePtr &name_list, const NodePtr &type_decl)
-                : nameList(name_list),
-                  typeDecl(type_decl)
-        {
-            assert(is_a_ptr_of<NameListNode>(name_list));
-            assert(is_a_ptr_of<SimpleTypeDeclNode>(type_decl));
-        }
-    };
-
-    class RecordTypeNode : public AbstractTypeNode  // TODO: check all children are FieldDeclNode
+    class RecordTypeNode : public TypeNode  // TODO: check all children are FieldDeclNode
     {
     public:
         Type getTypeClass() const override
@@ -104,25 +60,7 @@ namespace npc
         }
     };
 
-    class TypeDefNode : public AbstractTypeNode  // TODO: should it be designed like this?
-    {
-    public:
-        std::shared_ptr<IdentifierNode> name;
-        std::shared_ptr<SimpleTypeDeclNode> typeDecl;
-
-        TypeDefNode(const NodePtr &name, const NodePtr &type_decl)
-                : name(cast_node<IdentifierNode>(name)),
-                  typeDecl(cast_node<SimpleTypeDeclNode>(type_decl))
-        {}
-
-        Type getTypeClass() const override
-        {
-            // TODO
-            assert(false);
-        }
-    };
-
-    class AliasTypeNode : public AbstractTypeNode
+    class AliasTypeNode : public TypeNode
     {
     public:
         AliasTypeNode(const NodePtr &name_node)
@@ -138,21 +76,22 @@ namespace npc
         std::string _name;
     };
 
-    class EnumTypeNode : public AbstractTypeNode
+    class EnumTypeNode : public TypeNode
     {
     };
 
-    class RangeTypeNode : public AbstractTypeNode
+    class RangeTypeNode : public TypeNode
     {
     public:
         const NodePtr &min, &max;
 
+        // TODO: checking type of both const_value is same.
         RangeTypeNode(const NodePtr &min, const NodePtr &max)
                 : min(min), max(max)
         {}
     };
 
-    class ArrayTypeNode : public AbstractTypeNode
+    class ArrayTypeNode : public TypeNode
     {
     };
 }

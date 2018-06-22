@@ -25,6 +25,14 @@ namespace npc
         {
         }
     };
+
+    // TODO: Move back to expr_nodes.hpp
+    class ExprNode : public DummyNode
+    {
+    };
+    class ExprListNode : public DummyNode
+    {
+    };
 }
 
 #endif //NAIVE_PASCAL_COMPILER_DUMMY_NODE_H

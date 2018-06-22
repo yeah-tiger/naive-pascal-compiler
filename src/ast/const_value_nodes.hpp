@@ -7,13 +7,14 @@
 
 #include <sstream>
 #include "dummy_node.hpp"
-#include "abstract_expr_node.hpp"
+#include "expr_nodes.hpp"
 
 namespace npc
 {
-    class ConstValueNode : public AbstractExprNode
+    class ConstValueNode : public ExprNode
     {
     public:
+        // TODO: remove negative()
         virtual NodePtr negative() const = 0;
     };
 
