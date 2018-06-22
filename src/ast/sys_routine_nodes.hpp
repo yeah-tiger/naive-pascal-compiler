@@ -12,7 +12,7 @@ namespace npc
 {
     enum class SysRoutine
     {
-        ABS, CHR, ORD, PRED, SQR, SQRT, SUCC,
+        ABS, CHR, ODD, ORD, PRED, SQR, SQRT, SUCC,
         READ_FUN, READLN,  // READ is occupied by flex part.
         WRITE, WRITELN
     };

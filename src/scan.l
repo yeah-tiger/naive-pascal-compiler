@@ -1,6 +1,7 @@
 %{
     #include <cstdio>
     #include <cassert>
+    #include <limits>
     #include "utils/ast.hpp"
     #include "utils/ast_utils.hpp"
     #include "y.tab.h"
@@ -71,36 +72,41 @@ NQUOTE [^']
 {V}{A}{R}                   return VAR;
 {W}{H}{I}{L}{E}             return WHILE;
 
+{B}{O}{O}{L}{E}{A}{N} {
+    yylval = make_node<SimpleTypeNode>(Type::BOOLEAN);
+    return SYS_TYPE;
+}
 {I}{N}{T}{E}{G}{E}{R} {
-    yylval = make_node<SimpleTypeNode>(Type::integer);
+    yylval = make_node<SimpleTypeNode>(Type::INTEGER);
     return SYS_TYPE;
 }
 {R}{E}{A}{L} {
-    yylval = make_node<SimpleTypeNode>(Type::real);
-    return SYS_TYPE;
-}
-{B}{O}{O}{L}{E}{A}{N} {
-    yylval = make_node<SimpleTypeNode>(Type::boolean);
+    yylval = make_node<SimpleTypeNode>(Type::REAL);
     return SYS_TYPE;
 }
 {C}{H}{A}{R} {
-    yylval = make_node<SimpleTypeNode>(Type::character);
+    yylval = make_node<SimpleTypeNode>(Type::CHAR);
     return SYS_TYPE;
 }
+{S}{T}{R}{I}{N}{G} {
+    yylval = make_node<SimpleTypeNode>(Type::STRING);
+    return SYS_TYPE;
+}
+
 {F}{A}{L}{S}{E}|{T}{R}{U}{E}|{M}{A}{X}{I}{N}{T} {
     switch (yytext[0])
     {
     case 'f':
     case 'F':
-        yylval = make_node<SysConNode>(SysConEnum::FALSE);
+        yylval = make_node<BooleanNode>(false);
         break;
     case 't':
     case 'T':
-        yylval = make_node<SysConNode>(SysConEnum::TRUE);
+        yylval = make_node<BooleanNode>(true);
         break;
     case 'm':
     case 'M':
-        yylval = make_node<SysConNode>(SysConEnum::MAXINT);
+        yylval = make_node<IntegerNode>(std::numeric_limits<int>::max());
         break;
     default:
         assert(false);
@@ -110,6 +116,7 @@ NQUOTE [^']
 
 {A}{B}{S} { yylval = make_node<SysRoutineNode>(SysRoutine::ABS); return SYS_FUNC; }
 {C}{H}{R} { yylval = make_node<SysRoutineNode>(SysRoutine::CHR); return SYS_FUNC; }
+{O}{D}{D} { yylval = make_node<SysRoutineNode>(SysRoutine::ODD); return SYS_FUNC; }
 {O}{R}{D} { yylval = make_node<SysRoutineNode>(SysRoutine::ORD); return SYS_FUNC; }
 {P}{R}{E}{D} { yylval = make_node<SysRoutineNode>(SysRoutine::PRED); return SYS_FUNC; }
 {S}{Q}{R} { yylval = make_node<SysRoutineNode>(SysRoutine::SQR); return SYS_FUNC; }
@@ -125,10 +132,10 @@ NQUOTE [^']
     return ID;
 }
 
-[0-9]+              { yylval = make_node<IntegerNode>(yytext); return INTEGER; }
-[0-9]+"."[0-9]+     { yylval = make_node<RealNode>(yytext); return REAL; }
-'({NQUOTE}|'')+'    { yylval = make_node<StringNode>(yytext); return STRING; }
- /* TODO: CHAR */
+[+-]?[0-9]+             { yylval = make_node<IntegerNode>(yytext); return INTEGER; }
+[+-]?[0-9]+"."[0-9]+    { yylval = make_node<RealNode>(yytext); return REAL; }
+'{NQUOTE}'              { yylval = make_node<CharNode>(yytext); return CHAR; }
+'({NQUOTE}|'')+'        { yylval = make_node<StringNode>(yytext); return STRING; }
 
 ":="                return ASSIGN;
 ":"                 return COLON;

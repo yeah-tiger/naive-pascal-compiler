@@ -78,27 +78,25 @@ type_decl
     : simple_type_decl { $$ = $1; }
     | array_type_decl  { $$ = $1; }
     | record_type_decl { $$ = $1; }
+    | LP name_list RP
+        { $$ = make_node<SetTypeNode>(); $$->move_children($2); }
     ;
 
 simple_type_decl
     : SYS_TYPE { $$ = $1; }
-    | ID
-        { $$ = make_node<AliasTypeNode>($1); }
-    | LP name_list RP
-        { $$ = make_node<EnumTypeNode>(); $$->move_children($2); }
-    | const_value DOTDOT const_value
-        { $$ = make_node<RangeTypeNode>($1, $3, RangeFormat::POSPOS); }
-    | MINUS const_value DOTDOT const_value
-        { $$ = make_node<RangeTypeNode>($2, $4, RangeFormat::NEGPOS); }
-    | MINUS const_value DOTDOT MINUS const_value
-        { $$ = make_node<RangeTypeNode>($2, $5, RangeFormat::NEGNEG); }
-    | ID DOTDOT ID
-        { $$ = make_node<RangeTypeNode>($1, $3, RangeFormat::IDID); }
+    | ID { $$ = make_node<AliasTypeNode>($1); }
     ;
 
 array_type_decl
-    : ARRAY LB simple_type_decl RB OF type_decl
+    : ARRAY LB array_range RB OF type_decl
         { $$ = make_node<ArrayTypeNode>($3, $6); }
+    ;
+
+array_range
+    : const_value DOTDOT const_value
+        { $$ = make_node<RangeNode>($1, $3); }
+    | ID DOTDOT ID
+        { $$ = make_node<RangeNode>($1, $3); }
     ;
 
 record_type_decl
@@ -309,7 +307,7 @@ factor
     | const_value { $$ = $1; }
     | LP expression RP { $$ = $2; }
     | NOT factor
-        { $$ = make_node<BinopExprNode>(BinaryOperator::XOR, make_node<SysConNode>(SysConEnum::TRUE), $2); }
+        { $$ = make_node<BinopExprNode>(BinaryOperator::XOR, make_node<BooleanNode>(true), $2); }
     | MINUS factor
         { $$ = make_node<BinopExprNode>(BinaryOperator::SUB, make_node<IntegerNode>(0), $2); }
     | ID LB expression RB

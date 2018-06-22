@@ -8,34 +8,43 @@
 #include <sstream>
 #include "dummy_node.hpp"
 #include "expr_nodes.hpp"
+#include "type_nodes.hpp"
 
 namespace npc
 {
     class ConstValueNode : public ExprNode
     {
     public:
-        // TODO: remove negative()
-        virtual NodePtr negative() const = 0;
+        Type type = Type::UNDEFINED;
+    };
+
+    class BooleanNode : public ConstValueNode
+    {
+    public:
+        bool val;
+
+        BooleanNode(bool val) : val(val)
+        {
+            type = Type::BOOLEAN;
+        }
     };
 
     class IntegerNode : public ConstValueNode
     {
     public:
-        int64_t val;
+        int val;
 
-        IntegerNode(int64_t v)
-        { val = v; }
-
-        IntegerNode(const char *v)
+        IntegerNode(int val) : val(val)
         {
-            std::stringstream ss;
-            ss << v;
-            ss >> this->val;
+            type = Type::INTEGER;
         }
 
-        NodePtr negative() const override
+        IntegerNode(const char *val)
         {
-            return make_node<IntegerNode>(-val);
+            std::stringstream ss;
+            ss << val;
+            ss >> this->val;
+            type = Type::INTEGER;
         }
     };
 
@@ -44,19 +53,17 @@ namespace npc
     public:
         double val;
 
-        RealNode(const char *v)
+        RealNode(double val) : val(val)
         {
-            std::stringstream ss;
-            ss << v;
-            ss >> this->val;
+            type = Type::REAL;
         }
 
-        RealNode(const double v) : val(v)
-        {}
-
-        NodePtr negative() const override
+        RealNode(const char *val)
         {
-            return make_node<RealNode>(-val);
+            std::stringstream ss;
+            ss << val;
+            ss >> this->val;
+            type = Type::REAL;
         }
     };
 
@@ -65,19 +72,15 @@ namespace npc
     public:
         char val;
 
-        CharNode(const char *v)
+        CharNode(const char val) : val(val)
         {
-            std::stringstream ss;
-            ss << v;
-            ss >> this->val;
+            type = Type::CHAR;
         }
 
-        CharNode(const char v) : val(v)
-        {}
-
-        NodePtr negative() const override
+        CharNode(const char *val)
         {
-            return make_node<CharNode>(-val);
+            this->val = *val;
+            type = Type::CHAR;
         }
     };
 
@@ -86,37 +89,9 @@ namespace npc
     public:
         std::string val;
 
-        StringNode(const char *sz)
-                : val(std::string(sz))
-        {}
-
-        NodePtr negative() const override
+        StringNode(const char *val) : val(val)
         {
-            assert(false);
-            return make_node<DummyNode>();
-        }
-    };
-
-    enum class SysConEnum
-    {
-        TRUE,
-        FALSE,
-        MAXINT
-    };
-
-    class SysConNode : public ConstValueNode
-    {
-    public:
-        SysConEnum val;
-
-        SysConNode(SysConEnum v)
-                : val(v)
-        {}
-
-        NodePtr negative() const override
-        {
-            assert(false);
-            return make_node<DummyNode>();
+            type = Type::STRING;
         }
     };
 }

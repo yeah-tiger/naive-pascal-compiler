@@ -52,7 +52,7 @@ namespace npc
     public:
         std::shared_ptr<ParamListNode> params;
 
-        ProcedureNode(const NodePtr &name, const NodePtr &head_list, const NodePtr &params)
+        ProcedureNode(const NodePtr &name, const NodePtr &params, const NodePtr &head_list)
                 : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params))
         {}
     };
@@ -63,7 +63,7 @@ namespace npc
         std::shared_ptr<ParamListNode> params;
         std::shared_ptr<SimpleTypeNode> type;
 
-        FunctionNode(const NodePtr &name, const NodePtr &head_list, const NodePtr &params, const NodePtr &type)
+        FunctionNode(const NodePtr &name, const NodePtr &params, const NodePtr &type, const NodePtr &head_list)
                 : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params)),
                   type(cast_node<SimpleTypeNode>(type))
         {}

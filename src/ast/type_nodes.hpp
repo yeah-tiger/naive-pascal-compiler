@@ -10,89 +10,86 @@
 #include <vector>
 #include "dummy_node.hpp"
 #include "identifier_node.hpp"
-
-// TODO: Refactor all these type nodes
+#include "expr_nodes.hpp"
 
 namespace npc
 {
     enum class Type
     {
-        error, integer, real, character, boolean, array, record
+        UNDEFINED,
+        BOOLEAN, INTEGER, REAL, CHAR,
+        STRING, ARRAY, RECORD, SET
     };
 
     class TypeNode : public DummyNode
     {
     public:
-        ~TypeNode() override = 0;
-
-        virtual Type getTypeClass() const
-        {
-            return Type::error;  // TODO: should be pure virtual
-        }
+        Type type = Type::UNDEFINED;
     };
 
-    inline TypeNode::~TypeNode() = default;
-
-    /*
-     * for system built-in types
-     */
     class SimpleTypeNode : public TypeNode
     {
     public:
-        SimpleTypeNode(Type type) : type(type)
-        {}
-
-        Type type;
-
-        Type getTypeClass() const override
+        SimpleTypeNode(Type type)
         {
-            return this->type;
-        }
-    };
-
-    class RecordTypeNode : public TypeNode  // TODO: check all children are FieldDeclNode
-    {
-    public:
-        Type getTypeClass() const override
-        {
-            // TODO
-            assert(false);
+            this->type = type;
         }
     };
 
     class AliasTypeNode : public TypeNode
     {
     public:
-        AliasTypeNode(const NodePtr &name_node)
-                : _name(std::dynamic_pointer_cast<IdentifierNode>(name_node)->name)
-        {}
+        std::shared_ptr<IdentifierNode> identifier;
 
-        const std::string &name() const noexcept
+        AliasTypeNode(const NodePtr &identifier)
+                : identifier(cast_node<IdentifierNode>(identifier))
         {
-            return this->_name;
+            // TODO: assert the identifier is a type
         }
-
-    private:
-        std::string _name;
     };
 
-    class EnumTypeNode : public TypeNode
-    {
-    };
-
-    class RangeTypeNode : public TypeNode
+    class RangeNode : public DummyNode
     {
     public:
-        const NodePtr &min, &max;
+        std::shared_ptr<ExprNode> min;
+        std::shared_ptr<ExprNode> max;
 
-        // TODO: checking type of both const_value is same.
-        RangeTypeNode(const NodePtr &min, const NodePtr &max)
-                : min(min), max(max)
-        {}
+        RangeNode(const NodePtr &min, const NodePtr &max)
+                : min(cast_node<ExprNode>(min)), max(cast_node<ExprNode>(max))
+        {
+            // TODO: assert both types are the same
+        }
     };
 
     class ArrayTypeNode : public TypeNode
     {
+    public:
+        std::shared_ptr<RangeNode> range;
+        std::shared_ptr<TypeNode> element_type;
+
+        ArrayTypeNode(const NodePtr &range, const NodePtr &element_type)
+                : range(cast_node<RangeNode>(range)), element_type(cast_node<TypeNode>(element_type))
+        {
+            type = Type::ARRAY;
+        }
+    };
+
+    class RecordTypeNode : public TypeNode
+    {
+    public:
+        RecordTypeNode()
+        {
+            type = Type::RECORD;
+        }
+    };
+
+    class SetTypeNode : public TypeNode
+    {
+    public:
+        SetTypeNode()
+        {
+            type = Type::SET;
+        }
     };
 }
 
