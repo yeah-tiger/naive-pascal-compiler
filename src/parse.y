@@ -19,7 +19,7 @@
 
 %token PROGRAM ID CONST ARRAY VAR FUNCTION PROCEDURE _BEGIN END TYPE READ RECORD
 %token INTEGER REAL CHAR STRING
-%token SYS_CON SYS_FUNCT SYS_PROC SYS_TYPE
+%token SYS_CON SYS_FUNC SYS_PROC SYS_TYPE
 %token IF THEN ELSE REPEAT UNTIL WHILE DO FOR TO DOWNTO CASE OF GOTO
 %token ASSIGN EQUAL UNEQUAL LE LT GE GT
 %token PLUS MINUS MUL DIV OR AND MOD NOT
@@ -49,7 +49,7 @@ const_part: CONST const_expr_list
     {
         $$ = $2;
     }
-    | { $$ = make_node<ConstPartNode>(); }
+    | { $$ = make_node<ConstListNode>(); }
     ;
 
 const_expr_list: const_expr_list ID EQUAL const_value SEMI
@@ -59,7 +59,7 @@ const_expr_list: const_expr_list ID EQUAL const_value SEMI
     }
     | ID EQUAL const_value SEMI
     {
-        $$ = make_node<ConstPartNode>();
+        $$ = make_node<ConstListNode>();
         $$->add(make_node<ConstExprNode>($1, $3));
     }
     ;
@@ -75,11 +75,11 @@ type_part: TYPE type_decl_list
     {
         $$ = $2;
     }
-    |  // intended blank
+    | { $$ = make_node<TypeListNode>(); }
     ;
 
 type_decl_list: type_decl_list type_definition { $$ = $1; $$->add($2); }
-    | type_definition { $$ = make_node<TypePartNode>(); $$->add($1); }
+    | type_definition { $$ = make_node<TypeListNode>(); $$->add($1); }
     ;
 
 type_definition: ID EQUAL type_decl SEMI
@@ -146,16 +146,13 @@ name_list: name_list COMMA ID { $$ = $1; $$->add($3); }
     | ID { $$ = make_node<NameListNode>(); $$->add($1); }
 ;
 var_part: VAR var_decl_list { $$ = $2; }
-| { $$ = make_node<VarDeclListNode>(); }
+| { $$ = make_node<VarListNode>(); }
 ;
-var_decl_list: var_decl_list var_decl {
-    $$ = $1;
-    $$->merge_children($2->children());
-}
+var_decl_list: var_decl_list var_decl { $$ = $1; $$->merge_children($2->children()); }
     | var_decl { $$ = $1; }
 ;
 var_decl: name_list COLON type_decl SEMI {
-    $$ = make_node<VarDeclListNode>();
+    $$ = make_node<VarListNode>();
     for (const auto node : $1->children()) {
         $$->add(make_node<VarDeclNode>(node, $3));
     }
@@ -164,29 +161,34 @@ var_decl: name_list COLON type_decl SEMI {
 
 routine_part: routine_part function_decl { $$ = $1; $$->add($2); }
     | routine_part procedure_decl { $$ = $1; $$->add($2); }
-    | { $$ = make_node<RoutineNode>(); }
+    | { $$ = make_node<SubroutineListNode>(); }
     ;
 
 function_decl: function_head SEMI sub_routine SEMI
     {
-        $$ = make_node<FunctionNode>($1, $3);
+        cast_node<FunctionNode>($1)->add_stmt_list($3);
+        $$ = $1;
     }
     ;
 
 function_head: FUNCTION ID parameters COLON simple_type_decl
     {
-        $$ = make_node<FunctionHeadNode>($2, $3, $5);
+        $$ = make_node<FunctionNode>($2, $3, $5);
     }
     ;
 
 procedure_decl: procedure_head SEMI sub_routine SEMI
     {
-        $$ = make_node<ProcedureNode>($1, $3);
+        cast_node<ProcedureNode>($1)->add_stmt_list($3);
+        $$ = $1;
     }
     ;
 
-procedure_head: PROCEDURE ID parameters { $$ = make_node<ProcedureHeadNode>($2, $3); }
-;
+procedure_head: PROCEDURE ID parameters
+    {
+        $$ = make_node<ProcedureNode>($2, $3);
+    }
+    ;
 
 parameters: LP para_decl_list RP { $$ = $2; }
 |   { $$ = make_node<ParametersNode>(); }
@@ -291,8 +293,8 @@ factor: ID { $$ = $1; }
     /*| ID LP args_list RP*/
     | ID LP args_list RP            /* FUNCTION is parsed as ID */
     { $$ = make_node<ProcCallNode>($1, $3); }
-    | SYS_FUNCT { $$ = make_node<SysProcCallNode>($1); }
-    | SYS_FUNCT LP args_list RP { $$ = make_node<SysProcCallNode>($1, $3); }
+    | SYS_FUNC { $$ = make_node<SysProcCallNode>($1); }
+    | SYS_FUNC LP args_list RP { $$ = make_node<SysProcCallNode>($1, $3); }
     | const_value { $$ = $1; }
     | LP expression RP { $$ = $2; }
     | NOT factor { $$ = make_node<BinopExprNode>(BinopExprNode::OP::_xor, make_node<SysConNode>(SysConEnum::TRUE), $2); }

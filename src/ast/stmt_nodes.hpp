@@ -9,6 +9,7 @@
 #include "dummy_node.hpp"
 #include "type_nodes.hpp"
 #include "const_value_nodes.hpp"
+#include "routine_call_nodes.hpp"
 
 namespace npc
 {

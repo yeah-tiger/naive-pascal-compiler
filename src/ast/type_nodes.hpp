@@ -12,38 +12,12 @@
 
 namespace npc
 {
-    // TODO: rearrange file structure.
-
-    class NameListNode;
-
-    class VarDeclListNode;
-
-    class VarDeclNode;
-
-    class IdentifierNode;
-
-    class SimpleTypeDeclNode;
-
-    class TypePartNode;
-
-    class TypeDefNode;
-
-    class ArrayRefNode;
-
-    class AbstractExprNode;
-
-    class ExprListNode;
-
     enum class Type
     {
         error, integer, real, character, boolean, array, record
     };
 
     class NameListNode : public DummyNode
-    {
-    };
-
-    class VarDeclListNode : public DummyNode
     {
     };
 
@@ -92,10 +66,12 @@ namespace npc
     class VarDeclNode : public DummyNode
     {
     public:
-        std::shared_ptr<AbstractNode> identifier, type;
+        std::shared_ptr<IdentifierNode> identifier;
+        // TODO: should be type node
+        std::shared_ptr<AbstractNode> type;
 
-        VarDeclNode(std::shared_ptr<AbstractNode> i, std::shared_ptr<AbstractNode> t) : identifier(std::move(i)),
-                                                                                        type(std::move(t))
+        VarDeclNode(const NodePtr &i, const NodePtr &t)
+                : identifier(cast_node<IdentifierNode>(i)), type(t)
         {}
     };
 

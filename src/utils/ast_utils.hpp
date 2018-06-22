@@ -34,6 +34,7 @@ namespace npc
     typename std::enable_if<std::is_base_of<AbstractNode, TNode>::value, std::shared_ptr<TNode>>::type
     cast_node(const std::shared_ptr<AbstractNode> &node)
     {
+        std::cout << typeid(TNode).name() << " " << typeid(node).name() << std::endl;
         assert(is_a_ptr_of<TNode>(node));
         return std::dynamic_pointer_cast<TNode>(node);
     }

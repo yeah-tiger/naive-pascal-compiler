@@ -109,12 +109,13 @@ NQUOTE [^']
     return SYS_CON;
 }
 
-{A}{B}{S} { yylval = make_node<SysFunctionNode>(SysFunction::ABS); return SYS_FUNCT; }
-{C}{H}{R} { yylval = make_node<SysFunctionNode>(SysFunction::CHR); return SYS_FUNCT; }
-{O}{R}{D} { yylval = make_node<SysFunctionNode>(SysFunction::ORD); return SYS_FUNCT; }
-{P}{R}{E}{D} { yylval = make_node<SysFunctionNode>(SysFunction::PRED); return SYS_FUNCT; }
-{S}{Q}{R} { yylval = make_node<SysFunctionNode>(SysFunction::SQR); return SYS_FUNCT; }
-{S}{U}{C}{C} { yylval = make_node<SysFunctionNode>(SysFunction::SUCC); return SYS_FUNCT; }
+{A}{B}{S} { yylval = make_node<SysFunctionNode>(SysFunction::ABS); return SYS_FUNC; }
+{C}{H}{R} { yylval = make_node<SysFunctionNode>(SysFunction::CHR); return SYS_FUNC; }
+{O}{R}{D} { yylval = make_node<SysFunctionNode>(SysFunction::ORD); return SYS_FUNC; }
+{P}{R}{E}{D} { yylval = make_node<SysFunctionNode>(SysFunction::PRED); return SYS_FUNC; }
+{S}{Q}{R} { yylval = make_node<SysFunctionNode>(SysFunction::SQR); return SYS_FUNC; }
+{S}{Q}{R}{T} { yylval = make_node<SysFunctionNode>(SysFunction::SQRT); return SYS_FUNC; }
+{S}{U}{C}{C} { yylval = make_node<SysFunctionNode>(SysFunction::SUCC); return SYS_FUNC; }
 {R}{E}{A}{D} { yylval = make_node<SysFunctionNode>(SysFunction::READ_FUN); return READ; }
 {R}{E}{A}{D}{L}{N} { yylval = make_node<SysFunctionNode>(SysFunction::READLN); return READ; }
 {W}{R}{I}{T}{E} { yylval = make_node<SysFunctionNode>(SysFunction::WRITE); return SYS_PROC; }

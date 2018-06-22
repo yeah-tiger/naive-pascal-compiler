@@ -9,9 +9,7 @@
 
 #include "../ast/abstract_node.hpp"
 #include "../ast/dummy_node.hpp"
-#include "../ast/program_node.hpp"
 #include "../ast/const_expr_node.hpp"
-#include "../ast/const_part_node.hpp"
 #include "../ast/const_value_nodes.hpp"
 #include "../ast/type_nodes.hpp"
 #include "../ast/routine_nodes.hpp"
