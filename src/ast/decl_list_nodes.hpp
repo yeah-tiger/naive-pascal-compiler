@@ -16,7 +16,8 @@ namespace npc
     {
     };
 
-    class ParamDeclNode : public DummyNode {
+    class ParamDeclNode : public DummyNode
+    {
     public:
         std::shared_ptr<IdentifierNode> name;
         std::shared_ptr<SimpleTypeNode> type;
@@ -24,6 +25,15 @@ namespace npc
         ParamDeclNode(const NodePtr &name, const NodePtr &type)
                 : name(cast_node<IdentifierNode>(name)), type(cast_node<SimpleTypeNode>(type))
         {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "paramDecl", "name": ")EOF"} +
+                   this->name->toJson() +
+                   R"(, "type": )" +
+                   this->type->toJson() + ",";
+        }
     };
 
     class ParamListNode : public DummyNode
@@ -39,6 +49,15 @@ namespace npc
         VarDeclNode(const NodePtr &name, const NodePtr &type)
                 : name(cast_node<IdentifierNode>(name)), type(cast_node<TypeNode>(type))
         {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "varDecl", "name": ")EOF"} +
+                   this->name->toJson() +
+                   R"(, "type": )" +
+                   this->type->toJson() + ",";
+        }
     };
 
     class VarListNode : public DummyNode
@@ -54,6 +73,15 @@ namespace npc
         ConstExprNode(const NodePtr &name, const NodePtr &value)
                 : name(cast_node<IdentifierNode>(name)), value(cast_node<ConstValueNode>(value))
         {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "constExpr", "name": ")EOF"} +
+                   this->name->toJson() +
+                   R"(, "value": )" +
+                   this->value->toJson() + ",";
+        }
     };
 
     class ConstListNode : public DummyNode
@@ -69,6 +97,15 @@ namespace npc
         TypeDefNode(const NodePtr &name, const NodePtr &type)
                 : name(cast_node<IdentifierNode>(name)), type(cast_node<TypeNode>(type))
         {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "typeDef", "name": ")EOF"} +
+                   this->name->toJson() +
+                   R"(, "type": )" +
+                   this->type->toJson() + ",";
+        }
     };
 
     class TypeListNode : public DummyNode

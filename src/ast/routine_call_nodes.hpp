@@ -24,6 +24,15 @@ namespace npc
         explicit RoutineCallNode(const NodePtr &identifier)
                 : RoutineCallNode(identifier, make_node<ExprListNode>())
         {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "routineCall", "identifier": ")EOF"} +
+                   this->identifier->toJson() +
+                   R"(, "args": )" +
+                   this->args->toJson() + ",";
+        }
     };
 
     class ProcCallNode : public RoutineCallNode
