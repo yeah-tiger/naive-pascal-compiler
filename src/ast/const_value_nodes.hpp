@@ -16,6 +16,10 @@ namespace npc
     {
     public:
         Type type = Type::UNDEFINED;
+
+    protected:
+        bool should_have_children() const final
+        { return false; }
     };
 
     class BooleanNode : public ConstValueNode
@@ -32,7 +36,7 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "Boolean", "value": ")"} +
-                    (val ? "true" : "false") + "\"";
+                   (val ? "true" : "false") + "\"";
         }
     };
 

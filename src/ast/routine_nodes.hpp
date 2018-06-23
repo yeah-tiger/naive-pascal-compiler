@@ -19,6 +19,9 @@ namespace npc
         {
             return std::string{R"("type": "SubroutineList")"};
         }
+
+        bool should_have_children() const final
+        { return true; }
     };
 
     class HeadListNode : public DummyNode
@@ -35,20 +38,20 @@ namespace npc
         {}
 
     protected:
-        bool should_have_children() const override
-        { return false; }
-
         std::string json_head() const override
         {
             return std::string{R"("type": "HeadList", "consts": )"} +
-                    this->const_list->to_json() +
+                   this->const_list->to_json() +
                    R"(, "types": )" +
-                    this->type_list->to_json() +
+                   this->type_list->to_json() +
                    R"(, "vars": )" +
-                    this->var_list->to_json() +
+                   this->var_list->to_json() +
                    R"(, "subroutines": )" +
-                    this->subroutine_list->to_json();
+                   this->subroutine_list->to_json();
         }
+
+        bool should_have_children() const final
+        { return false; }
     };
 
     class RoutineNode : public DummyNode
@@ -64,17 +67,29 @@ namespace npc
     protected:
         std::string json_head() const override
         {
-            return std::string{R"("type": "Routine", "name": )"} +
-                    this->name->to_json() +
+            return std::string{R"("type": "Rsoutine", "name": )"} +
+                   this->name->to_json() +
                    R"(, "head": )" +
-                    this->head_list->to_json();
+                   this->head_list->to_json();
         }
+
+        bool should_have_children() const final
+        { return true; }
     };
 
     class ProgramNode : public RoutineNode
     {
     public:
         using RoutineNode::RoutineNode;
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "Program", "name": )"} +
+                   this->name->to_json() +
+                   R"(, "head": )" +
+                   this->head_list->to_json();
+        }
     };
 
     class ProcedureNode : public RoutineNode
@@ -85,6 +100,17 @@ namespace npc
         ProcedureNode(const NodePtr &name, const NodePtr &params, const NodePtr &head_list)
                 : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params))
         {}
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "Procedure", "name": )"} +
+                   this->name->to_json() +
+                   R"(, "params": )" +
+                   this->params->to_json() +
+                   R"(, "head": )" +
+                   this->head_list->to_json();
+        }
     };
 
     class FunctionNode : public RoutineNode
@@ -97,6 +123,19 @@ namespace npc
                 : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params)),
                   type(cast_node<SimpleTypeNode>(type))
         {}
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "Function", "name": )"} +
+                   this->name->to_json() +
+                   R"(, "params": )" +
+                   this->params->to_json() +
+                   R"(, "return": )" +
+                   this->type->to_json() +
+                   R"(, "head": )" +
+                   this->head_list->to_json();
+        }
     };
 }
 

@@ -14,6 +14,9 @@ namespace npc
 {
     class NameListNode : public DummyNode
     {
+    protected:
+        bool should_have_children() const override
+        { return true; }
     };
 
     class ParamDeclNode : public DummyNode
@@ -30,10 +33,13 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "ParamDecl", "name": )"} +
-                    this->name->to_json() +
+                   this->name->to_json() +
                    R"(, "decl": )" +
-                    this->type->to_json();
+                   this->type->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class ParamListNode : public DummyNode
@@ -43,6 +49,9 @@ namespace npc
         {
             return std::string{R"("type": "ParamList")"};
         }
+
+        bool should_have_children() const override
+        { return true; }
     };
 
     class VarDeclNode : public DummyNode
@@ -59,10 +68,13 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "VarDecl", "name": )"} +
-                    this->name->to_json() +
+                   this->name->to_json() +
                    R"(, "decl": )" +
-                    this->type->to_json();
+                   this->type->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class VarListNode : public DummyNode
@@ -72,6 +84,9 @@ namespace npc
         {
             return std::string{R"("type": "VarList")"};
         }
+
+        bool should_have_children() const override
+        { return true; }
     };
 
     class ConstDeclNode : public DummyNode
@@ -88,10 +103,13 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "ConstDecl", "name": )"} +
-                    this->name->to_json() +
+                   this->name->to_json() +
                    R"(, "value": )" +
-                    this->value->to_json();
+                   this->value->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class ConstListNode : public DummyNode
@@ -101,6 +119,9 @@ namespace npc
         {
             return std::string{R"("type": "ConstList")"};
         }
+
+        bool should_have_children() const override
+        { return true; }
     };
 
     class TypeDefNode : public DummyNode
@@ -117,10 +138,13 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "TypeDef", "name": )"} +
-                    this->name->to_json() +
+                   this->name->to_json() +
                    R"(, "alias": )" +
-                    this->type->to_json();
+                   this->type->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class TypeListNode : public DummyNode
@@ -130,6 +154,9 @@ namespace npc
         {
             return std::string{R"("type": "TypeList")"};
         }
+
+        bool should_have_children() const override
+        { return true; }
     };
 }
 
