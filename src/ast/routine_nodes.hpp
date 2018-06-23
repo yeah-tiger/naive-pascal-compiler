@@ -14,6 +14,9 @@ namespace npc
 {
     class SubroutineListNode : public DummyNode
     {
+    public:
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -36,6 +39,8 @@ namespace npc
                 : const_list(cast_node<ConstListNode>(consts)), type_list(cast_node<TypeListNode>(types)),
                   var_list(cast_node<VarListNode>(vars)), subroutine_list(cast_node<SubroutineListNode>(subroutines))
         {}
+
+        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override

@@ -97,6 +97,8 @@ namespace npc
                 : op(op), lhs(cast_node<ExprNode>(lhs)), rhs(cast_node<ExprNode>(rhs))
         {}
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         bool should_have_children() const override
         { return false; }
