@@ -8,7 +8,7 @@
 
     using namespace npc;
 
-    int line_no;
+    int line_no = 1;
     void commenteof();
 %}
 

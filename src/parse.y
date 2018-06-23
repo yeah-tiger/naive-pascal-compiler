@@ -323,7 +323,9 @@ args_list
 
 %%
 
+extern int line_no;
+
 inline int yyerror(const char *s) {
-    fprintf(stderr, "Bison Error: %s\n", s);
+    fprintf(stderr, "Bison error at line %d: %s\n", line_no, s);
     exit(-1);
 }
