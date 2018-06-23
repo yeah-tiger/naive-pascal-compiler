@@ -31,18 +31,35 @@ namespace npc
             return std::string{R"("type": "RoutineCall", "identifier": )"} + this->identifier->to_json() +
                    R"(, "args": )" + this->args->to_json();
         }
+
+        bool should_have_children() const final
+        { return false; }
     };
 
     class ProcCallNode : public RoutineCallNode
     {
     public:
         using RoutineCallNode::RoutineCallNode;
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "ProcCall", "identifier": )"} + this->identifier->to_json() +
+                   R"(, "args": )" + this->args->to_json();
+        }
     };
 
     class FuncCallNode : public RoutineCallNode
     {
     public:
         using RoutineCallNode::RoutineCallNode;
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "FuncCall", "identifier": )"} + this->identifier->to_json() +
+                   R"(, "args": )" + this->args->to_json();
+        }
     };
 }
 

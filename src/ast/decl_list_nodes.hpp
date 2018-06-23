@@ -17,6 +17,11 @@ namespace npc
     protected:
         bool should_have_children() const override
         { return true; }
+
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "NameList")"};
+        }
     };
 
     class ParamDeclNode : public DummyNode

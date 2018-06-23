@@ -19,19 +19,19 @@ namespace npc
 
     inline std::string to_string(SysRoutine routine)
     {
-        std::map<SysRoutine , std::string> routine_to_string{
-                {SysRoutine::ABS,  "abs"},
-                {SysRoutine::CHR,  "chr"},
-                {SysRoutine::ODD,  "odd"},
-                {SysRoutine::ORD,  "ord"},
-                {SysRoutine::PRED, "pred"},
-                {SysRoutine::SQR,  "sqr"},
-                {SysRoutine::SQRT, "sqrt"},
-                {SysRoutine::SUCC, "succ"},
+        std::map<SysRoutine, std::string> routine_to_string{
+                {SysRoutine::ABS,      "abs"},
+                {SysRoutine::CHR,      "chr"},
+                {SysRoutine::ODD,      "odd"},
+                {SysRoutine::ORD,      "ord"},
+                {SysRoutine::PRED,     "pred"},
+                {SysRoutine::SQR,      "sqr"},
+                {SysRoutine::SQRT,     "sqrt"},
+                {SysRoutine::SUCC,     "succ"},
                 {SysRoutine::READ_FUN, "read"},
-                {SysRoutine::READLN, "readln"},
-                {SysRoutine::WRITE, "write"},
-                {SysRoutine::WRITELN, "writeln"}
+                {SysRoutine::READLN,   "readln"},
+                {SysRoutine::WRITE,    "write"},
+                {SysRoutine::WRITELN,  "writeln"}
         };
         // TODO: bound checking
         return routine_to_string[routine];
@@ -42,7 +42,17 @@ namespace npc
     public:
         SysRoutine routine;
 
-        explicit SysRoutineNode(SysRoutine routine) : routine(routine) {}
+        explicit SysRoutineNode(SysRoutine routine) : routine(routine)
+        {}
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "SysCall", "identifier": ")"} + to_string(this->routine);
+        }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class SysCallNode : public DummyNode
@@ -61,6 +71,9 @@ namespace npc
             return std::string{R"("type": "SysCall", "identifier": ")"} + to_string(this->routine->routine) +
                    R"(", "args": )" + this->args->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 }
 

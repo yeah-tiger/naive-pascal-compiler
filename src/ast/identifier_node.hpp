@@ -25,8 +25,11 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "Identifier", "name": ")"}
-                    + this->name + "\"";
+                   + this->name + "\"";
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 }
 

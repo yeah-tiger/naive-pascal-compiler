@@ -13,7 +13,6 @@
 
 namespace npc
 {
-
     class StmtNode : public DummyNode
     {
     };
@@ -39,9 +38,9 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "AssignStmt", "lhs": )"} +
-                    this->lhs->to_json() +
+                   this->lhs->to_json() +
                    R"(, "rhs": )" +
-                    this->rhs->to_json();
+                   this->rhs->to_json();
         }
 
         bool should_have_children() const override
@@ -62,7 +61,7 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "ProcStmt", "call": )"} +
-                    this->proc_call->to_json();
+                   this->proc_call->to_json();
         }
 
         bool should_have_children() const override
@@ -85,11 +84,11 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "IfStmt", "expr": )"} +
-                    this->expr->to_json() +
+                   this->expr->to_json() +
                    R"(, "stmt": )" +
-                    this->stmt->to_json() +
+                   this->stmt->to_json() +
                    R"(, "else_stmt": )" +
-                    this->else_stmt->to_json();
+                   this->else_stmt->to_json();
         }
 
         bool should_have_children() const override
@@ -108,8 +107,11 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "RepeatStmt", "expr": )"} +
-                    this->expr->to_json();
+                   this->expr->to_json();
         }
+
+        bool should_have_children() const override
+        { return true; }
     };
 
     class WhileStmtNode : public StmtNode
@@ -126,9 +128,9 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "WhileStmt", "expr": )"} +
-                    this->expr->to_json() +
+                   this->expr->to_json() +
                    R"(, "stmt": )" +
-                    this->stmt->to_json();
+                   this->stmt->to_json();
         }
 
         bool should_have_children() const override
@@ -160,7 +162,7 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "ForStmt", "direction": ")"} +
-                    (direction == DirectionEnum::TO ? "TO" : "DOWNTO") +
+                   (direction == DirectionEnum::TO ? "TO" : "DOWNTO") +
                    R"(", "identifier": )" + this->identifier->to_json() +
                    R"(, "start": )" + this->start->to_json() +
                    R"(, "finish": )" + this->finish->to_json() +
@@ -187,9 +189,9 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "CaseExpr", "branch": )"} +
-                    this->branch->to_json() +
+                   this->branch->to_json() +
                    R"(, "stmt": )" +
-                    this->stmt->to_json();
+                   this->stmt->to_json();
         }
 
         bool should_have_children() const override
@@ -210,12 +212,23 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "CaseStmt", "expr": )"} +
-                    this->expr->to_json();
+                   this->expr->to_json();
         }
+
+        bool should_have_children() const override
+        { return true; }
     };
 
     class StmtList : public StmtNode
     {
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "CaseStmt")"};
+        }
+
+        bool should_have_children() const override
+        { return true; }
     };
 }
 

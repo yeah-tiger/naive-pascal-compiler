@@ -28,10 +28,13 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "ArrayRef", "identifier": )"} +
-                    this->identifier->to_json() +
+                   this->identifier->to_json() +
                    R"(, "index": )" +
-                    this->index->to_json();
+                   this->index->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class RecordRefNode : public ExprNode
@@ -48,10 +51,13 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "RecordRef", "identifier": )"} +
-                    this->identifier->to_json() +
+                   this->identifier->to_json() +
                    R"(, "field": )" +
-                    this->field->to_json();
+                   this->field->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     enum class BinaryOperator
@@ -100,9 +106,9 @@ namespace npc
             return std::string{R"("type": "BinopExpr", "op": ")"} +
                    to_string(this->op) +
                    R"(", "lhs": )" +
-                    this->lhs->to_json() +
+                   this->lhs->to_json() +
                    R"(, "rhs": )" +
-                    this->rhs->to_json();
+                   this->rhs->to_json();
         }
     };
 
@@ -121,6 +127,9 @@ namespace npc
         {
             return std::string{R"("type": "FuncExpr", "call": )"} + this->func_call->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 }
 
