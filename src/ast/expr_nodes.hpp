@@ -27,7 +27,7 @@ namespace npc
     protected:
         std::string json_head() const override
         {
-            return std::string{R"("type": "arrayRef", "identifier": )"} +
+            return std::string{R"("type": "ArrayRef", "identifier": )"} +
                     this->identifier->to_json() +
                    R"(, "index": )" +
                     this->index->to_json();
@@ -47,14 +47,13 @@ namespace npc
     protected:
         std::string json_head() const override
         {
-            return std::string{R"("type": "recordRef", "identifier": )"} +
+            return std::string{R"("type": "RecordRef", "identifier": )"} +
                     this->identifier->to_json() +
                    R"(, "field": )" +
                     this->field->to_json();
         }
     };
 
-    // TODO: to string
     enum class BinaryOperator
     {
         GT, GE, LT, LE, EQ, NE, ADD, SUB, MUL, DIV, MOD, AND, OR, XOR
@@ -98,7 +97,7 @@ namespace npc
 
         std::string json_head() const override
         {
-            return std::string{R"("type": "binopExpr", "op": ")"} +
+            return std::string{R"("type": "BinopExpr", "op": ")"} +
                    to_string(this->op) +
                    R"(", "lhs": )" +
                     this->lhs->to_json() +
@@ -115,6 +114,12 @@ namespace npc
         FuncExprNode(const NodePtr &func_call) : func_call(func_call)
         {
             assert(is_a_ptr_of<FuncCallNode>(func_call) || is_a_ptr_of<SysCallNode>(func_call));
+        }
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "FuncExpr", "call": )"} + this->func_call->to_json();
         }
     };
 }

@@ -17,6 +17,26 @@ namespace npc
         WRITE, WRITELN
     };
 
+    inline std::string to_string(SysRoutine routine)
+    {
+        std::map<SysRoutine , std::string> routine_to_string{
+                {SysRoutine::ABS,  "abs"},
+                {SysRoutine::CHR,  "chr"},
+                {SysRoutine::ODD,  "odd"},
+                {SysRoutine::ORD,  "ord"},
+                {SysRoutine::PRED, "pred"},
+                {SysRoutine::SQR,  "sqr"},
+                {SysRoutine::SQRT, "sqrt"},
+                {SysRoutine::SUCC, "succ"},
+                {SysRoutine::READ_FUN, "read"},
+                {SysRoutine::READLN, "readln"},
+                {SysRoutine::WRITE, "write"},
+                {SysRoutine::WRITELN, "writeln"}
+        };
+        // TODO: bound checking
+        return routine_to_string[routine];
+    }
+
     class SysRoutineNode : public DummyNode
     {
     public:
@@ -34,6 +54,13 @@ namespace npc
         SysCallNode(const NodePtr &routine, const NodePtr &args)
                 : routine(cast_node<SysRoutineNode>(routine)), args(cast_node<ExprListNode>(args))
         {}
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "SysCall", "identifier": ")"} + to_string(this->routine->routine) +
+                   R"(", "args": )" + this->args->to_json();
+        }
     };
 }
 

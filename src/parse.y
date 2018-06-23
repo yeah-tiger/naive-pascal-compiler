@@ -211,7 +211,7 @@ proc_stmt
         { $$ = make_node<ProcStmtNode>(make_node<ProcCallNode>($1)); }
     | ID LP args_list RP
         { $$ = make_node<ProcStmtNode>(make_node<ProcCallNode>($1, $3)); }
-    | SYS_PROC LP expression_list RP
+    | SYS_PROC LP args_list RP
         { $$ = make_node<ProcStmtNode>(make_node<SysCallNode>($1, $3)); }
     | READ LP variable_list RP
         { $$ = make_node<ProcStmtNode>(make_node<SysCallNode>($1, $3)); }
@@ -264,11 +264,6 @@ case_expr_list
 case_expr
     : const_value COLON stmt SEMI { $$ = make_node<CaseExprNode>($1, $3); }
     | ID COLON stmt SEMI { $$ = make_node<CaseExprNode>($1, $3); }
-    ;
-
-expression_list
-    : expression_list COMMA expression { $$ = $1; $$->add_child($3); }
-    | expression { $$ = make_node<ExprListNode>(); $$->add_child($1); }
     ;
 
 expression

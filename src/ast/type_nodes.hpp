@@ -24,7 +24,7 @@ namespace npc
     inline std::string to_string(Type type)
     {
         std::map<Type, std::string> type_to_string{
-                {Type::UNDEFINED,  "<undefined-type>"},
+                {Type::UNDEFINED, "<undefined-type>"},
                 {Type::BOOLEAN, "boolean"},
                 {Type::INTEGER, "integer"},
                 {Type::REAL, "real"},
@@ -32,7 +32,7 @@ namespace npc
                 {Type::STRING, "string"},
                 {Type::ARRAY, "array"},
                 {Type::RECORD, "record"},
-                {Type::SET, "set"},
+                {Type::SET, "set"}
         };
         // TODO: bound checking
         return type_to_string[type];

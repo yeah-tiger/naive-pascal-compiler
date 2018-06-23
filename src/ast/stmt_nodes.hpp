@@ -61,7 +61,7 @@ namespace npc
     protected:
         std::string json_head() const override
         {
-            return std::string{R"("type": "ProcStmt", "procCall": )"} +
+            return std::string{R"("type": "ProcStmt", "call": )"} +
                     this->proc_call->to_json();
         }
 

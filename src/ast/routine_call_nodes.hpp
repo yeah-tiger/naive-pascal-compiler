@@ -28,10 +28,8 @@ namespace npc
     protected:
         std::string json_head() const override
         {
-            return std::string{R"("type": "routineCall", "identifier": ")"} +
-                    this->identifier->to_json() +
-                   R"(, "args": )" +
-                    this->args->to_json();
+            return std::string{R"("type": "RoutineCall", "identifier": )"} + this->identifier->to_json() +
+                   R"(, "args": )" + this->args->to_json();
         }
     };
 
