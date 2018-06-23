@@ -59,7 +59,7 @@ begin
         sum := sum + i;
         i := i + 1;
         a[i] := i; { test array }
-        if i > 5 then break; { test break }
     until (i >= 10);
     writeln('sum=', sum);
+    calcAbs(-1.0);
 end.
