@@ -22,7 +22,7 @@ namespace npc
         // NOLINT
         virtual ~AbstractNode() noexcept = default;  // the base template class has a trivial destructor.
 
-        virtual void codegen(CodegenContext &context) const = 0;
+        virtual llvm::Value *codegen(CodegenContext &context) = 0;
 
         void print_json() const
         {

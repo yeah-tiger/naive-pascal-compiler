@@ -32,6 +32,8 @@ namespace npc
             type = Type::BOOLEAN;
         }
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -58,6 +60,8 @@ namespace npc
             type = Type::INTEGER;
         }
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -83,6 +87,8 @@ namespace npc
             type = Type::REAL;
         }
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -105,6 +111,8 @@ namespace npc
             this->val = *val;
             type = Type::CHAR;
         }
+
+        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override

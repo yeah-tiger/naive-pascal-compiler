@@ -17,8 +17,10 @@ namespace npc
     class DummyNode : public AbstractNode
     {
     public:
-        void codegen(CodegenContext &context) const override
+        llvm::Value *codegen(CodegenContext &context) override
         {
+            assert(false);
+            return nullptr;
         }
 
     protected:
