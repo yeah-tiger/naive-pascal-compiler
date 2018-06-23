@@ -17,11 +17,6 @@ namespace npc
     class DummyNode : public AbstractNode
     {
     public:
-        std::string toString() const override
-        {
-            return std::string{};
-        }
-
         void codegen(CodegenContext &context) const override
         {
         }

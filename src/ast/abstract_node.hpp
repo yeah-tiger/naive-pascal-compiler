@@ -24,18 +24,17 @@ namespace npc
 
         virtual void codegen(CodegenContext &context) const = 0;
 
-        void describe() const
+        void logJson() const
         {
-            std::clog << this->toString() << std::endl;
+            std::clog << this->toJson() << std::endl;
         }
-
-        virtual std::string toString() const = 0;
 
         ///
         /// \return a legal JSON string. a JSON object.
         std::string toJson() const
         {
-            std::stringstream ret{"{"};
+            std::stringstream ret;
+            ret << "{";
             ret << this->jsonHead();
             if (this->should_have_children())
             {

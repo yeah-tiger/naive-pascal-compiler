@@ -100,7 +100,7 @@ namespace npc
         {
             return std::string{R"EOF("type": "binopExpr", "op": ")EOF"} +
                    to_string(this->op) +
-                   R"(, "lhs": )" +
+                   R"(", "lhs": )" +
                    this->lhs->toJson() +
                    R"(, "rhs": )" +
                    this->rhs->toJson() + ",";
