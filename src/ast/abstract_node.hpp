@@ -9,6 +9,7 @@
 #include <memory>
 #include <list>
 #include <iostream>
+#include <sstream>
 
 #include "codegen_context.hpp"
 #include "../utils/ast_utils.hpp"
@@ -29,6 +30,28 @@ namespace npc
         }
 
         virtual std::string toString() const = 0;
+
+        std::string toJson() const
+        {
+            std::stringstream ret{"{"};
+            ret << this->jsonHead();
+            if (this->should_have_children())
+            {
+                ret << "[";
+                auto &children = this->_children;
+                for (auto &node : children)
+                {
+                    ret << node->toJson();
+                    if (node != *children.end())
+                    {
+                        ret << ",";
+                    }
+                }
+                ret << "]";
+            }
+            ret << "}";
+            return ret.str();
+        }
 
         std::list<std::shared_ptr<AbstractNode>> &children() noexcept
         {
@@ -75,7 +98,10 @@ namespace npc
         std::list<std::shared_ptr<AbstractNode>> _children;
         std::weak_ptr<AbstractNode> _parent;
 
-        virtual const bool should_have_children() const { return true; }
+        virtual const bool should_have_children() const
+        { return true; }
+
+        virtual std::string jsonHead() const = 0;
     };
 }
 

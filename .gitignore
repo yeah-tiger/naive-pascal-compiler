@@ -10,3 +10,4 @@ cmake-build-debug/
 \#*\#
 .\#*
 .DS_Store
+*.g.cpp

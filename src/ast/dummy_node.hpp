@@ -6,6 +6,7 @@
 #define NAIVE_PASCAL_COMPILER_DUMMY_NODE_H
 
 #include <string>
+#include <sstream>
 #include "abstract_node.hpp"
 
 namespace npc
@@ -24,12 +25,19 @@ namespace npc
         void codegen(CodegenContext &context) const override
         {
         }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "<unspecified-from-dummy>",)EOF"};
+        }
     };
 
     // TODO: Move back to expr_nodes.hpp
     class ExprNode : public DummyNode
     {
     };
+
     class ExprListNode : public DummyNode
     {
     };
