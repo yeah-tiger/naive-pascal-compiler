@@ -14,6 +14,11 @@ namespace npc
 {
     class SubroutineListNode : public DummyNode
     {
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "subroutineList",)EOF"};
+        }
     };
 
     class HeadListNode : public DummyNode
@@ -28,6 +33,22 @@ namespace npc
                 : const_list(cast_node<ConstListNode>(consts)), type_list(cast_node<TypeListNode>(types)),
                   var_list(cast_node<VarListNode>(vars)), subroutine_list(cast_node<SubroutineListNode>(subroutines))
         {}
+
+    protected:
+        bool should_have_children() const override
+        { return false; }
+
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "headList", "constList": ")EOF"} +
+                   this->const_list->toJson() +
+                   R"(, "typeList": )" +
+                   this->type_list->toJson() +
+                   R"(, "varList": )" +
+                   this->var_list->toJson() +
+                   R"(, "subroutineList": )" +
+                   this->subroutine_list->toJson() + ",";
+        }
     };
 
     class RoutineNode : public DummyNode

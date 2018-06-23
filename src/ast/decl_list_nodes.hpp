@@ -38,6 +38,11 @@ namespace npc
 
     class ParamListNode : public DummyNode
     {
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "paramList",)EOF"};
+        }
     };
 
     class VarDeclNode : public DummyNode
@@ -62,6 +67,11 @@ namespace npc
 
     class VarListNode : public DummyNode
     {
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "varList",)EOF"};
+        }
     };
 
     class ConstExprNode : public DummyNode
@@ -86,6 +96,11 @@ namespace npc
 
     class ConstListNode : public DummyNode
     {
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "constList",)EOF"};
+        }
     };
 
     class TypeDefNode : public DummyNode
@@ -110,6 +125,11 @@ namespace npc
 
     class TypeListNode : public DummyNode
     {
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "typeList",)EOF"};
+        }
     };
 }
 
