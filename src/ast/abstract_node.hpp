@@ -11,8 +11,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "codegen_context.hpp"
-#include "../utils/ast_utils.hpp"
+#include "codegen/codegen_context.hpp"
+#include "utils/ast_utils.hpp"
 
 namespace npc
 {
