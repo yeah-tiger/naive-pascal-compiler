@@ -31,13 +31,15 @@ namespace npc
 
         virtual std::string toString() const = 0;
 
+        ///
+        /// \return a legal JSON string. a JSON object.
         std::string toJson() const
         {
             std::stringstream ret{"{"};
             ret << this->jsonHead();
             if (this->should_have_children())
             {
-                ret << "[";
+                ret << "\"children\": [";
                 auto &children = this->_children;
                 for (auto &node : children)
                 {
@@ -98,9 +100,11 @@ namespace npc
         std::list<std::shared_ptr<AbstractNode>> _children;
         std::weak_ptr<AbstractNode> _parent;
 
-        virtual const bool should_have_children() const
+        virtual bool should_have_children() const
         { return true; }
 
+        ///
+        /// \return a part of JSON, comma-separated fields. Default value could be empty.
         virtual std::string jsonHead() const = 0;
     };
 }

@@ -15,8 +15,18 @@ namespace npc
     public:
         std::string name;
 
-        explicit IdentifierNode(std::string s) : name(std::move(s)) {}
-        explicit IdentifierNode(const char *c) : name(c) {}
+        explicit IdentifierNode(std::string s) : name(std::move(s))
+        {}
+
+        explicit IdentifierNode(const char *c) : name(c)
+        {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "identifier", "value": ")EOF"} + this->name +
+                   std::string{"\","};
+        }
     };
 }
 

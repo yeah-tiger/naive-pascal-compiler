@@ -27,6 +27,13 @@ namespace npc
         {
             type = Type::BOOLEAN;
         }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "boolean", "value": ")EOF"} + (val ? "true" : "false") +
+                   std::string{"\","};
+        }
     };
 
     class IntegerNode : public ConstValueNode
@@ -45,6 +52,13 @@ namespace npc
             ss << val;
             ss >> this->val;
             type = Type::INTEGER;
+        }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "integer", "value": ")EOF"} + std::to_string(val) +
+                   std::string{"\","};
         }
     };
 
@@ -65,6 +79,13 @@ namespace npc
             ss >> this->val;
             type = Type::REAL;
         }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "real", "value": ")EOF"} + std::to_string(val) +
+                   std::string{"\","};
+        }
     };
 
     class CharNode : public ConstValueNode
@@ -82,6 +103,13 @@ namespace npc
             this->val = *val;
             type = Type::CHAR;
         }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "char", "value": ")EOF"} + std::to_string(val) +
+                   std::string{"\","};
+        }
     };
 
     class StringNode : public ConstValueNode
@@ -92,6 +120,13 @@ namespace npc
         StringNode(const char *val) : val(val)
         {
             type = Type::STRING;
+        }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "string", "value": ")EOF"} + val +
+                   std::string{"\","};
         }
     };
 }
