@@ -39,6 +39,15 @@ namespace npc
         RoutineNode(const NodePtr &name, const NodePtr &head_list)
                 : name(cast_node<IdentifierNode>(name)), head_list(cast_node<HeadListNode>(head_list))
         {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "routine", "name": ")EOF"} +
+                   this->name->toJson() +
+                   R"(, "headList": )" +
+                   this->head_list->toJson() + ",";
+        }
     };
 
     class ProgramNode : public RoutineNode
