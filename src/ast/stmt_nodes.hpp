@@ -22,7 +22,6 @@ namespace npc
     {
     };
 
-
     class AssignStmtNode : public StmtNode
     {
     public:
@@ -37,12 +36,12 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "assignStmt", "lhs": )EOF"} +
-                   this->lhs->toJson() +
+            return std::string{R"("type": "AssignStmt", "lhs": )"} +
+                    this->lhs->to_json() +
                    R"(, "rhs": )" +
-                   this->rhs->toJson() + ",";
+                    this->rhs->to_json();
         }
 
         bool should_have_children() const override
@@ -60,11 +59,14 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "procStmt", "procCall": )EOF"} +
-                   this->proc_call->toJson() + ",";
+            return std::string{R"("type": "ProcStmt", "procCall": )"} +
+                    this->proc_call->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class IfStmtNode : public StmtNode
@@ -80,14 +82,14 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "ifStmt", "expr": )EOF"} +
-                   this->expr->toJson() +
+            return std::string{R"("type": "IfStmt", "expr": )"} +
+                    this->expr->to_json() +
                    R"(, "stmt": )" +
-                   this->stmt->toJson() +
-                   R"(, "elseStmt": )" +
-                   this->else_stmt->toJson() + ",";
+                    this->stmt->to_json() +
+                   R"(, "else_stmt": )" +
+                    this->else_stmt->to_json();
         }
 
         bool should_have_children() const override
@@ -103,10 +105,10 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "repeatStmt", "expr": )EOF"} +
-                   this->expr->toJson() + ",";
+            return std::string{R"("type": "RepeatStmt", "expr": )"} +
+                    this->expr->to_json();
         }
     };
 
@@ -121,13 +123,16 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "whileStmt", "expr": )EOF"} +
-                   this->expr->toJson() +
+            return std::string{R"("type": "WhileStmt", "expr": )"} +
+                    this->expr->to_json() +
                    R"(, "stmt": )" +
-                   this->stmt->toJson() + ",";
+                    this->stmt->to_json();
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     enum class DirectionEnum
@@ -150,6 +155,20 @@ namespace npc
                   start(cast_node<ExprNode>(start)), finish(cast_node<ExprNode>(finish)),
                   stmt(cast_node<StmtNode>(stmt))
         {}
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "ForStmt", "direction": ")"} +
+                    (direction == DirectionEnum::TO ? "TO" : "DOWNTO") +
+                   R"(", "identifier": )" + this->identifier->to_json() +
+                   R"(, "start": )" + this->start->to_json() +
+                   R"(, "finish": )" + this->finish->to_json() +
+                   R"(, "stmt": )" + this->stmt->to_json();
+        }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class CaseExprNode : public StmtNode
@@ -165,12 +184,12 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "caseExpr", "branch": )EOF"} +
-                   this->branch->toJson() +
+            return std::string{R"("type": "CaseExpr", "branch": )"} +
+                    this->branch->to_json() +
                    R"(, "stmt": )" +
-                   this->stmt->toJson() + ",";
+                    this->stmt->to_json();
         }
 
         bool should_have_children() const override
@@ -188,10 +207,10 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "caseStmt", "expr": )EOF"} +
-                   this->expr->toJson() + ",";
+            return std::string{R"("type": "CaseStmt", "expr": )"} +
+                    this->expr->to_json();
         }
     };
 

@@ -29,10 +29,10 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "boolean", "value": ")EOF"} + (val ? "true" : "false") +
-                   std::string{"\","};
+            return std::string{R"("type": "Boolean", "value": ")"} +
+                    (val ? "true" : "false") + "\"";
         }
     };
 
@@ -55,10 +55,9 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "integer", "value": ")EOF"} + std::to_string(val) +
-                   std::string{"\","};
+            return std::string{R"("type": "Integer", "value": ")"} + std::to_string(val) + "\"";
         }
     };
 
@@ -81,10 +80,9 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "real", "value": ")EOF"} + std::to_string(val) +
-                   std::string{"\","};
+            return std::string{R"("type": "Real", "value": ")"} + std::to_string(val) + "\"";
         }
     };
 
@@ -105,10 +103,9 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "char", "value": ")EOF"} + std::to_string(val) +
-                   std::string{"\","};
+            return std::string{R"("type": "Char", "value": ")"} + std::to_string(val) + "\"";
         }
     };
 
@@ -123,10 +120,9 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "string", "value": ")EOF"} + val +
-                   std::string{"\","};
+            return std::string{R"("type": "String", "value": ")"} + val + "\"";
         }
     };
 }

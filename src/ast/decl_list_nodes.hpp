@@ -27,21 +27,21 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "paramDecl", "name": )EOF"} +
-                   this->name->toJson() +
-                   R"(, "type": )" +
-                   this->type->toJson() + ",";
+            return std::string{R"("type": "ParamDecl", "name": )"} +
+                    this->name->to_json() +
+                   R"(, "decl": )" +
+                    this->type->to_json();
         }
     };
 
     class ParamListNode : public DummyNode
     {
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "paramList",)EOF"};
+            return std::string{R"("type": "ParamList")"};
         }
     };
 
@@ -56,50 +56,50 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "varDecl", "name": )EOF"} +
-                   this->name->toJson() +
-                   R"(, "type": )" +
-                   this->type->toJson() + ",";
+            return std::string{R"("type": "VarDecl", "name": )"} +
+                    this->name->to_json() +
+                   R"(, "decl": )" +
+                    this->type->to_json();
         }
     };
 
     class VarListNode : public DummyNode
     {
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "varList",)EOF"};
+            return std::string{R"("type": "VarList")"};
         }
     };
 
-    class ConstExprNode : public DummyNode
+    class ConstDeclNode : public DummyNode
     {
     public:
         std::shared_ptr<IdentifierNode> name;
         std::shared_ptr<ConstValueNode> value;
 
-        ConstExprNode(const NodePtr &name, const NodePtr &value)
+        ConstDeclNode(const NodePtr &name, const NodePtr &value)
                 : name(cast_node<IdentifierNode>(name)), value(cast_node<ConstValueNode>(value))
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "constExpr", "name": )EOF"} +
-                   this->name->toJson() +
+            return std::string{R"("type": "ConstDecl", "name": )"} +
+                    this->name->to_json() +
                    R"(, "value": )" +
-                   this->value->toJson() + ",";
+                    this->value->to_json();
         }
     };
 
     class ConstListNode : public DummyNode
     {
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "constList",)EOF"};
+            return std::string{R"("type": "ConstList")"};
         }
     };
 
@@ -114,21 +114,21 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "typeDef", "name": )EOF"} +
-                   this->name->toJson() +
-                   R"(, "type": )" +
-                   this->type->toJson() + ",";
+            return std::string{R"("type": "TypeDef", "name": )"} +
+                    this->name->to_json() +
+                   R"(, "alias": )" +
+                    this->type->to_json();
         }
     };
 
     class TypeListNode : public DummyNode
     {
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "typeList",)EOF"};
+            return std::string{R"("type": "TypeList")"};
         }
     };
 }

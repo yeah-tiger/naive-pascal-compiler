@@ -22,9 +22,9 @@ namespace npc
         }
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "<unspecified-from-dummy>",)EOF"};
+            return std::string{R"("type": "<unspecified-from-dummy>")"};
         }
     };
 

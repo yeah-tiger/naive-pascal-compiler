@@ -26,12 +26,12 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "routineCall", "identifier": ")EOF"} +
-                   this->identifier->toJson() +
+            return std::string{R"("type": "routineCall", "identifier": ")"} +
+                    this->identifier->to_json() +
                    R"(, "args": )" +
-                   this->args->toJson() + ",";
+                    this->args->to_json();
         }
     };
 

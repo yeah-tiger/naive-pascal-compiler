@@ -15,9 +15,9 @@ namespace npc
     class SubroutineListNode : public DummyNode
     {
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "subroutineList",)EOF"};
+            return std::string{R"("type": "SubroutineList")"};
         }
     };
 
@@ -38,16 +38,16 @@ namespace npc
         bool should_have_children() const override
         { return false; }
 
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "headList", "constList": )EOF"} +
-                   this->const_list->toJson() +
-                   R"(, "typeList": )" +
-                   this->type_list->toJson() +
-                   R"(, "varList": )" +
-                   this->var_list->toJson() +
-                   R"(, "subroutineList": )" +
-                   this->subroutine_list->toJson() + ",";
+            return std::string{R"("type": "HeadList", "consts": )"} +
+                    this->const_list->to_json() +
+                   R"(, "types": )" +
+                    this->type_list->to_json() +
+                   R"(, "vars": )" +
+                    this->var_list->to_json() +
+                   R"(, "subroutines": )" +
+                    this->subroutine_list->to_json();
         }
     };
 
@@ -62,12 +62,12 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "routine", "name": )EOF"} +
-                   this->name->toJson() +
-                   R"(, "headList": )" +
-                   this->head_list->toJson() + ",";
+            return std::string{R"("type": "Routine", "name": )"} +
+                    this->name->to_json() +
+                   R"(, "head": )" +
+                    this->head_list->to_json();
         }
     };
 

@@ -25,12 +25,12 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "arrayRef", "identifier": )EOF"} +
-                   this->identifier->toJson() +
+            return std::string{R"("type": "arrayRef", "identifier": )"} +
+                    this->identifier->to_json() +
                    R"(, "index": )" +
-                   this->index->toJson() + ",";
+                    this->index->to_json();
         }
     };
 
@@ -45,12 +45,12 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "recordRef", "identifier": )EOF"} +
-                   this->identifier->toJson() +
+            return std::string{R"("type": "recordRef", "identifier": )"} +
+                    this->identifier->to_json() +
                    R"(, "field": )" +
-                   this->field->toJson() + ",";
+                    this->field->to_json();
         }
     };
 
@@ -62,7 +62,7 @@ namespace npc
 
     inline std::string to_string(BinaryOperator binop)
     {
-        std::map<BinaryOperator, std::string> binopToString{
+        std::map<BinaryOperator, std::string> binop_to_string{
                 {BinaryOperator::GT,  "GT"},
                 {BinaryOperator::GE,  "GE"},
                 {BinaryOperator::LT,  "LT"},
@@ -79,7 +79,7 @@ namespace npc
                 {BinaryOperator::XOR, "XOR"}
         };
         // TODO: bound checking
-        return binopToString[binop];
+        return binop_to_string[binop];
     }
 
     class BinopExprNode : public ExprNode
@@ -96,14 +96,14 @@ namespace npc
         bool should_have_children() const override
         { return false; }
 
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "binopExpr", "op": ")EOF"} +
+            return std::string{R"("type": "binopExpr", "op": ")"} +
                    to_string(this->op) +
                    R"(", "lhs": )" +
-                   this->lhs->toJson() +
+                    this->lhs->to_json() +
                    R"(, "rhs": )" +
-                   this->rhs->toJson() + ",";
+                    this->rhs->to_json();
         }
     };
 

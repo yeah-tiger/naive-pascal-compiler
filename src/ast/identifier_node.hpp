@@ -22,10 +22,10 @@ namespace npc
         {}
 
     protected:
-        std::string jsonHead() const override
+        std::string json_head() const override
         {
-            return std::string{R"EOF("type": "identifier", "value": ")EOF"} + this->name +
-                   std::string{"\","};
+            return std::string{R"("type": "Identifier", "name": ")"}
+                    + this->name + "\"";
         }
     };
 }

@@ -21,10 +21,34 @@ namespace npc
         STRING, ARRAY, RECORD, SET
     };
 
+    inline std::string to_string(Type type)
+    {
+        std::map<Type, std::string> type_to_string{
+                {Type::UNDEFINED,  "<undefined-type>"},
+                {Type::BOOLEAN, "boolean"},
+                {Type::INTEGER, "integer"},
+                {Type::REAL, "real"},
+                {Type::CHAR, "char"},
+                {Type::STRING, "string"},
+                {Type::ARRAY, "array"},
+                {Type::RECORD, "record"},
+                {Type::SET, "set"},
+        };
+        // TODO: bound checking
+        return type_to_string[type];
+    }
+
     class TypeNode : public DummyNode
     {
     public:
         Type type = Type::UNDEFINED;
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "Type", "name": ")"} +
+                    to_string(this->type) + "\"";
+        }
     };
 
     class SimpleTypeNode : public TypeNode
@@ -45,6 +69,13 @@ namespace npc
                 : identifier(cast_node<IdentifierNode>(identifier))
         {
             // TODO: assert the identifier is a type
+        }
+
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "Type", "name": "alias", "identifier": )"} +
+                    to_string(this->type);
         }
     };
 

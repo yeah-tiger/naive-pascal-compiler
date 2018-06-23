@@ -24,29 +24,25 @@ namespace npc
 
         virtual void codegen(CodegenContext &context) const = 0;
 
-        void logJson() const
+        void print_json() const
         {
-            std::clog << this->toJson() << std::endl;
+            std::clog << this->to_json() << std::endl;
         }
 
-        ///
-        /// \return a legal JSON string. a JSON object.
-        std::string toJson() const
+        std::string to_json() const
         {
             std::stringstream ret;
             ret << "{";
-            ret << this->jsonHead();
+            ret << this->json_head();
             if (this->should_have_children())
             {
-                ret << "\"children\": [";
-                auto &children = this->_children;
-                for (auto &node : children)
+                ret << ", \"children\": [";
+                bool is_first = true;
+                for (auto &node : this->_children)
                 {
-                    ret << node->toJson();
-                    if (node != *children.end())
-                    {
-                        ret << ",";
-                    }
+                    if (is_first) is_first = false;
+                    else ret << ", ";
+                    ret << node->to_json();
                 }
                 ret << "]";
             }
@@ -102,9 +98,7 @@ namespace npc
         virtual bool should_have_children() const
         { return true; }
 
-        ///
-        /// \return a part of JSON, comma-separated fields. Default value could be empty.
-        virtual std::string jsonHead() const = 0;
+        virtual std::string json_head() const = 0;
     };
 }
 
