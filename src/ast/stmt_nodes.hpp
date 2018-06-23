@@ -33,9 +33,20 @@ namespace npc
                 : lhs(cast_node<ExprNode>(lhs)), rhs(cast_node<ExprNode>(rhs))
         {
             assert(is_a_ptr_of<IdentifierNode>(lhs)
-                || is_a_ptr_of<ArrayRefNode>(lhs) || is_a_ptr_of<RecordRefNode>(lhs));
+                   || is_a_ptr_of<ArrayRefNode>(lhs) || is_a_ptr_of<RecordRefNode>(lhs));
         }
 
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "assignStmt", "lhs": ")EOF"} +
+                   this->lhs->toJson() +
+                   R"(, "rhs": )" +
+                   this->rhs->toJson() + ",";
+        }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class ProcStmtNode : public StmtNode
@@ -46,6 +57,13 @@ namespace npc
         ProcStmtNode(const NodePtr &proc_call) : proc_call(proc_call)
         {
             assert(is_a_ptr_of<ProcCallNode>(proc_call) || is_a_ptr_of<SysCallNode>(proc_call));
+        }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "procStmt", "procCall": ")EOF"} +
+                   this->proc_call->toJson() + ",";
         }
     };
 
@@ -60,6 +78,20 @@ namespace npc
                 : expr(cast_node<ExprNode>(expr)), stmt(cast_node<StmtNode>(stmt)),
                   else_stmt(cast_node<StmtNode>(else_stmt))
         {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "ifStmt", "expr": ")EOF"} +
+                   this->expr->toJson() +
+                   R"(, "stmt": )" +
+                   this->stmt->toJson() +
+                   R"(, "elseStmt": )" +
+                   this->else_stmt->toJson() + ",";
+        }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class RepeatStmtNode : public StmtNode
@@ -67,7 +99,15 @@ namespace npc
     public:
         std::shared_ptr<ExprNode> expr;
 
-        RepeatStmtNode(const NodePtr &expr) : expr(cast_node<ExprNode>(expr)) {}
+        RepeatStmtNode(const NodePtr &expr) : expr(cast_node<ExprNode>(expr))
+        {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "repeatStmt", "expr": ")EOF"} +
+                   this->expr->toJson() + ",";
+        }
     };
 
     class WhileStmtNode : public StmtNode
@@ -79,6 +119,15 @@ namespace npc
         WhileStmtNode(const NodePtr &expr, const NodePtr &stmt)
                 : expr(cast_node<ExprNode>(expr)), stmt(cast_node<StmtNode>(stmt))
         {}
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "whileStmt", "expr": ")EOF"} +
+                   this->expr->toJson() +
+                   R"(, "stmt": )" +
+                   this->stmt->toJson() + ",";
+        }
     };
 
     enum class DirectionEnum
@@ -114,6 +163,18 @@ namespace npc
         {
             assert(is_a_ptr_of<IdentifierNode>(branch) || is_a_ptr_of<ConstValueNode>(branch));
         }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "caseExpr", "branch": ")EOF"} +
+                   this->branch->toJson() +
+                   R"(, "stmt": )" +
+                   this->stmt->toJson() + ",";
+        }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class CaseStmtNode : public StmtNode
@@ -124,6 +185,13 @@ namespace npc
         void add_expr(const NodePtr &expr)
         {
             this->expr = cast_node<ExprNode>(expr);
+        }
+
+    protected:
+        std::string jsonHead() const override
+        {
+            return std::string{R"EOF("type": "caseStmt", "expr": ")EOF"} +
+                   this->expr->toJson() + ",";
         }
     };
 
