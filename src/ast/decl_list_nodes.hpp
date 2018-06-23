@@ -29,7 +29,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "paramDecl", "name": ")EOF"} +
+            return std::string{R"EOF("type": "paramDecl", "name": )EOF"} +
                    this->name->toJson() +
                    R"(, "type": )" +
                    this->type->toJson() + ",";
@@ -58,7 +58,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "varDecl", "name": ")EOF"} +
+            return std::string{R"EOF("type": "varDecl", "name": )EOF"} +
                    this->name->toJson() +
                    R"(, "type": )" +
                    this->type->toJson() + ",";
@@ -87,7 +87,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "constExpr", "name": ")EOF"} +
+            return std::string{R"EOF("type": "constExpr", "name": )EOF"} +
                    this->name->toJson() +
                    R"(, "value": )" +
                    this->value->toJson() + ",";
@@ -116,7 +116,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "typeDef", "name": ")EOF"} +
+            return std::string{R"EOF("type": "typeDef", "name": )EOF"} +
                    this->name->toJson() +
                    R"(, "type": )" +
                    this->type->toJson() + ",";

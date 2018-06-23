@@ -27,7 +27,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "arrayRef", "identifier": ")EOF"} +
+            return std::string{R"EOF("type": "arrayRef", "identifier": )EOF"} +
                    this->identifier->toJson() +
                    R"(, "index": )" +
                    this->index->toJson() + ",";
@@ -47,7 +47,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "recordRef", "identifier": ")EOF"} +
+            return std::string{R"EOF("type": "recordRef", "identifier": )EOF"} +
                    this->identifier->toJson() +
                    R"(, "field": )" +
                    this->field->toJson() + ",";

@@ -40,7 +40,7 @@ namespace npc
 
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "headList", "constList": ")EOF"} +
+            return std::string{R"EOF("type": "headList", "constList": )EOF"} +
                    this->const_list->toJson() +
                    R"(, "typeList": )" +
                    this->type_list->toJson() +
@@ -64,7 +64,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "routine", "name": ")EOF"} +
+            return std::string{R"EOF("type": "routine", "name": )EOF"} +
                    this->name->toJson() +
                    R"(, "headList": )" +
                    this->head_list->toJson() + ",";

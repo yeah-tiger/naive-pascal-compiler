@@ -39,7 +39,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "assignStmt", "lhs": ")EOF"} +
+            return std::string{R"EOF("type": "assignStmt", "lhs": )EOF"} +
                    this->lhs->toJson() +
                    R"(, "rhs": )" +
                    this->rhs->toJson() + ",";
@@ -62,7 +62,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "procStmt", "procCall": ")EOF"} +
+            return std::string{R"EOF("type": "procStmt", "procCall": )EOF"} +
                    this->proc_call->toJson() + ",";
         }
     };
@@ -82,7 +82,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "ifStmt", "expr": ")EOF"} +
+            return std::string{R"EOF("type": "ifStmt", "expr": )EOF"} +
                    this->expr->toJson() +
                    R"(, "stmt": )" +
                    this->stmt->toJson() +
@@ -105,7 +105,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "repeatStmt", "expr": ")EOF"} +
+            return std::string{R"EOF("type": "repeatStmt", "expr": )EOF"} +
                    this->expr->toJson() + ",";
         }
     };
@@ -123,7 +123,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "whileStmt", "expr": ")EOF"} +
+            return std::string{R"EOF("type": "whileStmt", "expr": )EOF"} +
                    this->expr->toJson() +
                    R"(, "stmt": )" +
                    this->stmt->toJson() + ",";
@@ -167,7 +167,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "caseExpr", "branch": ")EOF"} +
+            return std::string{R"EOF("type": "caseExpr", "branch": )EOF"} +
                    this->branch->toJson() +
                    R"(, "stmt": )" +
                    this->stmt->toJson() + ",";
@@ -190,7 +190,7 @@ namespace npc
     protected:
         std::string jsonHead() const override
         {
-            return std::string{R"EOF("type": "caseStmt", "expr": ")EOF"} +
+            return std::string{R"EOF("type": "caseStmt", "expr": )EOF"} +
                    this->expr->toJson() + ",";
         }
     };
