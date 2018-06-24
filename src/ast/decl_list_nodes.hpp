@@ -104,6 +104,15 @@ namespace npc
                 : name(cast_node<IdentifierNode>(name)), value(cast_node<ConstValueNode>(value))
         {}
 
+        void type_check() {
+            auto v_name = name->name, v_type = to_string(value->type);
+            if (sym_table.find(v_name, true) != nullptr) {
+                std::cerr << v_name << " already exists." << std::endl;
+                assert(false);
+            }
+            sym_table.insert(v_name, v_type);
+        }
+
     protected:
         std::string json_head() const override
         {

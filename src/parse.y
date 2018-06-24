@@ -11,6 +11,9 @@
 
     int yylex();
     int yyerror(const char *s);
+
+    SymTable AbstractNode::sym_table;
+    auto &sym_table = AbstractNode::sym_table;
 %}
 
 %define api.value.type {std::shared_ptr<npc::AbstractNode>}
@@ -25,9 +28,9 @@
 %token PLUS MINUS MUL DIV OR AND MOD NOT
 %token DOT DOTDOT SEMI LP RP LB RB COMMA COLON
 
-%start program
-
 %%
+
+json : program { $$->print_json(); }
 
 program
     : PROGRAM ID SEMI routine_head routine_body DOT
@@ -48,7 +51,7 @@ const_expr_list
     : const_expr_list ID EQUAL const_value SEMI
         { $$ = $1; $$->add_child(make_node<ConstDeclNode>($2, $4)); }
     | ID EQUAL const_value SEMI
-        { $$ = make_node<ConstListNode>(); $$->add_child(make_node<ConstDeclNode>($1, $3)); }
+        { sym_table.begin_scope(); $$ = make_node<ConstListNode>(); $$->add_child(make_node<ConstDeclNode>($1, $3)); }
     ;
 
 const_value

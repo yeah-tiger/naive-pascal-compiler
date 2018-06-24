@@ -13,16 +13,20 @@
 
 #include "codegen_context.hpp"
 #include "../utils/ast_utils.hpp"
+#include "sym_table.hpp"
 
 namespace npc
 {
     class AbstractNode : public std::enable_shared_from_this<AbstractNode>
     {
     public:
+        static SymTable sym_table;
         // NOLINT
         virtual ~AbstractNode() noexcept = default;  // the base template class has a trivial destructor.
 
         virtual void codegen(CodegenContext &context) const = 0;
+
+        virtual void type_check() {}
 
         void print_json() const
         {
