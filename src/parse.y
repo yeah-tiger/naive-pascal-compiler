@@ -147,6 +147,7 @@ procedure_decl
 
 parameters
     : LP para_decl_list RP { $$ = $2; }
+    | LP RP { $$ = make_node<ParamListNode>(); }
     | { $$ = make_node<ParamListNode>(); }
     ;
 

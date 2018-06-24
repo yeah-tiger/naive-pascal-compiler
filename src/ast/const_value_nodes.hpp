@@ -110,7 +110,7 @@ namespace npc
 
         CharNode(const char *val)
         {
-            this->val = *val;
+            this->val = val[1];
             type = Type::CHAR;
         }
 
@@ -130,6 +130,8 @@ namespace npc
 
         StringNode(const char *val) : val(val)
         {
+            this->val.erase(this->val.begin());
+            this->val.pop_back();
             type = Type::STRING;
         }
 
