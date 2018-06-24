@@ -29,8 +29,15 @@ namespace npc
     };
 
     // TODO: Move back to expr_nodes.hpp
+    enum class Type;
+    inline Type to_type(std::string type);
     class ExprNode : public DummyNode
     {
+    public:
+        virtual Type get_type() const {
+            std::cerr << "Un-implemented get_type()" << std::endl;
+            assert(false);
+        }
     };
 
     class ExprListNode : public DummyNode

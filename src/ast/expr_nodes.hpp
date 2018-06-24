@@ -8,6 +8,8 @@
 #include <string>
 #include <map>
 #include "dummy_node.hpp"
+#include "type_nodes.hpp"
+#include "const_value_nodes.hpp"
 #include "identifier_node.hpp"
 #include "routine_call_nodes.hpp"
 #include "sys_routine_nodes.hpp"
@@ -97,6 +99,20 @@ namespace npc
                 : op(op), lhs(cast_node<ExprNode>(lhs)), rhs(cast_node<ExprNode>(rhs))
         {}
 
+        virtual Type get_type() const {
+            Type lhs_type, rhs_type;
+            lhs_type = lhs->get_type();
+            rhs_type = rhs->get_type();
+            if (lhs_type != rhs_type &&
+                !((lhs_type == Type::INTEGER && rhs_type == Type::REAL)
+                        || (lhs_type == Type::REAL && rhs_type == Type::INTEGER)
+                )) {
+                std::cerr << "Different types: " << to_string(lhs_type) << ", " << to_string(rhs_type) << std::endl;
+                assert(lhs_type == rhs_type);
+            }
+            return lhs_type;
+        }
+
     protected:
         bool should_have_children() const override
         { return false; }
@@ -120,6 +136,17 @@ namespace npc
         FuncExprNode(const NodePtr &func_call) : func_call(func_call)
         {
             assert(is_a_ptr_of<FuncCallNode>(func_call) || is_a_ptr_of<SysCallNode>(func_call));
+        }
+
+        virtual Type get_type() const {
+            if (is_a_ptr_of<FuncCallNode>(func_call)) {
+                auto type = cast_node<FuncCallNode>(func_call)->identifier->get_type();
+                return type;
+            } else {
+                auto routine = cast_node<SysCallNode>(func_call)->routine->routine;
+                // TODO: IMPLEMENT REAL SYS CALL TYPE DECL.
+                return Type::REAL;
+            }
         }
 
     protected:

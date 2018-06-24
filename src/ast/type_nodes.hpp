@@ -38,6 +38,23 @@ namespace npc
         return type_to_string[type];
     }
 
+    inline Type to_type(std::string type)
+    {
+        std::map<std::string, Type> string_to_type{
+                {"<undefined-type>", Type::UNDEFINED},
+                {"boolean", Type::BOOLEAN},
+                {"integer", Type::INTEGER},
+                {"real", Type::REAL},
+                {"char", Type::CHAR},
+                {"string", Type::STRING},
+                {"array", Type::ARRAY},
+                {"record", Type::RECORD},
+                {"set", Type::SET}
+        };
+        // TODO: bound checking
+        return string_to_type[type];
+    }
+
     class TypeNode : public DummyNode
     {
     public:

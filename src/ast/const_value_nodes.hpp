@@ -17,6 +17,10 @@ namespace npc
     public:
         Type type = Type::UNDEFINED;
 
+        virtual Type get_type() const {
+            return type;
+        }
+
     protected:
         bool should_have_children() const final
         { return false; }

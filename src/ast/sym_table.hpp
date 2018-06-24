@@ -27,6 +27,7 @@ namespace npc
     public:
         _SymTable &current_table() { return envs.back(); }
         Variable *find(const std::string &name, bool search_global=false) {
+            if (frozen) { return nullptr; }
             for (auto e_iter = envs.rbegin(); e_iter != envs.rend(); ++e_iter) {
                 auto var_iter = e_iter->find(name);
                 if (var_iter != e_iter->end()) {
@@ -38,12 +39,16 @@ namespace npc
         }
         size_t size() const { return envs.size(); }
         void insert(const std::string &name, const std::string &type) {
+            if (frozen) { return; }
             current_table().insert({name, Variable(name, type)});
         }
         void begin_scope() { envs.emplace_back(); }
         void end_scope() { envs.pop_back(); }
+        void freeze() { frozen = true; }
+        void unfreeze() { frozen = false; }
     private:
         std::vector<_SymTable> envs;
+        bool frozen = false;
     };
 }
 

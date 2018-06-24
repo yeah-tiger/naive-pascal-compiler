@@ -101,6 +101,15 @@ namespace npc
                 : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params))
         {}
 
+        void type_check() {
+            auto v_name = name->name, v_type = to_string(Type::UNDEFINED);
+            if (sym_table.find(v_name) != nullptr) {
+                std::cerr << v_name << " already declared." << std::endl;
+                assert(false);
+            }
+            sym_table.insert(v_name, v_type);
+        }
+
     protected:
         std::string json_head() const override
         {

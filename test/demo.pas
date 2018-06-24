@@ -11,7 +11,6 @@ var
   j: char;
 function myabs(x: real):real;
 var ret: real;
-x: real;
 begin
   if x >= 0 then ret := x
   else ret := -x;

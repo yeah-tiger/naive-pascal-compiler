@@ -34,6 +34,19 @@ namespace npc
                    || is_a_ptr_of<ArrayRefNode>(lhs) || is_a_ptr_of<RecordRefNode>(lhs));
         }
 
+        void type_check()
+        {
+            if (is_a_ptr_of<IdentifierNode>(lhs)) {
+                auto v_name = cast_node<IdentifierNode>(lhs)->name;
+                auto lhs_decl = sym_table.find(v_name, true);
+                if (lhs_decl == nullptr) {
+                    std::cerr << v_name << " has not been declared.\n" << std::endl;
+                    assert(false);
+                }
+                rhs->get_type();
+            }
+        }
+
     protected:
         std::string json_head() const override
         {

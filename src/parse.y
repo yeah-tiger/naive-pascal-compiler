@@ -139,8 +139,21 @@ routine_part: routine_part function_decl { $$ = $1; $$->add_child($2); }
     ;
 
 function_decl
-    : FUNCTION { sym_table.begin_scope(); } ID parameters COLON simple_type_decl SEMI routine_head routine_body SEMI
-        { $$ = make_node<FunctionNode>($3, $4, $6, $8); $$->move_children($9); }
+    : FUNCTION { sym_table.freeze(); } ID parameters COLON simple_type_decl {
+                sym_table.unfreeze();
+                auto v_name = cast_node<IdentifierNode>($3)->name, v_type = to_string(cast_node<SimpleTypeNode>($6)->type);
+                if (sym_table.find(v_name) != nullptr) {
+                    std::cerr << v_name << " already declared.\n" << std::endl;
+                    assert(false);
+                }
+                sym_table.insert(v_name, v_type);
+                sym_table.begin_scope();
+                auto params = cast_node<ParamListNode>($4);
+                for (auto &param : params->children()) {
+                    cast_node<ParamDeclNode>(param)->type_check();
+                }
+    } SEMI routine_head routine_body SEMI
+        { $$ = make_node<FunctionNode>($3, $4, $6, $9); $$->move_children($10); }
     ;
 
 procedure_decl
