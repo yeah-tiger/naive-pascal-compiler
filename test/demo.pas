@@ -1,7 +1,6 @@
-program x;
+program prog;
 const
   pi=3.1415926;
-  pi=1.0;
 var
   r: integer;
   s: real;
@@ -10,9 +9,9 @@ var
   eq: boolean;
   i, sum: integer;
   j: char;
-  arr: array[1..10] of integer;
 function myabs(x: real):real;
 var ret: real;
+x: real;
 begin
   if x >= 0 then ret := x
   else ret := -x;
@@ -52,16 +51,6 @@ begin
     { compact for }
     for i := 1 to 10 do sum := sum + i;
   end;
-  writeln('sum=', sum);
-
-  { repeat statment }
-  sum := 0;
-  i := 1;
-  repeat
-    sum := sum + i;
-    i := i + 1;
-    a[i] := i; { test array }
-  until (i >= 10);
   writeln('sum=', sum);
   calcAbs(-1.0);
 end.

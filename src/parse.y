@@ -38,8 +38,8 @@ program
     ;
 
 routine_head
-    : const_part type_part var_part routine_part
-        { $$ = make_node<HeadListNode>($1, $2, $3, $4); }
+    : { sym_table.begin_scope(); } const_part type_part var_part routine_part
+        { $$ = make_node<HeadListNode>($2, $3, $4, $5); }
 ;
 
 const_part
@@ -51,7 +51,7 @@ const_expr_list
     : const_expr_list ID EQUAL const_value SEMI
         { $$ = $1; $$->add_child(make_node<ConstDeclNode>($2, $4)); }
     | ID EQUAL const_value SEMI
-        { sym_table.begin_scope(); $$ = make_node<ConstListNode>(); $$->add_child(make_node<ConstDeclNode>($1, $3)); }
+        { $$ = make_node<ConstListNode>(); $$->add_child(make_node<ConstDeclNode>($1, $3)); }
     ;
 
 const_value
@@ -176,7 +176,7 @@ name_list
     ;
 
 routine_body
-    : compound_stmt { $$ = $1; }
+    : compound_stmt { $$ = $1; } { sym_table.end_scope(); }
     ;
 
 compound_stmt

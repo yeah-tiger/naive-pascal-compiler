@@ -34,6 +34,15 @@ namespace npc
                 : name(cast_node<IdentifierNode>(name)), type(cast_node<SimpleTypeNode>(type))
         {}
 
+        void type_check() {
+            auto v_name = name->name, v_type = to_string(type->type);
+            if (sym_table.find(v_name) != nullptr) {
+                std::cerr << v_name << " already declared." << std::endl;
+                assert(false);
+            }
+            sym_table.insert(v_name, v_type);
+        }
+
     protected:
         std::string json_head() const override
         {
@@ -68,6 +77,15 @@ namespace npc
         VarDeclNode(const NodePtr &name, const NodePtr &type)
                 : name(cast_node<IdentifierNode>(name)), type(cast_node<TypeNode>(type))
         {}
+
+        void type_check() {
+            auto v_name = name->name, v_type = to_string(type->type);
+            if (sym_table.find(v_name) != nullptr) {
+                std::cerr << v_name << " already declared." << std::endl;
+                assert(false);
+            }
+            sym_table.insert(v_name, v_type);
+        }
 
     protected:
         std::string json_head() const override
@@ -106,8 +124,8 @@ namespace npc
 
         void type_check() {
             auto v_name = name->name, v_type = to_string(value->type);
-            if (sym_table.find(v_name, true) != nullptr) {
-                std::cerr << v_name << " already exists." << std::endl;
+            if (sym_table.find(v_name) != nullptr) {
+                std::cerr << v_name << " already declared." << std::endl;
                 assert(false);
             }
             sym_table.insert(v_name, v_type);

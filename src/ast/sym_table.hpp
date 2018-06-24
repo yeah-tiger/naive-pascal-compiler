@@ -36,6 +36,7 @@ namespace npc
             }
             return nullptr;
         }
+        size_t size() const { return envs.size(); }
         void insert(const std::string &name, const std::string &type) {
             current_table().insert({name, Variable(name, type)});
         }
