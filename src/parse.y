@@ -33,13 +33,13 @@
 json : program { $$->print_json(); }
 
 program
-    : PROGRAM ID SEMI routine_head routine_body DOT
-        { $$ = make_node<ProgramNode>($2, $4); $$->move_children($5); }
+    : PROGRAM ID SEMI { sym_table.begin_scope(); } routine_head routine_body DOT
+        { $$ = make_node<ProgramNode>($2, $5); $$->move_children($6); }
     ;
 
 routine_head
-    : { sym_table.begin_scope(); } const_part type_part var_part routine_part
-        { $$ = make_node<HeadListNode>($2, $3, $4, $5); }
+    : const_part type_part var_part routine_part
+        { $$ = make_node<HeadListNode>($1, $2, $3, $4); }
 ;
 
 const_part
@@ -139,13 +139,13 @@ routine_part: routine_part function_decl { $$ = $1; $$->add_child($2); }
     ;
 
 function_decl
-    : FUNCTION ID parameters COLON simple_type_decl SEMI routine_head routine_body SEMI
-        { $$ = make_node<FunctionNode>($2, $3, $5, $7); $$->move_children($8); }
+    : FUNCTION { sym_table.begin_scope(); } ID parameters COLON simple_type_decl SEMI routine_head routine_body SEMI
+        { $$ = make_node<FunctionNode>($3, $4, $6, $8); $$->move_children($9); }
     ;
 
 procedure_decl
-    : PROCEDURE ID parameters SEMI routine_head routine_body SEMI
-        { $$ = make_node<ProcedureNode>($2, $3, $5); $$->move_children($6); }
+    : PROCEDURE { sym_table.begin_scope(); } ID parameters SEMI routine_head routine_body SEMI
+        { $$ = make_node<ProcedureNode>($3, $4, $6); $$->move_children($7); }
     ;
 
 parameters
