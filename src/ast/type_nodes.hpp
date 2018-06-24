@@ -43,6 +43,9 @@ namespace npc
     public:
         Type type = Type::UNDEFINED;
 
+        llvm::Type *get_llvm_type(CodegenContext &context) const;
+        llvm::Constant *get_default_value(CodegenContext &context) const;
+
     protected:
         std::string json_head() const override
         {

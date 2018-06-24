@@ -25,6 +25,8 @@ namespace npc
                 : RoutineCallNode(identifier, make_node<ExprListNode>())
         {}
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {

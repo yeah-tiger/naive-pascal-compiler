@@ -69,6 +69,8 @@ namespace npc
                 : name(cast_node<IdentifierNode>(name)), type(cast_node<TypeNode>(type))
         {}
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -84,6 +86,9 @@ namespace npc
 
     class VarListNode : public DummyNode
     {
+    public:
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -104,6 +109,8 @@ namespace npc
                 : name(cast_node<IdentifierNode>(name)), value(cast_node<ConstValueNode>(value))
         {}
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -119,6 +126,9 @@ namespace npc
 
     class ConstListNode : public DummyNode
     {
+    public:
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {

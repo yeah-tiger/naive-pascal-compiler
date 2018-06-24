@@ -17,6 +17,8 @@ namespace npc
     public:
         Type type = Type::UNDEFINED;
 
+        llvm::Type *get_llvm_type(CodegenContext &context) const;
+
     protected:
         bool should_have_children() const final
         { return false; }
@@ -130,6 +132,8 @@ namespace npc
         {
             type = Type::STRING;
         }
+
+        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override

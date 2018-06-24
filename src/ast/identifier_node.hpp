@@ -21,6 +21,9 @@ namespace npc
         explicit IdentifierNode(const char *c) : name(c)
         {}
 
+        llvm::Value *get_value(CodegenContext &context);
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {

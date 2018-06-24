@@ -65,6 +65,8 @@ namespace npc
                 : routine(cast_node<SysRoutineNode>(routine)), args(cast_node<ExprListNode>(args))
         {}
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {

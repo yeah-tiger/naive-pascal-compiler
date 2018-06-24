@@ -19,6 +19,7 @@ namespace npc
     public:
         llvm::Value *codegen(CodegenContext &context) override
         {
+            std::cout << typeid(*this).name() << std::endl;
             assert(false);
             return nullptr;
         }

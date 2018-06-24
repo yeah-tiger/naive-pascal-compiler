@@ -87,6 +87,8 @@ namespace npc
     public:
         using RoutineNode::RoutineNode;
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -105,6 +107,8 @@ namespace npc
         ProcedureNode(const NodePtr &name, const NodePtr &params, const NodePtr &head_list)
                 : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params))
         {}
+
+        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override
@@ -128,6 +132,8 @@ namespace npc
                 : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params)),
                   type(cast_node<SimpleTypeNode>(type))
         {}
+
+//        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override
