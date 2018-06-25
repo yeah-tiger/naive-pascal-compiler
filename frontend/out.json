@@ -1,0 +1,908 @@
+{
+    "type": "Program",
+    "name": {
+        "type": "Identifier",
+        "name": "x"
+    },
+    "head": {
+        "type": "HeadList",
+        "consts": {
+            "type": "ConstList",
+            "children": [
+                {
+                    "type": "ConstDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "pi"
+                    },
+                    "value": {
+                        "type": "Real",
+                        "value": "3.141593"
+                    }
+                }
+            ]
+        },
+        "types": {
+            "type": "TypeList",
+            "children": []
+        },
+        "vars": {
+            "type": "VarList",
+            "children": [
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "r"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "integer",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "s"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "real",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "x"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "integer",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "y"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "integer",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "f"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "boolean",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "eq"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "boolean",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "i"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "integer",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "sum"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "integer",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "j"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "char",
+                        "children": []
+                    }
+                },
+                {
+                    "type": "VarDecl",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "arr"
+                    },
+                    "decl": {
+                        "type": "Type",
+                        "name": "array",
+                        "children": []
+                    }
+                }
+            ]
+        },
+        "subroutines": {
+            "type": "SubroutineList",
+            "children": [
+                {
+                    "type": "Function",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "myabs"
+                    },
+                    "params": {
+                        "type": "ParamList",
+                        "children": [
+                            {
+                                "type": "ParamDecl",
+                                "name": {
+                                    "type": "Identifier",
+                                    "name": "x"
+                                },
+                                "decl": {
+                                    "type": "Type",
+                                    "name": "real",
+                                    "children": []
+                                }
+                            }
+                        ]
+                    },
+                    "return": {
+                        "type": "Type",
+                        "name": "real",
+                        "children": []
+                    },
+                    "head": {
+                        "type": "HeadList",
+                        "consts": {
+                            "type": "ConstList",
+                            "children": []
+                        },
+                        "types": {
+                            "type": "TypeList",
+                            "children": []
+                        },
+                        "vars": {
+                            "type": "VarList",
+                            "children": [
+                                {
+                                    "type": "VarDecl",
+                                    "name": {
+                                        "type": "Identifier",
+                                        "name": "ret"
+                                    },
+                                    "decl": {
+                                        "type": "Type",
+                                        "name": "real",
+                                        "children": []
+                                    }
+                                }
+                            ]
+                        },
+                        "subroutines": {
+                            "type": "SubroutineList",
+                            "children": []
+                        }
+                    },
+                    "children": [
+                        {
+                            "type": "IfStmt",
+                            "expr": {
+                                "type": "BinopExpr",
+                                "op": "GE",
+                                "lhs": {
+                                    "type": "Identifier",
+                                    "name": "x"
+                                },
+                                "rhs": {
+                                    "type": "Integer",
+                                    "value": "0"
+                                }
+                            },
+                            "stmt": {
+                                "type": "AssignStmt",
+                                "lhs": {
+                                    "type": "Identifier",
+                                    "name": "ret"
+                                },
+                                "rhs": {
+                                    "type": "Identifier",
+                                    "name": "x"
+                                }
+                            },
+                            "else_stmt": {
+                                "type": "AssignStmt",
+                                "lhs": {
+                                    "type": "Identifier",
+                                    "name": "ret"
+                                },
+                                "rhs": {
+                                    "type": "BinopExpr",
+                                    "op": "SUB",
+                                    "lhs": {
+                                        "type": "Integer",
+                                        "value": "0"
+                                    },
+                                    "rhs": {
+                                        "type": "Identifier",
+                                        "name": "x"
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "type": "AssignStmt",
+                            "lhs": {
+                                "type": "Identifier",
+                                "name": "myabs"
+                            },
+                            "rhs": {
+                                "type": "Identifier",
+                                "name": "ret"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "Procedure",
+                    "name": {
+                        "type": "Identifier",
+                        "name": "calcAbs"
+                    },
+                    "params": {
+                        "type": "ParamList",
+                        "children": [
+                            {
+                                "type": "ParamDecl",
+                                "name": {
+                                    "type": "Identifier",
+                                    "name": "x"
+                                },
+                                "decl": {
+                                    "type": "Type",
+                                    "name": "real",
+                                    "children": []
+                                }
+                            }
+                        ]
+                    },
+                    "head": {
+                        "type": "HeadList",
+                        "consts": {
+                            "type": "ConstList",
+                            "children": []
+                        },
+                        "types": {
+                            "type": "TypeList",
+                            "children": []
+                        },
+                        "vars": {
+                            "type": "VarList",
+                            "children": [
+                                {
+                                    "type": "VarDecl",
+                                    "name": {
+                                        "type": "Identifier",
+                                        "name": "r"
+                                    },
+                                    "decl": {
+                                        "type": "Type",
+                                        "name": "real",
+                                        "children": []
+                                    }
+                                }
+                            ]
+                        },
+                        "subroutines": {
+                            "type": "SubroutineList",
+                            "children": []
+                        }
+                    },
+                    "children": [
+                        {
+                            "type": "AssignStmt",
+                            "lhs": {
+                                "type": "Identifier",
+                                "name": "r"
+                            },
+                            "rhs": {
+                                "type": "FuncExpr",
+                                "call": {
+                                    "type": "FuncCall",
+                                    "identifier": {
+                                        "type": "Identifier",
+                                        "name": "myabs"
+                                    },
+                                    "args": {
+                                        "type": "<unspecified-from-dummy>",
+                                        "children": [
+                                            {
+                                                "type": "Identifier",
+                                                "name": "x"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "type": "IfStmt",
+                            "expr": {
+                                "type": "BinopExpr",
+                                "op": "NE",
+                                "lhs": {
+                                    "type": "Identifier",
+                                    "name": "r"
+                                },
+                                "rhs": {
+                                    "type": "Identifier",
+                                    "name": "x"
+                                }
+                            },
+                            "stmt": {
+                                "type": "ProcStmt",
+                                "call": {
+                                    "type": "SysCall",
+                                    "identifier": "write",
+                                    "args": {
+                                        "type": "<unspecified-from-dummy>",
+                                        "children": [
+                                            {
+                                                "type": "String",
+                                                "value": "'x < 0'"
+                                            }
+                                        ]
+                                    }
+                                }
+                            },
+                            "else_stmt": {
+                                "type": "ProcStmt",
+                                "call": {
+                                    "type": "SysCall",
+                                    "identifier": "write",
+                                    "args": {
+                                        "type": "<unspecified-from-dummy>",
+                                        "children": [
+                                            {
+                                                "type": "String",
+                                                "value": "'x > 0'"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "children": [
+        {
+            "type": "ProcStmt",
+            "call": {
+                "type": "SysCall",
+                "identifier": "readln",
+                "args": {
+                    "type": "<unspecified-from-dummy>",
+                    "children": [
+                        {
+                            "type": "Identifier",
+                            "name": "r"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "ProcStmt",
+            "call": {
+                "type": "SysCall",
+                "identifier": "readln",
+                "args": {
+                    "type": "<unspecified-from-dummy>",
+                    "children": [
+                        {
+                            "type": "Identifier",
+                            "name": "x"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "ProcStmt",
+            "call": {
+                "type": "SysCall",
+                "identifier": "readln",
+                "args": {
+                    "type": "<unspecified-from-dummy>",
+                    "children": [
+                        {
+                            "type": "Identifier",
+                            "name": "y"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "AssignStmt",
+            "lhs": {
+                "type": "Identifier",
+                "name": "s"
+            },
+            "rhs": {
+                "type": "BinopExpr",
+                "op": "MUL",
+                "lhs": {
+                    "type": "Identifier",
+                    "name": "pi"
+                },
+                "rhs": {
+                    "type": "FuncExpr",
+                    "call": {
+                        "type": "SysCall",
+                        "identifier": "sqr",
+                        "args": {
+                            "type": "<unspecified-from-dummy>",
+                            "children": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "r"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "type": "IfStmt",
+            "expr": {
+                "type": "BinopExpr",
+                "op": "LT",
+                "lhs": {
+                    "type": "Identifier",
+                    "name": "x"
+                },
+                "rhs": {
+                    "type": "Identifier",
+                    "name": "y"
+                }
+            },
+            "stmt": {
+                "type": "AssignStmt",
+                "lhs": {
+                    "type": "Identifier",
+                    "name": "f"
+                },
+                "rhs": {
+                    "type": "Boolean",
+                    "value": "true"
+                }
+            },
+            "else_stmt": {
+                "type": "IfStmt",
+                "expr": {
+                    "type": "BinopExpr",
+                    "op": "EQ",
+                    "lhs": {
+                        "type": "Identifier",
+                        "name": "x"
+                    },
+                    "rhs": {
+                        "type": "Identifier",
+                        "name": "y"
+                    }
+                },
+                "stmt": {
+                    "type": "AssignStmt",
+                    "lhs": {
+                        "type": "Identifier",
+                        "name": "eq"
+                    },
+                    "rhs": {
+                        "type": "Boolean",
+                        "value": "true"
+                    }
+                },
+                "else_stmt": {
+                    "type": "AssignStmt",
+                    "lhs": {
+                        "type": "Identifier",
+                        "name": "f"
+                    },
+                    "rhs": {
+                        "type": "Boolean",
+                        "value": "false"
+                    }
+                }
+            }
+        },
+        {
+            "type": "CaseStmt",
+            "expr": {
+                "type": "BinopExpr",
+                "op": "DIV",
+                "lhs": {
+                    "type": "Identifier",
+                    "name": "x"
+                },
+                "rhs": {
+                    "type": "Integer",
+                    "value": "10"
+                }
+            },
+            "children": [
+                {
+                    "type": "CaseExpr",
+                    "branch": {
+                        "type": "Integer",
+                        "value": "10"
+                    },
+                    "stmt": {
+                        "type": "ProcStmt",
+                        "call": {
+                            "type": "SysCall",
+                            "identifier": "writeln",
+                            "args": {
+                                "type": "<unspecified-from-dummy>",
+                                "children": [
+                                    {
+                                        "type": "String",
+                                        "value": "'10'"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "type": "CaseExpr",
+                    "branch": {
+                        "type": "Integer",
+                        "value": "9"
+                    },
+                    "stmt": {
+                        "type": "ProcStmt",
+                        "call": {
+                            "type": "SysCall",
+                            "identifier": "writeln",
+                            "args": {
+                                "type": "<unspecified-from-dummy>",
+                                "children": [
+                                    {
+                                        "type": "Char",
+                                        "value": "39"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "type": "CaseExpr",
+                    "branch": {
+                        "type": "Integer",
+                        "value": "8"
+                    },
+                    "stmt": {
+                        "type": "IfStmt",
+                        "expr": {
+                            "type": "BinopExpr",
+                            "op": "NE",
+                            "lhs": {
+                                "type": "Identifier",
+                                "name": "y"
+                            },
+                            "rhs": {
+                                "type": "Integer",
+                                "value": "8"
+                            }
+                        },
+                        "stmt": {
+                            "type": "ProcStmt",
+                            "call": {
+                                "type": "SysCall",
+                                "identifier": "writeln",
+                                "args": {
+                                    "type": "<unspecified-from-dummy>",
+                                    "children": [
+                                        {
+                                            "type": "String",
+                                            "value": "'x=8,y!=8'"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "else_stmt": {
+                            "type": "ProcStmt",
+                            "call": {
+                                "type": "SysCall",
+                                "identifier": "writeln",
+                                "args": {
+                                    "type": "<unspecified-from-dummy>",
+                                    "children": [
+                                        {
+                                            "type": "String",
+                                            "value": "'x=8,y=8'"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "type": "AssignStmt",
+            "lhs": {
+                "type": "Identifier",
+                "name": "sum"
+            },
+            "rhs": {
+                "type": "Integer",
+                "value": "0"
+            }
+        },
+        {
+            "type": "ForStmt",
+            "direction": "TO",
+            "identifier": {
+                "type": "Identifier",
+                "name": "j"
+            },
+            "start": {
+                "type": "Char",
+                "value": "39"
+            },
+            "finish": {
+                "type": "Char",
+                "value": "39"
+            },
+            "stmt": {
+                "type": "<unspecified-from-dummy>",
+                "children": [
+                    {
+                        "type": "ProcStmt",
+                        "call": {
+                            "type": "SysCall",
+                            "identifier": "write",
+                            "args": {
+                                "type": "<unspecified-from-dummy>",
+                                "children": [
+                                    {
+                                        "type": "Identifier",
+                                        "name": "j"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "type": "ForStmt",
+                        "direction": "TO",
+                        "identifier": {
+                            "type": "Identifier",
+                            "name": "i"
+                        },
+                        "start": {
+                            "type": "Integer",
+                            "value": "1"
+                        },
+                        "finish": {
+                            "type": "Integer",
+                            "value": "10"
+                        },
+                        "stmt": {
+                            "type": "AssignStmt",
+                            "lhs": {
+                                "type": "Identifier",
+                                "name": "sum"
+                            },
+                            "rhs": {
+                                "type": "BinopExpr",
+                                "op": "ADD",
+                                "lhs": {
+                                    "type": "Identifier",
+                                    "name": "sum"
+                                },
+                                "rhs": {
+                                    "type": "Identifier",
+                                    "name": "i"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "ProcStmt",
+            "call": {
+                "type": "SysCall",
+                "identifier": "writeln",
+                "args": {
+                    "type": "<unspecified-from-dummy>",
+                    "children": [
+                        {
+                            "type": "String",
+                            "value": "'sum='"
+                        },
+                        {
+                            "type": "Identifier",
+                            "name": "sum"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "AssignStmt",
+            "lhs": {
+                "type": "Identifier",
+                "name": "sum"
+            },
+            "rhs": {
+                "type": "Integer",
+                "value": "0"
+            }
+        },
+        {
+            "type": "AssignStmt",
+            "lhs": {
+                "type": "Identifier",
+                "name": "i"
+            },
+            "rhs": {
+                "type": "Integer",
+                "value": "1"
+            }
+        },
+        {
+            "type": "RepeatStmt",
+            "expr": {
+                "type": "BinopExpr",
+                "op": "GE",
+                "lhs": {
+                    "type": "Identifier",
+                    "name": "i"
+                },
+                "rhs": {
+                    "type": "Integer",
+                    "value": "10"
+                }
+            },
+            "children": [
+                {
+                    "type": "AssignStmt",
+                    "lhs": {
+                        "type": "Identifier",
+                        "name": "sum"
+                    },
+                    "rhs": {
+                        "type": "BinopExpr",
+                        "op": "ADD",
+                        "lhs": {
+                            "type": "Identifier",
+                            "name": "sum"
+                        },
+                        "rhs": {
+                            "type": "Identifier",
+                            "name": "i"
+                        }
+                    }
+                },
+                {
+                    "type": "AssignStmt",
+                    "lhs": {
+                        "type": "Identifier",
+                        "name": "i"
+                    },
+                    "rhs": {
+                        "type": "BinopExpr",
+                        "op": "ADD",
+                        "lhs": {
+                            "type": "Identifier",
+                            "name": "i"
+                        },
+                        "rhs": {
+                            "type": "Integer",
+                            "value": "1"
+                        }
+                    }
+                },
+                {
+                    "type": "AssignStmt",
+                    "lhs": {
+                        "type": "ArrayRef",
+                        "identifier": {
+                            "type": "Identifier",
+                            "name": "a"
+                        },
+                        "index": {
+                            "type": "Identifier",
+                            "name": "i"
+                        }
+                    },
+                    "rhs": {
+                        "type": "Identifier",
+                        "name": "i"
+                    }
+                }
+            ]
+        },
+        {
+            "type": "ProcStmt",
+            "call": {
+                "type": "SysCall",
+                "identifier": "writeln",
+                "args": {
+                    "type": "<unspecified-from-dummy>",
+                    "children": [
+                        {
+                            "type": "String",
+                            "value": "'sum='"
+                        },
+                        {
+                            "type": "Identifier",
+                            "name": "sum"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "ProcStmt",
+            "call": {
+                "type": "ProcCall",
+                "identifier": {
+                    "type": "Identifier",
+                    "name": "calcAbs"
+                },
+                "args": {
+                    "type": "<unspecified-from-dummy>",
+                    "children": [
+                        {
+                            "type": "Real",
+                            "value": "-1.000000"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
