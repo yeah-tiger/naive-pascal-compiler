@@ -79,6 +79,10 @@ namespace npc
         {}
 
         void type_check() {
+            if (type->type == Type::UNDEFINED) {
+                std::cerr << "Using undefined type!" << std::endl;
+                assert(false);
+            }
             auto v_name = name->name, v_type = to_string(type->type);
             if (sym_table.find(v_name) != nullptr) {
                 std::cerr << v_name << " already declared." << std::endl;
