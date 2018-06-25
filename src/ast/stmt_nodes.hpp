@@ -43,7 +43,16 @@ namespace npc
                     std::cerr << v_name << " has not been declared.\n" << std::endl;
                     assert(false);
                 }
-                rhs->get_type();
+                Type lhs_type, rhs_type;
+                lhs_type = lhs->get_type();
+                rhs_type = rhs->get_type();
+                if (lhs_type != rhs_type &&
+                    !((lhs_type == Type::INTEGER && rhs_type == Type::REAL)
+                      || (lhs_type == Type::REAL && rhs_type == Type::INTEGER)
+                    )) {
+                    std::cerr << "Type mismatch: " << to_string(lhs_type) << ", " << to_string(rhs_type) << std::endl;
+                    assert(lhs_type == rhs_type);
+                }
             }
         }
 

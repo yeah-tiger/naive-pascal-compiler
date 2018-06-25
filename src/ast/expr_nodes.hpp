@@ -107,7 +107,7 @@ namespace npc
                 !((lhs_type == Type::INTEGER && rhs_type == Type::REAL)
                         || (lhs_type == Type::REAL && rhs_type == Type::INTEGER)
                 )) {
-                std::cerr << "Different types: " << to_string(lhs_type) << ", " << to_string(rhs_type) << std::endl;
+                std::cerr << "Type mismatch: " << to_string(lhs_type) << ", " << to_string(rhs_type) << std::endl;
                 assert(lhs_type == rhs_type);
             }
             return lhs_type;
