@@ -86,11 +86,6 @@ namespace npc
             this->merge_children(node->children());
         }
 
-        void move_children(const std::shared_ptr<AbstractNode> &node)
-        {
-            this->children() = std::move(node->children());
-        }
-
     protected:
         std::list<std::shared_ptr<AbstractNode>> _children;
         std::weak_ptr<AbstractNode> _parent;
@@ -101,6 +96,5 @@ namespace npc
         virtual std::string json_head() const = 0;
     };
 }
-
 
 #endif //NAIVE_PASCAL_COMPILER_AST_H

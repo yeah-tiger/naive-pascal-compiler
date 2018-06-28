@@ -31,7 +31,7 @@
 
 program
     : PROGRAM ID SEMI routine_head routine_body DOT
-        { $$ = make_node<ProgramNode>($2, $4); $$->move_children($5); }
+        { $$ = make_node<ProgramNode>($2, $4); $$->lift_children($5); }
     ;
 
 routine_head
@@ -79,7 +79,7 @@ type_decl
     | array_type_decl  { $$ = $1; }
     | record_type_decl { $$ = $1; }
     | LP name_list RP
-        { $$ = make_node<SetTypeNode>(); $$->move_children($2); }
+        { $$ = make_node<SetTypeNode>(); $$->lift_children($2); }
     ;
 
 simple_type_decl
@@ -137,12 +137,12 @@ routine_part: routine_part function_decl { $$ = $1; $$->add_child($2); }
 
 function_decl
     : FUNCTION ID parameters COLON simple_type_decl SEMI routine_head routine_body SEMI
-        { $$ = make_node<FunctionNode>($2, $3, $5, $7); $$->move_children($8); }
+        { $$ = make_node<FunctionNode>($2, $3, $5, $7); $$->lift_children($8); }
     ;
 
 procedure_decl
     : PROCEDURE ID parameters SEMI routine_head routine_body SEMI
-        { $$ = make_node<ProcedureNode>($2, $3, $5); $$->move_children($6); }
+        { $$ = make_node<ProcedureNode>($2, $3, $5); $$->lift_children($6); }
     ;
 
 parameters
@@ -179,7 +179,7 @@ routine_body
 
 compound_stmt
     : _BEGIN stmt_list END
-        { $$ = make_node<CompoundStmtNode>(); $$->move_children($2); }
+        { $$ = make_node<CompoundStmtNode>(); $$->lift_children($2); }
     ;
 
 stmt_list
@@ -237,7 +237,7 @@ else_clause
 
 repeat_stmt
     : REPEAT stmt_list UNTIL expression
-        { $$ = make_node<RepeatStmtNode>($4); $$->move_children($2); }
+        { $$ = make_node<RepeatStmtNode>($4); $$->lift_children($2); }
     ;
 
 while_stmt
