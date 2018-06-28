@@ -25,14 +25,14 @@ namespace npc
     {
         std::map<Type, std::string> type_to_string{
                 {Type::UNDEFINED, "<undefined-type>"},
-                {Type::BOOLEAN, "boolean"},
-                {Type::INTEGER, "integer"},
-                {Type::REAL, "real"},
-                {Type::CHAR, "char"},
-                {Type::STRING, "string"},
-                {Type::ARRAY, "array"},
-                {Type::RECORD, "record"},
-                {Type::SET, "set"}
+                {Type::BOOLEAN,   "boolean"},
+                {Type::INTEGER,   "integer"},
+                {Type::REAL,      "real"},
+                {Type::CHAR,      "char"},
+                {Type::STRING,    "string"},
+                {Type::ARRAY,     "array"},
+                {Type::RECORD,    "record"},
+                {Type::SET,       "set"}
         };
         // TODO: bound checking
         return type_to_string[type];
@@ -47,10 +47,12 @@ namespace npc
         llvm::Constant *get_default_value(CodegenContext &context) const;
 
     protected:
+        TypeNode() = default;
+
         std::string json_head() const override
         {
             return std::string{R"("type": "Type", "name": ")"} +
-                    to_string(this->type) + "\"";
+                   to_string(this->type) + "\"";
         }
     };
 
@@ -78,7 +80,7 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "Type", "name": "alias", "identifier": )"} +
-                    to_string(this->type);
+                   to_string(this->type);
         }
     };
 

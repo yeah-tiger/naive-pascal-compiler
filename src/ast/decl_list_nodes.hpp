@@ -12,18 +12,6 @@
 
 namespace npc
 {
-    class NameListNode : public DummyNode
-    {
-    protected:
-        bool should_have_children() const override
-        { return true; }
-
-        std::string json_head() const override
-        {
-            return std::string{R"("type": "NameList")"};
-        }
-    };
-
     class ParamDeclNode : public DummyNode
     {
     public:
@@ -172,6 +160,11 @@ namespace npc
 
         bool should_have_children() const override
         { return true; }
+    };
+
+    // Intermediate container, would be removed
+    class NameListNode : public DummyNode
+    {
     };
 }
 

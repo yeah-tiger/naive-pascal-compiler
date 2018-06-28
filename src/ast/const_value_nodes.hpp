@@ -20,6 +20,8 @@ namespace npc
         llvm::Type *get_llvm_type(CodegenContext &context) const;
 
     protected:
+        ConstValueNode() = default;
+
         bool should_have_children() const final
         { return false; }
     };

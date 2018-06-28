@@ -46,11 +46,6 @@ namespace npc
         {}
 
     protected:
-        std::string json_head() const override
-        {
-            return std::string{R"("type": "SysCall", "identifier": ")"} + to_string(this->routine);
-        }
-
         bool should_have_children() const override
         { return false; }
     };

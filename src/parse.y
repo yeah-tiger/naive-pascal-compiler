@@ -232,7 +232,7 @@ if_stmt
 
 else_clause
     : ELSE stmt { $$ = $2; }
-    | { $$ = make_node<StmtNode>(); }
+    | { $$ = make_node<CompoundStmtNode>(); }
     ;
 
 repeat_stmt

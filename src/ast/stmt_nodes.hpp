@@ -15,10 +15,15 @@ namespace npc
 {
     class StmtNode : public DummyNode
     {
+    protected:
+        StmtNode() = default;
     };
 
     class CompoundStmtNode : public StmtNode
     {
+    protected:
+        bool should_have_children() const override
+        { return true; }
     };
 
     class AssignStmtNode : public StmtNode
@@ -223,16 +228,9 @@ namespace npc
         { return true; }
     };
 
+    // Intermediate container, would be removed
     class StmtList : public StmtNode
     {
-    protected:
-        std::string json_head() const override
-        {
-            return std::string{R"("type": "CaseStmt")"};
-        }
-
-        bool should_have_children() const override
-        { return true; }
     };
 }
 

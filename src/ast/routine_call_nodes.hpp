@@ -28,11 +28,7 @@ namespace npc
         llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
-        std::string json_head() const override
-        {
-            return std::string{R"("type": "RoutineCall", "identifier": )"} + this->identifier->to_json() +
-                   R"(, "args": )" + this->args->to_json();
-        }
+        RoutineCallNode() = default;
 
         bool should_have_children() const final
         { return false; }

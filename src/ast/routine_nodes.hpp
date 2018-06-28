@@ -70,13 +70,7 @@ namespace npc
         {}
 
     protected:
-        std::string json_head() const override
-        {
-            return std::string{R"("type": "Rsoutine", "name": )"} +
-                   this->name->to_json() +
-                   R"(, "head": )" +
-                   this->head_list->to_json();
-        }
+        RoutineNode() = default;
 
         bool should_have_children() const final
         { return true; }
