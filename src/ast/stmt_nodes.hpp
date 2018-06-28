@@ -14,6 +14,9 @@ namespace npc
 {
     class CompoundStmtNode : public StmtNode
     {
+    public:
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -86,6 +89,8 @@ namespace npc
                 : expr(cast_node<ExprNode>(expr)), stmt(cast_node<StmtNode>(stmt)),
                   else_stmt(cast_node<StmtNode>(else_stmt))
         {}
+
+        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override
@@ -214,6 +219,8 @@ namespace npc
         {
             this->expr = cast_node<ExprNode>(expr);
         }
+
+        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override
