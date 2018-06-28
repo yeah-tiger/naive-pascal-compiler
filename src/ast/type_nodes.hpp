@@ -13,7 +13,7 @@ namespace npc
 {
     enum class Type
     {
-        UNDEFINED,
+        UNDEFINED, VOID,
         BOOLEAN, INTEGER, REAL, CHAR,
         STRING, ARRAY, RECORD, SET
     };
@@ -22,6 +22,7 @@ namespace npc
     {
         std::map<Type, std::string> type_to_string{
                 {Type::UNDEFINED, "<undefined-type>"},
+                {Type::VOID,      "void"},
                 {Type::BOOLEAN,   "boolean"},
                 {Type::INTEGER,   "integer"},
                 {Type::REAL,      "real"},

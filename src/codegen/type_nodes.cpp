@@ -17,6 +17,7 @@ namespace npc
             case Type::INTEGER: return context.builder.getInt32Ty();
             case Type::REAL: return context.builder.getDoubleTy();
             case Type::CHAR: return context.builder.getInt8Ty();
+            case Type::VOID: return context.builder.getVoidTy();
             default: assert(false); return nullptr;
         }
     }

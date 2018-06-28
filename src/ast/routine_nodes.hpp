@@ -93,46 +93,25 @@ namespace npc
         }
     };
 
-    class ProcedureNode : public RoutineNode
+    class SubroutineNode : public RoutineNode
     {
     public:
         std::shared_ptr<ParamListNode> params;
+        std::shared_ptr<TypeNode> type;
 
-        ProcedureNode(const NodePtr &name, const NodePtr &params, const NodePtr &head_list)
-                : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params))
-        {}
+        SubroutineNode(const NodePtr &name, const NodePtr &params, const NodePtr &type, const NodePtr &head_list)
+                : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params)),
+                  type(cast_node<TypeNode>(type))
+        {
+            assert(is_a_ptr_of<SimpleTypeNode>(type) || is_a_ptr_of<AliasTypeNode>(type));
+        }
 
         llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override
         {
-            return std::string{R"("type": "Procedure", "name": )"} +
-                   this->name->to_json() +
-                   R"(, "params": )" +
-                   this->params->to_json() +
-                   R"(, "head": )" +
-                   this->head_list->to_json();
-        }
-    };
-
-    class FunctionNode : public RoutineNode
-    {
-    public:
-        std::shared_ptr<ParamListNode> params;
-        std::shared_ptr<SimpleTypeNode> type;
-
-        FunctionNode(const NodePtr &name, const NodePtr &params, const NodePtr &type, const NodePtr &head_list)
-                : RoutineNode(name, head_list), params(cast_node<ParamListNode>(params)),
-                  type(cast_node<SimpleTypeNode>(type))
-        {}
-
-//        llvm::Value *codegen(CodegenContext &context) override;
-
-    protected:
-        std::string json_head() const override
-        {
-            return std::string{R"("type": "Function", "name": )"} +
+            return std::string{R"("type": Subroutine", "name": )"} +
                    this->name->to_json() +
                    R"(, "params": )" +
                    this->params->to_json() +

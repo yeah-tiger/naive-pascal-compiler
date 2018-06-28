@@ -28,11 +28,13 @@ namespace npc
     {
     public:
         std::shared_ptr<IdentifierNode> name;
-        std::shared_ptr<SimpleTypeNode> type;
+        std::shared_ptr<TypeNode> type;
 
         ParamDeclNode(const NodePtr &name, const NodePtr &type)
-                : name(cast_node<IdentifierNode>(name)), type(cast_node<SimpleTypeNode>(type))
-        {}
+                : name(cast_node<IdentifierNode>(name)), type(cast_node<TypeNode>(type))
+        {
+            assert(is_a_ptr_of<SimpleTypeNode>(type) || is_a_ptr_of<AliasTypeNode>(type));
+        }
 
     protected:
         std::string json_head() const override

@@ -126,6 +126,8 @@ namespace npc
             assert(is_a_ptr_of<RoutineCallNode>(func_call) || is_a_ptr_of<SysCallNode>(func_call));
         }
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {

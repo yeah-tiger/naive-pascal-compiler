@@ -112,4 +112,9 @@ namespace npc
             return nullptr;
         }
     }
+
+    llvm::Value *FuncExprNode::codegen(CodegenContext &context)
+    {
+        return func_call->codegen(context);
+    }
 }

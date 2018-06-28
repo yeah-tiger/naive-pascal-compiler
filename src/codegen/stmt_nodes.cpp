@@ -15,6 +15,7 @@ namespace npc
         {
             rhs = context.builder.CreateSIToFP(rhs, context.builder.getDoubleTy());
         }
+        // TODO: check if types are compatible
         context.builder.CreateStore(rhs, lhs);
         return nullptr;
     }

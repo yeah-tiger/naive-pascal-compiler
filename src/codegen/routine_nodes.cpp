@@ -30,7 +30,7 @@ namespace npc
         return nullptr;
     }
 
-    llvm::Value *ProcedureNode::codegen(CodegenContext &context)
+    llvm::Value *SubroutineNode::codegen(CodegenContext &context)
     {
         std::vector<llvm::Type*> types;
         std::vector<std::string> names;
@@ -40,7 +40,7 @@ namespace npc
             types.push_back(decl->type->get_llvm_type(context));
             names.push_back(decl->name->name);
         }
-        auto *func_type = llvm::FunctionType::get(context.builder.getVoidTy(), types, false);
+        auto *func_type = llvm::FunctionType::get(type->get_llvm_type(context), types, false);
         auto *func = llvm::Function::Create(func_type, llvm::Function::ExternalLinkage,
                                             name->name, context.module.get());
         auto *block = llvm::BasicBlock::Create(context.module->getContext(), "entry", func);
@@ -54,10 +54,25 @@ namespace npc
             context.set_local(names[index++], local);
             context.builder.CreateStore(&arg, local);
         }
+        if (type->type != Type::VOID)
+        {
+            auto *ret = context.builder.CreateAlloca(type->get_llvm_type(context));
+            context.set_local(name->name, ret);
+        }
 
         head_list->codegen(context);
         for (auto &stmt : children()) stmt->codegen(context);
-        context.builder.CreateRetVoid();
+
+        if (type->type == Type::VOID)
+        {
+            context.builder.CreateRetVoid();
+        }
+        else
+        {
+            auto *local = context.get_local(name->name);
+            auto *ret = context.builder.CreateLoad(local);
+            context.builder.CreateRet(ret);
+        }
         return nullptr;
     }
 

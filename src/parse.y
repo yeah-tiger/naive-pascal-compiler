@@ -141,12 +141,12 @@ routine_part: routine_part function_decl { $$ = $1; $$->add_child($2); }
 
 function_decl
     : FUNCTION ID parameters COLON simple_type_decl SEMI routine_head routine_body SEMI
-        { $$ = make_node<FunctionNode>($2, $3, $5, $7); $$->lift_children($8); }
+        { $$ = make_node<SubroutineNode>($2, $3, $5, $7); $$->lift_children($8); }
     ;
 
 procedure_decl
     : PROCEDURE ID parameters SEMI routine_head routine_body SEMI
-        { $$ = make_node<ProcedureNode>($2, $3, $5); $$->lift_children($6); }
+        { $$ = make_node<SubroutineNode>($2, $3, make_node<SimpleTypeNode>(Type::VOID), $5); $$->lift_children($6); }
     ;
 
 parameters
