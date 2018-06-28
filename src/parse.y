@@ -11,6 +11,8 @@
 
     int yylex();
     int yyerror(const char *s);
+
+    YYSTYPE program;
 %}
 
 %define api.value.type {std::shared_ptr<npc::AbstractNode>}
@@ -25,9 +27,11 @@
 %token PLUS MINUS MUL DIV OR AND MOD NOT
 %token DOT DOTDOT SEMI LP RP LB RB COMMA COLON
 
-%start program
-
 %%
+
+export
+    : program { program = $1; }
+    ;
 
 program
     : PROGRAM ID SEMI routine_head routine_body DOT
@@ -37,7 +41,7 @@ program
 routine_head
     : const_part type_part var_part routine_part
         { $$ = make_node<HeadListNode>($1, $2, $3, $4); }
-;
+    ;
 
 const_part
     : CONST const_expr_list { $$ = $2; }
@@ -166,7 +170,7 @@ para_type_list
 var_para_list
     : VAR name_list { $$ = $2; }
     | name_list { $$ = $1; }
-;
+    ;
 
 name_list
     : name_list COMMA ID { $$ = $1; $$->add_child($3); }
