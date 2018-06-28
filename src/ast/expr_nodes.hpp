@@ -63,26 +63,27 @@ namespace npc
 
     enum class BinaryOperator
     {
-        GT, GE, LT, LE, EQ, NE, ADD, SUB, MUL, DIV, MOD, AND, OR, XOR
+        GT, GE, LT, LE, EQ, NE, ADD, SUB, MUL, TRUEDIV, DIV, MOD, AND, OR, XOR
     };
 
     inline std::string to_string(BinaryOperator binop)
     {
         std::map<BinaryOperator, std::string> binop_to_string{
-                {BinaryOperator::GT,  "GT"},
-                {BinaryOperator::GE,  "GE"},
-                {BinaryOperator::LT,  "LT"},
-                {BinaryOperator::LE,  "LE"},
-                {BinaryOperator::EQ,  "EQ"},
-                {BinaryOperator::NE,  "NE"},
-                {BinaryOperator::ADD, "ADD"},
-                {BinaryOperator::SUB, "SUB"},
-                {BinaryOperator::MUL, "MUL"},
-                {BinaryOperator::DIV, "DIV"},
-                {BinaryOperator::MOD, "MOD"},
-                {BinaryOperator::AND, "AND"},
-                {BinaryOperator::OR,  "OR"},
-                {BinaryOperator::XOR, "XOR"}
+                {BinaryOperator::GT,      ">"},
+                {BinaryOperator::GE,      ">="},
+                {BinaryOperator::LT,      "<"},
+                {BinaryOperator::LE,      "<="},
+                {BinaryOperator::EQ,      "="},
+                {BinaryOperator::NE,      "<>"},
+                {BinaryOperator::ADD,     "+"},
+                {BinaryOperator::SUB,     "-"},
+                {BinaryOperator::MUL,     "*"},
+                {BinaryOperator::TRUEDIV, "/"},
+                {BinaryOperator::DIV,     "div"},
+                {BinaryOperator::MOD,     "mod"},
+                {BinaryOperator::AND,     "and"},
+                {BinaryOperator::OR,      "or"},
+                {BinaryOperator::XOR,     "xor"}
         };
         // TODO: bound checking
         return binop_to_string[binop];

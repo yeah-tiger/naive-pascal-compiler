@@ -155,7 +155,7 @@ NQUOTE [^']
 "]"                 return RB;
 ")"                 return RP;
 ";"                 return SEMI;
-"/"                 return DIV;
+"/"                 return TRUEDIV;
 "*"                 return MUL;
 "{"    {
     int c;

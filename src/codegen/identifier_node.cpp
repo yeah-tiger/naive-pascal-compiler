@@ -7,7 +7,7 @@
 
 namespace npc
 {
-    llvm::Value *IdentifierNode::get_value(CodegenContext &context)
+    llvm::Value *IdentifierNode::get_ptr(CodegenContext &context)
     {
         auto *value = context.get_local(name);
         if (value == nullptr) value = context.module->getGlobalVariable(name);
@@ -17,6 +17,6 @@ namespace npc
 
     llvm::Value *IdentifierNode::codegen(CodegenContext &context)
     {
-        return context.builder.CreateLoad(get_value(context));
+        return context.builder.CreateLoad(get_ptr(context));
     }
 }

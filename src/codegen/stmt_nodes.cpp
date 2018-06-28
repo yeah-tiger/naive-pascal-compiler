@@ -2,7 +2,6 @@
 // Created by 孙耀珠 on 2018/6/24.
 //
 
-#include <llvm/IR/LegacyPassNameParser.h>
 #include "utils/ast.hpp"
 #include "codegen/codegen_context.hpp"
 
@@ -10,8 +9,13 @@ namespace npc
 {
     llvm::Value *AssignStmtNode::codegen(CodegenContext &context)
     {
-        auto id = cast_node<IdentifierNode>(lhs);
-        context.builder.CreateStore(rhs->codegen(context), id->get_value(context));
+        auto *lhs = cast_node<IdentifierNode>(this->lhs)->get_ptr(context);
+        auto *rhs = this->rhs->codegen(context);
+        if (lhs->getType()->getPointerElementType()->isDoubleTy() && rhs->getType()->isIntegerTy(32))
+        {
+            rhs = context.builder.CreateSIToFP(rhs, context.builder.getDoubleTy());
+        }
+        context.builder.CreateStore(rhs, lhs);
         return nullptr;
     }
 

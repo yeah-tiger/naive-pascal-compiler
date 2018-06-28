@@ -24,7 +24,7 @@
 %token SYS_CON SYS_FUNC SYS_PROC SYS_TYPE
 %token IF THEN ELSE REPEAT UNTIL WHILE DO FOR TO DOWNTO CASE OF GOTO
 %token ASSIGN EQUAL UNEQUAL LE LT GE GT
-%token PLUS MINUS MUL DIV OR AND MOD NOT
+%token PLUS MINUS MUL TRUEDIV DIV OR AND MOD NOT
 %token DOT DOTDOT SEMI LP RP LB RB COMMA COLON
 
 %%
@@ -290,6 +290,7 @@ expr
 
 term
     : term MUL factor { $$ = make_node<BinopExprNode>(BinaryOperator::MUL, $1, $3); }
+    | term TRUEDIV factor { $$ = make_node<BinopExprNode>(BinaryOperator::TRUEDIV, $1, $3); }
     | term DIV factor { $$ = make_node<BinopExprNode>(BinaryOperator::DIV, $1, $3); }
     | term MOD factor { $$ = make_node<BinopExprNode>(BinaryOperator::MOD, $1, $3); }
     | term AND factor { $$ = make_node<BinopExprNode>(BinaryOperator::AND, $1, $3); }

@@ -20,7 +20,7 @@ namespace npc
         explicit IdentifierNode(const char *c) : name(c)
         {}
 
-        llvm::Value *get_value(CodegenContext &context);
+        llvm::Value *get_ptr(CodegenContext &context);
         llvm::Value *codegen(CodegenContext &context) override;
 
     protected:

@@ -13,17 +13,11 @@ namespace npc
     {
         switch (type)
         {
-        case Type::BOOLEAN:
-            return context.builder.getInt1Ty();
-        case Type::INTEGER:
-            return context.builder.getInt32Ty();
-        case Type::REAL:
-            return context.builder.getDoubleTy();
-        case Type::CHAR:
-            return context.builder.getInt8Ty();
-        default:
-            assert(false);
-            return nullptr;
+            case Type::BOOLEAN: return context.builder.getInt1Ty();
+            case Type::INTEGER: return context.builder.getInt32Ty();
+            case Type::REAL: return context.builder.getDoubleTy();
+            case Type::CHAR: return context.builder.getInt8Ty();
+            default: assert(false); return nullptr;
         }
     }
 
@@ -31,17 +25,11 @@ namespace npc
     {
         switch (type)
         {
-            case Type::BOOLEAN:
-                return context.builder.getFalse();
-            case Type::INTEGER:
-                return context.builder.getInt32(0);
-            case Type::REAL:
-                return llvm::ConstantFP::get(context.builder.getDoubleTy(), 0.0);
-            case Type::CHAR:
-                return context.builder.getInt8(0);
-            default:
-                assert(false);
-                return nullptr;
+            case Type::BOOLEAN: return context.builder.getFalse();
+            case Type::INTEGER: return context.builder.getInt32(0);
+            case Type::REAL: return llvm::ConstantFP::get(context.builder.getDoubleTy(), 0.0);
+            case Type::CHAR: return context.builder.getInt8(0);
+            default: assert(false); return nullptr;
         }
     }
 
