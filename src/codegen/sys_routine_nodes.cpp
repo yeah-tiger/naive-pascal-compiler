@@ -28,14 +28,13 @@ namespace npc
                 args.push_back(context.builder.CreateGlobalStringPtr("%f"));
                 args.push_back(value);
             }
+            else if (value->getType()->isPointerTy())
+            { // Pascal pointers are not supported, so this is an LLVM global string pointer.
+                args.push_back(value);
+            }
             else
             {
-                // FIXME: a hack for printing string literals
-                auto *gv = llvm::cast<llvm::GlobalVariable>(value);
-                auto *zero = context.builder.getInt32(0);
-                llvm::Value *zeros[] = { zero, zero };
-                auto *ptr = context.builder.CreateInBoundsGEP(gv->getValueType(), gv, zeros);
-                args.push_back(ptr);
+                assert(false);
             }
             context.builder.CreateCall(printf_func, args);
         }

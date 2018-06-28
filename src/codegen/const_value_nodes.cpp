@@ -35,6 +35,6 @@ namespace npc
 
     llvm::Value *StringNode::codegen(CodegenContext &context)
     {
-        return context.builder.CreateGlobalString(val);
+        return context.builder.CreateGlobalStringPtr(val);
     }
 }

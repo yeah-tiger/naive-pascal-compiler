@@ -14,15 +14,13 @@ namespace npc
         switch (type)
         {
         case Type::BOOLEAN:
-            return context.builder.getTrue()->getType();
+            return context.builder.getInt1Ty();
         case Type::INTEGER:
             return context.builder.getInt32Ty();
         case Type::REAL:
             return context.builder.getDoubleTy();
         case Type::CHAR:
             return context.builder.getInt8Ty();
-        case Type::STRING:
-            return llvm::ArrayType::get(context.builder.getInt8Ty(), 256);
         default:
             assert(false);
             return nullptr;
@@ -51,7 +49,6 @@ namespace npc
     {
         return llvm_type(type, context);
     }
-
 
     llvm::Type *TypeNode::get_llvm_type(CodegenContext &context) const
     {

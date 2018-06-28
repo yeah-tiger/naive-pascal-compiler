@@ -89,7 +89,7 @@ NQUOTE [^']
     return SYS_TYPE;
 }
 {S}{T}{R}{I}{N}{G} {
-    yylval = make_node<SimpleTypeNode>(Type::STRING);
+    yylval = make_node<StringTypeNode>();
     return SYS_TYPE;
 }
 

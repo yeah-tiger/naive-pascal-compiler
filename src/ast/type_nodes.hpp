@@ -65,6 +65,13 @@ namespace npc
         }
     };
 
+    class StringTypeNode : public TypeNode
+    {
+    public:
+        StringTypeNode()
+        { type = Type::STRING; }
+    };
+
     class AliasTypeNode : public TypeNode
     {
     public:
