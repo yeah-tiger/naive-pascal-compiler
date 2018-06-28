@@ -213,9 +213,9 @@ assign_stmt
 
 proc_stmt
     : ID LP RP
-        { $$ = make_node<ProcStmtNode>(make_node<ProcCallNode>($1)); }
+        { $$ = make_node<ProcStmtNode>(make_node<RoutineCallNode>($1)); }
     | ID LP args_list RP
-        { $$ = make_node<ProcStmtNode>(make_node<ProcCallNode>($1, $3)); }
+        { $$ = make_node<ProcStmtNode>(make_node<RoutineCallNode>($1, $3)); }
     | SYS_PROC LP args_list RP
         { $$ = make_node<ProcStmtNode>(make_node<SysCallNode>($1, $3)); }
     | READ LP variable_list RP
@@ -300,9 +300,9 @@ term
 factor
     : ID { $$ = $1; }
     | ID LP RP
-        { $$ = make_node<FuncExprNode>(make_node<FuncCallNode>($1)); }
+        { $$ = make_node<FuncExprNode>(make_node<RoutineCallNode>($1)); }
     | ID LP args_list RP
-        { $$ = make_node<FuncExprNode>(make_node<FuncCallNode>($1, $3)); }
+        { $$ = make_node<FuncExprNode>(make_node<RoutineCallNode>($1, $3)); }
     | SYS_FUNC LP args_list RP
         { $$ = make_node<FuncExprNode>(make_node<SysCallNode>($1, $3)); }
     | const_value { $$ = $1; }

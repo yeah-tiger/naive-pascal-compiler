@@ -59,7 +59,7 @@ namespace npc
 
         ProcStmtNode(const NodePtr &proc_call) : proc_call(proc_call)
         {
-            assert(is_a_ptr_of<ProcCallNode>(proc_call) || is_a_ptr_of<SysCallNode>(proc_call));
+            assert(is_a_ptr_of<RoutineCallNode>(proc_call) || is_a_ptr_of<SysCallNode>(proc_call));
         }
 
         llvm::Value *codegen(CodegenContext &context) override;

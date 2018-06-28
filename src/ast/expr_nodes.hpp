@@ -123,7 +123,7 @@ namespace npc
 
         FuncExprNode(const NodePtr &func_call) : func_call(func_call)
         {
-            assert(is_a_ptr_of<FuncCallNode>(func_call) || is_a_ptr_of<SysCallNode>(func_call));
+            assert(is_a_ptr_of<RoutineCallNode>(func_call) || is_a_ptr_of<SysCallNode>(func_call));
         }
 
     protected:
