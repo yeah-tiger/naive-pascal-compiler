@@ -5,23 +5,21 @@
 #ifndef NAIVE_PASCAL_COMPILER_STMT_NODES_HPP
 #define NAIVE_PASCAL_COMPILER_STMT_NODES_HPP
 
-#include <utility>
-#include "dummy_node.hpp"
-#include "type_nodes.hpp"
-#include "const_value_nodes.hpp"
-#include "routine_call_nodes.hpp"
+#include "ast/abstract_subnodes.hpp"
+#include "ast/const_value_nodes.hpp"
+#include "ast/routine_call_nodes.hpp"
+#include "ast/sys_routine_nodes.hpp"
 
 namespace npc
 {
-    class StmtNode : public DummyNode
-    {
-    protected:
-        StmtNode() = default;
-    };
-
     class CompoundStmtNode : public StmtNode
     {
     protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "CompoundStmt")"};
+        }
+
         bool should_have_children() const override
         { return true; }
     };

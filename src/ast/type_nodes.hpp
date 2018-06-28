@@ -5,12 +5,9 @@
 #ifndef NAIVE_PASCAL_COMPILER_TYPE_NODES_HPP
 #define NAIVE_PASCAL_COMPILER_TYPE_NODES_HPP
 
-#include <cassert>
-#include <utility>
-#include <vector>
-#include "dummy_node.hpp"
-#include "identifier_node.hpp"
-#include "expr_nodes.hpp"
+#include "ast/dummy_node.hpp"
+#include "ast/abstract_subnodes.hpp"
+#include "ast/identifier_node.hpp"
 
 namespace npc
 {
@@ -54,6 +51,9 @@ namespace npc
             return std::string{R"("type": "Type", "name": ")"} +
                    to_string(this->type) + "\"";
         }
+
+        bool should_have_children() const override
+        { return false; }
     };
 
     class SimpleTypeNode : public TypeNode

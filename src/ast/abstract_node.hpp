@@ -5,6 +5,7 @@
 #ifndef NAIVE_PASCAL_COMPILER_AST_H
 #define NAIVE_PASCAL_COMPILER_AST_H
 
+#include <cassert>
 #include <string>
 #include <memory>
 #include <list>

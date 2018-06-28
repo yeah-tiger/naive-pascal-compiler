@@ -5,9 +5,7 @@
 #ifndef NAIVE_PASCAL_COMPILER_DUMMY_NODE_H
 #define NAIVE_PASCAL_COMPILER_DUMMY_NODE_H
 
-#include <string>
-#include <sstream>
-#include "abstract_node.hpp"
+#include "ast/abstract_node.hpp"
 
 namespace npc
 {
@@ -29,15 +27,6 @@ namespace npc
         {
             return std::string{R"("type": "<unspecified-from-dummy>")"};
         }
-    };
-
-    // TODO: Move back to expr_nodes.hpp
-    class ExprNode : public DummyNode
-    {
-    };
-
-    class ExprListNode : public DummyNode
-    {
     };
 }
 

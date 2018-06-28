@@ -5,9 +5,9 @@
 #ifndef NAIVE_PASCAL_COMPILER_ROUTINE_CALL_NODES_HPP
 #define NAIVE_PASCAL_COMPILER_ROUTINE_CALL_NODES_HPP
 
-#include "dummy_node.hpp"
-#include "identifier_node.hpp"
-#include "expr_nodes.hpp"
+#include "ast/dummy_node.hpp"
+#include "ast/identifier_node.hpp"
+#include "ast/decl_list_nodes.hpp"
 
 namespace npc
 {
@@ -15,14 +15,14 @@ namespace npc
     {
     public:
         std::shared_ptr<IdentifierNode> identifier;
-        std::shared_ptr<ExprListNode> args;
+        std::shared_ptr<ArgListNode> args;
 
         RoutineCallNode(const NodePtr &identifier, const NodePtr &args)
-                : identifier(cast_node<IdentifierNode>(identifier)), args(cast_node<ExprListNode>(args))
+                : identifier(cast_node<IdentifierNode>(identifier)), args(cast_node<ArgListNode>(args))
         {}
 
         explicit RoutineCallNode(const NodePtr &identifier)
-                : RoutineCallNode(identifier, make_node<ExprListNode>())
+                : RoutineCallNode(identifier, make_node<ArgListNode>())
         {}
 
         llvm::Value *codegen(CodegenContext &context) override;

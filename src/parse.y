@@ -226,7 +226,7 @@ variable_list
     : variable_list COMMA ID
         { $$ = $1; $$->add_child($3); }
     | ID
-        { $$ = make_node<ExprListNode>(); $$->add_child($1); }
+        { $$ = make_node<ArgListNode>(); $$->add_child($1); }
     ;
 
 if_stmt
@@ -318,7 +318,7 @@ factor
 
 args_list
     : args_list COMMA expression { $$ = $1; $$->add_child($3); }
-    | expression { $$ = make_node<ExprListNode>(); $$->add_child($1); }
+    | expression { $$ = make_node<ArgListNode>(); $$->add_child($1); }
     ;
 
 %%

@@ -6,9 +6,9 @@
 #define NAIVE_PASCAL_COMPILER_CONST_VALUE_NODES_HPP
 
 #include <sstream>
-#include "dummy_node.hpp"
-#include "expr_nodes.hpp"
-#include "type_nodes.hpp"
+
+#include "ast/abstract_subnodes.hpp"
+#include "ast/type_nodes.hpp"
 
 namespace npc
 {

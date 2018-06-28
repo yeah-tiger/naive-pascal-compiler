@@ -7,10 +7,11 @@
 
 #include <string>
 #include <map>
-#include "dummy_node.hpp"
-#include "identifier_node.hpp"
-#include "routine_call_nodes.hpp"
-#include "sys_routine_nodes.hpp"
+
+#include "ast/abstract_subnodes.hpp"
+#include "ast/identifier_node.hpp"
+#include "ast/routine_call_nodes.hpp"
+#include "ast/sys_routine_nodes.hpp"
 
 namespace npc
 {

@@ -5,8 +5,7 @@
 #ifndef NAIVE_PASCAL_COMPILER_IDENTIFIER_NODE_HPP
 #define NAIVE_PASCAL_COMPILER_IDENTIFIER_NODE_HPP
 
-#include "dummy_node.hpp"
-#include "expr_nodes.hpp"
+#include "ast/abstract_subnodes.hpp"
 
 namespace npc
 {

@@ -5,8 +5,8 @@
 #ifndef NAIVE_PASCAL_COMPILER_SYS_ROUTINE_NODES_HPP
 #define NAIVE_PASCAL_COMPILER_SYS_ROUTINE_NODES_HPP
 
-#include "dummy_node.hpp"
-#include "expr_nodes.hpp"
+#include "ast/dummy_node.hpp"
+#include "ast/decl_list_nodes.hpp"
 
 namespace npc
 {
@@ -54,10 +54,10 @@ namespace npc
     {
     public:
         std::shared_ptr<SysRoutineNode> routine;
-        std::shared_ptr<ExprListNode> args;
+        std::shared_ptr<ArgListNode> args;
 
         SysCallNode(const NodePtr &routine, const NodePtr &args)
-                : routine(cast_node<SysRoutineNode>(routine)), args(cast_node<ExprListNode>(args))
+                : routine(cast_node<SysRoutineNode>(routine)), args(cast_node<ArgListNode>(args))
         {}
 
         llvm::Value *codegen(CodegenContext &context) override;

@@ -5,10 +5,10 @@
 #ifndef NAIVE_PASCAL_COMPILER_ROUTINE_NODES_HPP
 #define NAIVE_PASCAL_COMPILER_ROUTINE_NODES_HPP
 
-#include "dummy_node.hpp"
-#include "identifier_node.hpp"
-#include "type_nodes.hpp"
-#include "decl_list_nodes.hpp"
+#include "ast/dummy_node.hpp"
+#include "ast/identifier_node.hpp"
+#include "ast/type_nodes.hpp"
+#include "ast/decl_list_nodes.hpp"
 
 namespace npc
 {

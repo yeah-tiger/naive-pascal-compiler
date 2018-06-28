@@ -5,13 +5,25 @@
 #ifndef NAIVE_PASCAL_COMPILER_DECL_LIST_NODES_HPP
 #define NAIVE_PASCAL_COMPILER_DECL_LIST_NODES_HPP
 
-#include "dummy_node.hpp"
-#include "identifier_node.hpp"
-#include "type_nodes.hpp"
-#include "const_value_nodes.hpp"
+#include "ast/dummy_node.hpp"
+#include "ast/identifier_node.hpp"
+#include "ast/type_nodes.hpp"
+#include "ast/const_value_nodes.hpp"
 
 namespace npc
 {
+    class ArgListNode : public DummyNode
+    {
+    protected:
+        std::string json_head() const override
+        {
+            return std::string{R"("type": "ArgList")"};
+        }
+
+        bool should_have_children() const override
+        { return true; }
+    };
+
     class ParamDeclNode : public DummyNode
     {
     public:
