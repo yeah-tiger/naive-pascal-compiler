@@ -149,6 +149,8 @@ namespace npc
                 : name(cast_node<IdentifierNode>(name)), type(cast_node<TypeNode>(type))
         {}
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -164,6 +166,9 @@ namespace npc
 
     class TypeListNode : public DummyNode
     {
+    public:
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {

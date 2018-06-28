@@ -22,7 +22,8 @@ namespace npc
         if (context.is_subroutine)
         {
             auto *local = context.builder.CreateAlloca(value->get_llvm_type(context));
-            context.set_local(name->name, local);
+            auto success = context.set_local(name->name, local);
+            assert(success);
             context.builder.CreateStore(value->codegen(context), local);
             return local;
         }
@@ -49,7 +50,8 @@ namespace npc
         if (context.is_subroutine)
         {
             auto *local = context.builder.CreateAlloca(type->get_llvm_type(context));
-            context.set_local(name->name, local);
+            auto success = context.set_local(name->name, local);
+            assert(success);
             return local;
         }
         else
@@ -57,5 +59,25 @@ namespace npc
             return new llvm::GlobalVariable(*context.module, type->get_llvm_type(context), false,
                     llvm::GlobalVariable::ExternalLinkage, type->get_default_value(context), name->name);
         }
+    }
+
+    llvm::Value *TypeListNode::codegen(CodegenContext &context)
+    {
+        for (auto &child : children()) child->codegen(context);
+        return nullptr;
+    }
+
+    llvm::Value *TypeDefNode::codegen(CodegenContext &context)
+    {
+        if (context.is_subroutine)
+        {
+            assert(false);
+        }
+        else
+        {
+            auto success = context.set_alias(name->name, type->get_llvm_type(context));
+            assert(success);
+        }
+        return nullptr;
     }
 }

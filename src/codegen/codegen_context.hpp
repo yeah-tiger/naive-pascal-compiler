@@ -12,6 +12,7 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Value.h>
+#include <llvm/IR/Type.h>
 
 static llvm::LLVMContext llvm_context;
 
@@ -51,8 +52,23 @@ namespace npc
             locals.clear();
         }
 
+        llvm::Type *get_alias(std::string key)
+        {
+            auto it = aliases.find(key);
+            if (it != aliases.end()) return it->second;
+            else return nullptr;
+        }
+
+        bool set_alias(std::string key, llvm::Type *value)
+        {
+            if (get_alias(key)) return false;
+            aliases[key] = value;
+            return true;
+        }
+
     private:
         std::map<std::string, llvm::Value*> locals;
+        std::map<std::string, llvm::Type*> aliases;
     };
 }
 

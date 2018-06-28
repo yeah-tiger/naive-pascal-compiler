@@ -56,6 +56,10 @@ namespace npc
         {
             return llvm_type(simple_type->type, context);
         }
+        else if (auto *alias = dynamic_cast<const AliasTypeNode*>(this))
+        {
+            return context.get_alias(alias->identifier->name);
+        }
         else
         {
             assert(false);

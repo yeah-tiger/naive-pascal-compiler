@@ -87,7 +87,7 @@ namespace npc
         std::string json_head() const override
         {
             return std::string{R"("type": "Type", "name": "alias", "identifier": )"} +
-                   to_string(this->type);
+                   this->identifier->to_json();
         }
     };
 
