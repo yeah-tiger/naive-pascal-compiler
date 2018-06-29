@@ -18,7 +18,7 @@ namespace npc
             case Type::REAL: return context.builder.getDoubleTy();
             case Type::CHAR: return context.builder.getInt8Ty();
             case Type::VOID: return context.builder.getVoidTy();
-            default: assert(false); return nullptr;
+            default: return nullptr;
         }
     }
 
@@ -30,7 +30,7 @@ namespace npc
             case Type::INTEGER: return context.builder.getInt32(0);
             case Type::REAL: return llvm::ConstantFP::get(context.builder.getDoubleTy(), 0.0);
             case Type::CHAR: return context.builder.getInt8(0);
-            default: assert(false); return nullptr;
+            default: return nullptr;
         }
     }
 
@@ -42,18 +42,11 @@ namespace npc
     llvm::Type *TypeNode::get_llvm_type(CodegenContext &context) const
     {
         if (auto *simple_type = dynamic_cast<const SimpleTypeNode*>(this))
-        {
-            return llvm_type(simple_type->type, context);
-        }
+        { return llvm_type(simple_type->type, context); }
         else if (auto *alias = dynamic_cast<const AliasTypeNode*>(this))
-        {
-            return context.get_alias(alias->identifier->name);
-        }
+        { return context.get_alias(alias->identifier->name); }
         else
-        {
-            assert(false);
-            return nullptr;
-        }
+        { throw CodegenException("unsupported type: " + to_string(type)); }
     }
 
     llvm::Constant *TypeNode::get_default_value(CodegenContext &context) const

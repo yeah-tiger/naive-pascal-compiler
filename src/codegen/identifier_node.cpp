@@ -11,7 +11,7 @@ namespace npc
     {
         auto *value = context.get_local(name);
         if (value == nullptr) value = context.module->getGlobalVariable(name);
-        assert(value);
+        if (value == nullptr) throw CodegenException("identifier not found: " + name);
         return value;
     }
 

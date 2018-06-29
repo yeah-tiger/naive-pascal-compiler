@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <exception>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
@@ -70,6 +71,19 @@ namespace npc
         std::map<std::string, llvm::Value*> locals;
         std::map<std::string, llvm::Type*> aliases;
     };
-}
+
+    class CodegenException : public std::exception
+    {
+    public:
+        explicit CodegenException(const std::string &description) : description(description)
+        {}
+
+        const char *what() const noexcept
+        { return ("Codegen Error: " + description).c_str(); }
+
+    private:
+        std::string description;
+    };
+};
 
 #endif //NAIVE_PASCAL_COMPILER_CODEGEN_CONTEXT_H

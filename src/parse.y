@@ -19,9 +19,9 @@
 %define parse.error verbose
 %define parse.lac full
 
-%token PROGRAM ID CONST ARRAY VAR FUNCTION PROCEDURE _BEGIN END TYPE READ RECORD
+%token PROGRAM ID CONST ARRAY VAR FUNCTION PROCEDURE _BEGIN END TYPE RECORD
 %token INTEGER REAL CHAR STRING
-%token SYS_CON SYS_FUNC SYS_PROC SYS_TYPE
+%token SYS_CON SYS_FUNC SYS_PROC SYS_TYPE READ_FUNC
 %token IF THEN ELSE REPEAT UNTIL WHILE DO FOR TO DOWNTO CASE OF GOTO
 %token ASSIGN EQUAL UNEQUAL LE LT GE GT
 %token PLUS MINUS MUL TRUEDIV DIV OR AND MOD NOT
@@ -218,7 +218,7 @@ proc_stmt
         { $$ = make_node<ProcStmtNode>(make_node<RoutineCallNode>($1, $3)); }
     | SYS_PROC LP args_list RP
         { $$ = make_node<ProcStmtNode>(make_node<SysCallNode>($1, $3)); }
-    | READ LP variable_list RP
+    | READ_FUNC LP variable_list RP
         { $$ = make_node<ProcStmtNode>(make_node<SysCallNode>($1, $3)); }
     ;
 

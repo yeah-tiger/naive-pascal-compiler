@@ -13,25 +13,24 @@ namespace npc
     enum class SysRoutine
     {
         ABS, CHR, ODD, ORD, PRED, SQR, SQRT, SUCC,
-        READ_FUN, READLN,  // READ is occupied by flex part.
-        WRITE, WRITELN
+        READ, READLN, WRITE, WRITELN
     };
 
     inline std::string to_string(SysRoutine routine)
     {
         std::map<SysRoutine, std::string> routine_to_string{
-                {SysRoutine::ABS,      "abs"},
-                {SysRoutine::CHR,      "chr"},
-                {SysRoutine::ODD,      "odd"},
-                {SysRoutine::ORD,      "ord"},
-                {SysRoutine::PRED,     "pred"},
-                {SysRoutine::SQR,      "sqr"},
-                {SysRoutine::SQRT,     "sqrt"},
-                {SysRoutine::SUCC,     "succ"},
-                {SysRoutine::READ_FUN, "read"},
-                {SysRoutine::READLN,   "readln"},
-                {SysRoutine::WRITE,    "write"},
-                {SysRoutine::WRITELN,  "writeln"}
+                {SysRoutine::ABS,     "abs"},
+                {SysRoutine::CHR,     "chr"},
+                {SysRoutine::ODD,     "odd"},
+                {SysRoutine::ORD,     "ord"},
+                {SysRoutine::PRED,    "pred"},
+                {SysRoutine::SQR,     "sqr"},
+                {SysRoutine::SQRT,    "sqrt"},
+                {SysRoutine::SUCC,    "succ"},
+                {SysRoutine::READ,    "read"},
+                {SysRoutine::READLN,  "readln"},
+                {SysRoutine::WRITE,   "write"},
+                {SysRoutine::WRITELN, "writeln"}
         };
         // TODO: bound checking
         return routine_to_string[routine];

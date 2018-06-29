@@ -122,8 +122,8 @@ NQUOTE [^']
 {S}{Q}{R} { yylval = make_node<SysRoutineNode>(SysRoutine::SQR); return SYS_FUNC; }
 {S}{Q}{R}{T} { yylval = make_node<SysRoutineNode>(SysRoutine::SQRT); return SYS_FUNC; }
 {S}{U}{C}{C} { yylval = make_node<SysRoutineNode>(SysRoutine::SUCC); return SYS_FUNC; }
-{R}{E}{A}{D} { yylval = make_node<SysRoutineNode>(SysRoutine::READ_FUN); return READ; }
-{R}{E}{A}{D}{L}{N} { yylval = make_node<SysRoutineNode>(SysRoutine::READLN); return READ; }
+{R}{E}{A}{D} { yylval = make_node<SysRoutineNode>(SysRoutine::READ); return READ_FUNC; }
+{R}{E}{A}{D}{L}{N} { yylval = make_node<SysRoutineNode>(SysRoutine::READLN); return READ_FUNC; }
 {W}{R}{I}{T}{E} { yylval = make_node<SysRoutineNode>(SysRoutine::WRITE); return SYS_PROC; }
 {W}{R}{I}{T}{E}{L}{N} { yylval = make_node<SysRoutineNode>(SysRoutine::WRITELN); return SYS_PROC; }
 

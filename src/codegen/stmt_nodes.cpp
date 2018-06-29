@@ -17,13 +17,22 @@ namespace npc
 
     llvm::Value *AssignStmtNode::codegen(CodegenContext &context)
     {
-        auto *lhs = cast_node<IdentifierNode>(this->lhs)->get_ptr(context);
+        auto identifier = cast_node<IdentifierNode>(this->lhs);
+        auto *lhs = identifier->get_ptr(context);
         auto *rhs = this->rhs->codegen(context);
-        if (lhs->getType()->getPointerElementType()->isDoubleTy() && rhs->getType()->isIntegerTy(32))
+        auto *lhs_type = lhs->getType()->getPointerElementType();
+        auto *rhs_type = rhs->getType();
+        if (lhs_type->isDoubleTy() && rhs_type->isIntegerTy(32))
         {
             rhs = context.builder.CreateSIToFP(rhs, context.builder.getDoubleTy());
         }
-        // TODO: check if types are compatible
+        else if (!((lhs_type->isIntegerTy(1)  && rhs_type->isIntegerTy(1)) ||
+                   (lhs_type->isIntegerTy(8)  && rhs_type->isIntegerTy(8)) ||
+                   (lhs_type->isIntegerTy(32) && rhs_type->isIntegerTy(32)) ||
+                   (lhs_type->isDoubleTy()    && rhs_type->isDoubleTy())))
+        {
+            throw CodegenException("incompatible type in assignments: " + identifier->name);
+        }
         context.builder.CreateStore(rhs, lhs);
         return nullptr;
     }
@@ -37,7 +46,8 @@ namespace npc
     llvm::Value *IfStmtNode::codegen(CodegenContext &context)
     {
         auto *cond = expr->codegen(context);
-        assert(cond->getType()->isIntegerTy(1));
+        if (!cond->getType()->isIntegerTy(1))
+        { throw CodegenException("incompatible type in if condition: expected boolean"); }
 
         auto *func = context.builder.GetInsertBlock()->getParent();
         auto *then_block = llvm::BasicBlock::Create(context.module->getContext(), "then", func);
@@ -62,7 +72,8 @@ namespace npc
     llvm::Value *CaseStmtNode::codegen(CodegenContext &context)
     {
         auto *value = expr->codegen(context);
-        assert(value->getType()->isIntegerTy());
+        if (!value->getType()->isIntegerTy())
+        { throw CodegenException("incompatible type in case statement: expected integer"); }
         auto *func = context.builder.GetInsertBlock()->getParent();
         auto *cont = llvm::BasicBlock::Create(context.module->getContext(), "cont");
         auto *switch_inst = context.builder.CreateSwitch(value, cont, static_cast<unsigned int>(children().size()));
@@ -90,6 +101,8 @@ namespace npc
         context.builder.SetInsertPoint(block);
         for (auto &child : children()) child->codegen(context);
         auto *cond = expr->codegen(context);
+        if (!cond->getType()->isIntegerTy(1))
+        { throw CodegenException("incompatible type in repeat condition: expected boolean"); }
         auto *cont = llvm::BasicBlock::Create(context.module->getContext(), "cont", func);
         context.builder.CreateCondBr(cond, cont, block);
 
@@ -107,6 +120,8 @@ namespace npc
 
         context.builder.SetInsertPoint(while_block);
         auto *cond = expr->codegen(context);
+        if (!cond->getType()->isIntegerTy(1))
+        { throw CodegenException("incompatible type in while condition: expected boolean"); }
         context.builder.CreateCondBr(cond, loop_block, cont_block);
 
         context.builder.SetInsertPoint(loop_block);
@@ -120,6 +135,9 @@ namespace npc
 
     llvm::Value *ForStmtNode::codegen(CodegenContext &context)
     {
+        if (!identifier->codegen(context)->getType()->isIntegerTy(32))
+        { throw CodegenException("incompatible type in for iterator: expected int"); }
+
         auto init = make_node<AssignStmtNode>(identifier, start);
         auto upto = direction == DirectionEnum::TO;
         auto cond = make_node<BinopExprNode>(upto ? BinaryOperator::LE : BinaryOperator::GE, identifier, finish);

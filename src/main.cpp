@@ -82,7 +82,14 @@ int main(int argc, char *argv[])
 
     yyparse();
     CodegenContext context;
-    program->codegen(context);
+    try
+    {
+        program->codegen(context);
+    }
+    catch (CodegenException &e)
+    {
+        clog << e.what();
+    }
 
     string output = input;
     output.erase(output.rfind('.'));

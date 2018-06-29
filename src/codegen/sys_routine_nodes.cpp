@@ -34,7 +34,7 @@ namespace npc
             }
             else
             {
-                assert(false);
+                throw CodegenException("incompatible type in write: expected boolean, char, integer, real");
             }
             context.builder.CreateCall(printf_func, args);
         }

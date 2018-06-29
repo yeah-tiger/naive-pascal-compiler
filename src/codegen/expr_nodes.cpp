@@ -30,7 +30,7 @@ namespace npc
                 case BinaryOperator::AND: binop = llvm::Instruction::And; break;
                 case BinaryOperator::OR:  binop = llvm::Instruction::Or; break;
                 case BinaryOperator::XOR: binop = llvm::Instruction::Xor; break;
-                default: assert(false);
+                default: throw CodegenException("operator is invalid: boolean " + to_string(op) + " boolean");
             }
             return context.builder.CreateBinOp(binop, lhs, rhs);
         }
@@ -60,7 +60,7 @@ namespace npc
                 case BinaryOperator::AND: binop = llvm::Instruction::And; break;
                 case BinaryOperator::OR: binop = llvm::Instruction::Or; break;
                 case BinaryOperator::XOR: binop = llvm::Instruction::Xor; break;
-                default: assert(false);
+                default: throw CodegenException("operator is invalid: integer " + to_string(op) + " integer");
             }
             return context.builder.CreateBinOp(binop, lhs, rhs);
         }
@@ -87,7 +87,7 @@ namespace npc
                 case BinaryOperator::SUB: binop = llvm::Instruction::FSub; break;
                 case BinaryOperator::MUL: binop = llvm::Instruction::FMul; break;
                 case BinaryOperator::TRUEDIV: binop = llvm::Instruction::FDiv; break;
-                default: assert(false);
+                default: throw CodegenException("operator is invalid: real " + to_string(op) + " real");
             }
             return context.builder.CreateBinOp(binop, lhs, rhs);
         }
@@ -102,14 +102,13 @@ namespace npc
                 case BinaryOperator::LE: cmp = llvm::CmpInst::ICMP_SLE; break;
                 case BinaryOperator::EQ: cmp = llvm::CmpInst::ICMP_EQ; break;
                 case BinaryOperator::NE: cmp = llvm::CmpInst::ICMP_NE; break;
-                default: assert(false);
+                default: throw CodegenException("operator is invalid: char " + to_string(op) + " char");
             }
             return context.builder.CreateICmp(cmp, lhs, rhs);
         }
         else
         {
-            assert(false);
-            return nullptr;
+            throw CodegenException("operator is invalid: " + to_string(op) + " between different types");
         }
     }
 

@@ -23,7 +23,7 @@ namespace npc
         {
             auto *local = context.builder.CreateAlloca(value->get_llvm_type(context));
             auto success = context.set_local(name->name, local);
-            assert(success);
+            if (!success) throw CodegenException("duplicate identifier in const section: " + name->name);
             context.builder.CreateStore(value->codegen(context), local);
             return local;
         }
@@ -51,7 +51,7 @@ namespace npc
         {
             auto *local = context.builder.CreateAlloca(type->get_llvm_type(context));
             auto success = context.set_local(name->name, local);
-            assert(success);
+            if (!success) throw CodegenException("duplicate identifier in var section: " + name->name);
             return local;
         }
         else
@@ -69,15 +69,8 @@ namespace npc
 
     llvm::Value *TypeDefNode::codegen(CodegenContext &context)
     {
-        if (context.is_subroutine)
-        {
-            assert(false);
-        }
-        else
-        {
-            auto success = context.set_alias(name->name, type->get_llvm_type(context));
-            assert(success);
-        }
+        auto success = context.set_alias(name->name, type->get_llvm_type(context));
+        if (!success) throw CodegenException("duplicate type alias: " + name->name);
         return nullptr;
     }
 }
