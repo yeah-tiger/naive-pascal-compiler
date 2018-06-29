@@ -28,5 +28,5 @@ add_executable(npc
     ${SOURCE_FILES}
 )
 
-llvm_map_components_to_libnames(LLVM_LIBS core)
+llvm_map_components_to_libnames(LLVM_LIBS all)
 target_link_libraries(npc ${LLVM_LIBS})
