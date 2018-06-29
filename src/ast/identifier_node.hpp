@@ -5,6 +5,8 @@
 #ifndef NAIVE_PASCAL_COMPILER_IDENTIFIER_NODE_HPP
 #define NAIVE_PASCAL_COMPILER_IDENTIFIER_NODE_HPP
 
+#include <algorithm>
+
 #include "ast/abstract_subnodes.hpp"
 
 namespace npc
@@ -14,11 +16,10 @@ namespace npc
     public:
         std::string name;
 
-        explicit IdentifierNode(std::string s) : name(std::move(s))
-        {}
-
         explicit IdentifierNode(const char *c) : name(c)
-        {}
+        {
+            std::transform(name.begin(), name.end(), name.begin(), tolower);
+        }
 
         llvm::Value *get_ptr(CodegenContext &context);
         llvm::Value *codegen(CodegenContext &context) override;

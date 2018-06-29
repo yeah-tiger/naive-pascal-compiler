@@ -127,8 +127,8 @@ NQUOTE [^']
 {W}{R}{I}{T}{E} { yylval = make_node<SysRoutineNode>(SysRoutine::WRITE); return SYS_PROC; }
 {W}{R}{I}{T}{E}{L}{N} { yylval = make_node<SysRoutineNode>(SysRoutine::WRITELN); return SYS_PROC; }
 
-[a-zA-Z]([a-zA-Z0-9_])* {
-    yylval = make_node<IdentifierNode>(std::string(yytext));
+[a-zA-Z_]([a-zA-Z0-9_])* {
+    yylval = make_node<IdentifierNode>(yytext);
     return ID;
 }
 
