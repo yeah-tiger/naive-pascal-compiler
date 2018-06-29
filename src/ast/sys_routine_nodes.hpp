@@ -12,7 +12,7 @@ namespace npc
 {
     enum class SysRoutine
     {
-        ABS, CHR, ODD, ORD, PRED, SQR, SQRT, SUCC,
+        ABS, CHR, ORD, PRED, SQRT, SUCC,
         READ, READLN, WRITE, WRITELN
     };
 
@@ -21,10 +21,8 @@ namespace npc
         std::map<SysRoutine, std::string> routine_to_string{
                 {SysRoutine::ABS,     "abs"},
                 {SysRoutine::CHR,     "chr"},
-                {SysRoutine::ODD,     "odd"},
                 {SysRoutine::ORD,     "ord"},
                 {SysRoutine::PRED,    "pred"},
-                {SysRoutine::SQR,     "sqr"},
                 {SysRoutine::SQRT,    "sqrt"},
                 {SysRoutine::SUCC,    "succ"},
                 {SysRoutine::READ,    "read"},

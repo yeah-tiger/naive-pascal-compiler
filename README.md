@@ -4,12 +4,12 @@ A naïve Pascal compiler for the course *Compiler Principle* at ZJU. In summary,
 
 ## Features
 
-- *Simple Data Types*: `boolean`, `char`, `integer`, and `real`
+- *Simple Data Types*: `boolean`, `char`, `integer`, `real`
   - string literals are also supported
 - *Control Flow Statements*: if-else, case-of, while-do, repeat-until, and for loops
 - *Definition Sections*: `const`, `type`, `var`, and routine sections
 - *Routine* (`function` and `procedure`) definition and invocation
-  - including built-in routines: `writeln`
+  - including built-in routines: `read(ln)`, `write(ln)`, `abs`, `sqrt`, `chr`, `ord`, `pred`, `succ`
 - *Operators*: `+` `-` `*` `/` `div` `mod` `and` `or` `xor` `not` and comparison operators
 - *Type Checking*, and *Implicit Conversion* from `integer` to `real`
 
@@ -40,7 +40,7 @@ OPTION:
 - [ ] explicitly fix shift/reduce conflict of if-else
 - [ ] generate detailed error messages for Flex/Bison
 - [ ] do error recovery in Bison and codegen
-- [ ] support all built-in functions and procedures
+- [x] support all built-in functions and procedures
 - [ ] support complex data types (string, array, record, set)
 - [ ] support var parameters
 - [ ] handle nested routines correctly
