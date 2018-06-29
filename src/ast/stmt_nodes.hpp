@@ -115,6 +115,8 @@ namespace npc
         RepeatStmtNode(const NodePtr &expr) : expr(cast_node<ExprNode>(expr))
         {}
 
+        llvm::Value *codegen(CodegenContext &context) override;
+
     protected:
         std::string json_head() const override
         {
@@ -135,6 +137,8 @@ namespace npc
         WhileStmtNode(const NodePtr &expr, const NodePtr &stmt)
                 : expr(cast_node<ExprNode>(expr)), stmt(cast_node<StmtNode>(stmt))
         {}
+
+        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override
@@ -169,6 +173,8 @@ namespace npc
                   start(cast_node<ExprNode>(start)), finish(cast_node<ExprNode>(finish)),
                   stmt(cast_node<StmtNode>(stmt))
         {}
+
+        llvm::Value *codegen(CodegenContext &context) override;
 
     protected:
         std::string json_head() const override
