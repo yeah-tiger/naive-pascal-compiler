@@ -14,6 +14,10 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Type.h>
+#include <llvm/IR/LegacyPassManager.h>
+#include <llvm/Transforms/IPO.h>
+#include <llvm/Transforms/Scalar.h>
+#include <llvm/Transforms/Scalar/GVN.h>
 
 static llvm::LLVMContext llvm_context;
 
@@ -24,15 +28,29 @@ namespace npc
     public:
         llvm::IRBuilder<> builder;
         std::unique_ptr<llvm::Module> module;
+        std::unique_ptr<llvm::legacy::FunctionPassManager> fpm;
+        std::unique_ptr<llvm::legacy::PassManager> mpm;
 
         bool is_subroutine = false;
 
-        explicit CodegenContext(std::string module_id)
+        CodegenContext(std::string module_id, bool optimization)
                 : builder(llvm::IRBuilder<>(llvm_context)),
                   module(std::make_unique<llvm::Module>(module_id, llvm_context))
-        {}
-        CodegenContext() : CodegenContext("main")
-        {}
+        {
+            if (optimization)
+            {
+                fpm = std::make_unique<llvm::legacy::FunctionPassManager>(module.get());
+                fpm->add(llvm::createPromoteMemoryToRegisterPass());
+                fpm->add(llvm::createInstructionCombiningPass());
+                fpm->add(llvm::createReassociatePass());
+                fpm->add(llvm::createGVNPass());
+                fpm->add(llvm::createCFGSimplificationPass());
+                fpm->doInitialization();
+                mpm = std::make_unique<llvm::legacy::PassManager>();
+                mpm->add(llvm::createConstantMergePass());
+                mpm->add(llvm::createFunctionInliningPass());
+            }
+        }
 
         llvm::Value *get_local(std::string key)
         {

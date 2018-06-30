@@ -12,6 +12,7 @@ A naïve Pascal compiler for the course *Compiler Principle* at ZJU. In summary,
   - including built-in routines: `read(ln)`, `write(ln)`, `abs`, `sqrt`, `chr`, `ord`, `pred`, `succ`
 - *Operators*: `+` `-` `*` `/` `div` `mod` `and` `or` `xor` `not` and comparison operators
 - *Type Checking*, and *Implicit Conversion* from `integer` to `real`
+- *Case Insensitivity* as per the Pascal standard
 
 ## Usage
 
@@ -21,7 +22,10 @@ OPTION:
   -emit-llvm    Emit LLVM assembly code (.ll)
   -S            Emit assembly code (.s)
   -c            Emit object code (.o)
+  -O            (Optional) do optimization
 ```
+
+One of three emission options should be specified. The output file will be generated under the same directory as the input file.
 
 - For LLVM assembly files, run `lli output.ll` to directly execute them.
 - For assembly and object files, run `cc output.{s,o}` to generate executables.

@@ -61,12 +61,16 @@ int main(int argc, char *argv[])
     enum class Target
     { UNDEFINED, LLVM, ASM, OBJ };
     Target target = Target::UNDEFINED;
+    bool optimization = false;
     char *input = nullptr;
     for (int i = 1; i < argc; ++i)
     {
         if (strcmp(argv[i], "-emit-llvm") == 0) target = Target::LLVM;
         else if (strcmp(argv[i], "-S") == 0) target = Target::ASM;
         else if (strcmp(argv[i], "-c") == 0) target = Target::OBJ;
+        else if (strcmp(argv[i], "-O") == 0) optimization = true;
+        else if (argv[i][0] == '-')
+        { printf("Error: unknown argument: %s", argv[i]); exit(1); }
         else input = argv[i];
     }
     if (target == Target::UNDEFINED || input == nullptr)
@@ -81,7 +85,7 @@ int main(int argc, char *argv[])
     freopen(input, "r", stdin);
 
     yyparse();
-    CodegenContext context;
+    CodegenContext context("main", optimization);
     try
     {
         program->codegen(context);

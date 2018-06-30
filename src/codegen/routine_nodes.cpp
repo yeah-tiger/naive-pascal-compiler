@@ -5,6 +5,7 @@
 #include <vector>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Verifier.h>
 #include "utils/ast.hpp"
 #include "codegen/codegen_context.hpp"
 
@@ -27,6 +28,12 @@ namespace npc
         context.builder.SetInsertPoint(block);
         for (auto &stmt : children()) stmt->codegen(context);
         context.builder.CreateRet(context.builder.getInt32(0));
+
+        llvm::verifyFunction(*main_func);
+        if (context.fpm)
+        { context.fpm->run(*main_func); }
+        if (context.mpm)
+        { context.mpm->run(*context.module); }
         return nullptr;
     }
 
@@ -73,6 +80,10 @@ namespace npc
             auto *ret = context.builder.CreateLoad(local);
             context.builder.CreateRet(ret);
         }
+
+        llvm::verifyFunction(*func);
+        if (context.fpm)
+        { context.fpm->run(*func); }
         return nullptr;
     }
 
