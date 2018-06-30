@@ -40,7 +40,7 @@ One of three emission options should be specified. The output file will be gener
 ## TODO
 
 - [x] refactor header dependencies
-- [ ] add more practical test programs
+- [x] add more practical test programs
 - [ ] explicitly fix shift/reduce conflict of if-else
 - [ ] generate detailed error messages for Flex/Bison
 - [ ] do error recovery in Bison and codegen
