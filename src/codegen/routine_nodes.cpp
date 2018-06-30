@@ -53,7 +53,6 @@ namespace npc
         auto *block = llvm::BasicBlock::Create(context.module->getContext(), "entry", func);
         context.builder.SetInsertPoint(block);
 
-        context.reset_locals();
         auto index = 0;
         for (auto &arg : func->args())
         {
@@ -84,6 +83,8 @@ namespace npc
         llvm::verifyFunction(*func);
         if (context.fpm)
         { context.fpm->run(*func); }
+
+        context.reset_locals();
         return nullptr;
     }
 

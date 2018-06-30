@@ -97,7 +97,7 @@ namespace npc
         {}
 
         const char *what() const noexcept
-        { return ("Codegen Error: " + description).c_str(); }
+        { return ("Codegen error: " + description).c_str(); }
 
     private:
         std::string description;

@@ -22,18 +22,6 @@ namespace npc
         }
     }
 
-    static llvm::Constant *llvm_constant(Type type, CodegenContext &context)
-    {
-        switch (type)
-        {
-            case Type::BOOLEAN: return context.builder.getFalse();
-            case Type::INTEGER: return context.builder.getInt32(0);
-            case Type::REAL: return llvm::ConstantFP::get(context.builder.getDoubleTy(), 0.0);
-            case Type::CHAR: return context.builder.getInt8(0);
-            default: return nullptr;
-        }
-    }
-
     llvm::Type *ConstValueNode::get_llvm_type(CodegenContext &context) const
     {
         return llvm_type(type, context);
@@ -47,10 +35,5 @@ namespace npc
         { return context.get_alias(alias->identifier->name); }
         else
         { throw CodegenException("unsupported type: " + to_string(type)); }
-    }
-
-    llvm::Constant *TypeNode::get_default_value(CodegenContext &context) const
-    {
-        return llvm_constant(type, context);
     }
 }

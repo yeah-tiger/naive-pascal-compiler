@@ -54,12 +54,15 @@ namespace npc
                 case BinaryOperator::ADD: binop = llvm::Instruction::Add; break;
                 case BinaryOperator::SUB: binop = llvm::Instruction::Sub; break;
                 case BinaryOperator::MUL: binop = llvm::Instruction::Mul; break;
-                case BinaryOperator::TRUEDIV: binop = llvm::Instruction::FDiv; break;
                 case BinaryOperator::DIV: binop = llvm::Instruction::SDiv; break;
                 case BinaryOperator::MOD: binop = llvm::Instruction::SRem; break;
                 case BinaryOperator::AND: binop = llvm::Instruction::And; break;
                 case BinaryOperator::OR: binop = llvm::Instruction::Or; break;
                 case BinaryOperator::XOR: binop = llvm::Instruction::Xor; break;
+                case BinaryOperator::TRUEDIV:
+                    lhs = context.builder.CreateSIToFP(lhs, context.builder.getDoubleTy());
+                    rhs = context.builder.CreateSIToFP(rhs, context.builder.getDoubleTy());
+                    binop = llvm::Instruction::FDiv; break;
                 default: throw CodegenException("operator is invalid: integer " + to_string(op) + " integer");
             }
             return context.builder.CreateBinOp(binop, lhs, rhs);

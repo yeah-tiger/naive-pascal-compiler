@@ -57,6 +57,10 @@ namespace npc
                 : routine(cast_node<SysRoutineNode>(routine)), args(cast_node<ArgListNode>(args))
         {}
 
+        explicit SysCallNode(const NodePtr &routine)
+                : SysCallNode(routine, make_node<ArgListNode>())
+        {}
+
         llvm::Value *codegen(CodegenContext &context) override;
 
     protected:

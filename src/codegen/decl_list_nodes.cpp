@@ -30,9 +30,7 @@ namespace npc
         else
         {
             if (is_a_ptr_of<StringNode>(value))
-            {
-                return value->codegen(context);
-            }
+            { return value->codegen(context); }
             auto *constant = llvm::cast<llvm::Constant>(value->codegen(context));
             return new llvm::GlobalVariable(*context.module, value->get_llvm_type(context), true,
                     llvm::GlobalVariable::ExternalLinkage, constant, name->name);
@@ -56,8 +54,13 @@ namespace npc
         }
         else
         {
-            return new llvm::GlobalVariable(*context.module, type->get_llvm_type(context), false,
-                    llvm::GlobalVariable::ExternalLinkage, type->get_default_value(context), name->name);
+            auto *type = this->type->get_llvm_type(context);
+            llvm::Constant *constant;
+            if (type->isIntegerTy()) constant = llvm::ConstantInt::get(type, 0);
+            else if (type->isDoubleTy()) constant = llvm::ConstantFP::get(context.builder.getDoubleTy(), 0.0);
+            else throw CodegenException("unsupported type: " + to_string(this->type->type));
+            return new llvm::GlobalVariable(*context.module, type, false, llvm::GlobalVariable::ExternalLinkage,
+                                            constant, name->name);
         }
     }
 

@@ -56,7 +56,12 @@ namespace npc
                 context.builder.CreateCall(scanf_func, args);
             }
             if (routine->routine == SysRoutine::READLN)
-            { context.builder.CreateCall(scanf_func, context.builder.CreateGlobalStringPtr("%*[^\n]\n")); }
+            {
+                context.builder.CreateCall(scanf_func, context.builder.CreateGlobalStringPtr("%*[^\n]"));
+                auto *getchar_type = llvm::FunctionType::get(context.builder.getInt32Ty(), false);
+                auto *getchar_func = context.module->getOrInsertFunction("getchar", getchar_type);
+                context.builder.CreateCall(getchar_func);
+            }
             return nullptr;
         }
         else if (routine->routine == SysRoutine::ABS)

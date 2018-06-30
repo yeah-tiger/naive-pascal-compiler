@@ -71,6 +71,7 @@ NQUOTE [^']
 {U}{N}{T}{I}{L}             return UNTIL;
 {V}{A}{R}                   return VAR;
 {W}{H}{I}{L}{E}             return WHILE;
+{X}{O}{R}                   return XOR;
 
 {B}{O}{O}{L}{E}{A}{N} {
     yylval = make_node<SimpleTypeNode>(Type::BOOLEAN);
@@ -130,10 +131,10 @@ NQUOTE [^']
     return ID;
 }
 
-[+-]?[0-9]+             { yylval = make_node<IntegerNode>(yytext); return INTEGER; }
-[+-]?[0-9]+"."[0-9]+    { yylval = make_node<RealNode>(yytext); return REAL; }
-'{NQUOTE}'              { yylval = make_node<CharNode>(yytext); return CHAR; }
-'({NQUOTE}|'')+'        { yylval = make_node<StringNode>(yytext); return STRING; }
+[0-9]+              { yylval = make_node<IntegerNode>(yytext); return INTEGER; }
+[0-9]+"."[0-9]+     { yylval = make_node<RealNode>(yytext); return REAL; }
+'{NQUOTE}'          { yylval = make_node<CharNode>(yytext); return CHAR; }
+'({NQUOTE}|'')+'    { yylval = make_node<StringNode>(yytext); return STRING; }
 
 ":="                return ASSIGN;
 ":"                 return COLON;
@@ -148,13 +149,13 @@ NQUOTE [^']
 "("                 return LP;
 "<"                 return LT;
 "-"                 return MINUS;
-"<>"                return UNEQUAL;
+"*"                 return MUL;
 "+"                 return PLUS;
 "]"                 return RB;
 ")"                 return RP;
 ";"                 return SEMI;
 "/"                 return TRUEDIV;
-"*"                 return MUL;
+"<>"                return UNEQUAL;
 "{"    {
     int c;
     while ((c = yyinput())) {

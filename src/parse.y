@@ -24,7 +24,7 @@
 %token SYS_CON SYS_FUNC SYS_PROC SYS_TYPE READ_FUNC
 %token IF THEN ELSE REPEAT UNTIL WHILE DO FOR TO DOWNTO CASE OF GOTO
 %token ASSIGN EQUAL UNEQUAL LE LT GE GT
-%token PLUS MINUS MUL TRUEDIV DIV OR AND MOD NOT
+%token PLUS MINUS MUL TRUEDIV DIV MOD AND OR XOR NOT
 %token DOT DOTDOT SEMI LP RP LB RB COMMA COLON
 
 %%
@@ -96,6 +96,7 @@ array_type_decl
         { $$ = make_node<ArrayTypeNode>($3, $6); }
     ;
 
+// TODO: support negative indices
 array_range
     : const_value DOTDOT const_value
         { $$ = make_node<RangeNode>($1, $3); }
@@ -216,6 +217,8 @@ proc_stmt
         { $$ = make_node<ProcStmtNode>(make_node<RoutineCallNode>($1)); }
     | ID LP args_list RP
         { $$ = make_node<ProcStmtNode>(make_node<RoutineCallNode>($1, $3)); }
+    | SYS_PROC LP RP
+        { $$ = make_node<ProcStmtNode>(make_node<SysCallNode>($1)); }
     | SYS_PROC LP args_list RP
         { $$ = make_node<ProcStmtNode>(make_node<SysCallNode>($1, $3)); }
     | READ_FUNC LP variable_list RP
@@ -285,6 +288,7 @@ expr
     : expr PLUS term { $$ = make_node<BinopExprNode>(BinaryOperator::ADD, $1, $3); }
     | expr MINUS term { $$ = make_node<BinopExprNode>(BinaryOperator::SUB, $1, $3); }
     | expr OR term { $$ = make_node<BinopExprNode>(BinaryOperator::OR, $1, $3); }
+    | expr XOR term { $$ = make_node<BinopExprNode>(BinaryOperator::XOR, $1, $3); }
     | term { $$ = $1; }
     ;
 

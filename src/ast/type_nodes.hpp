@@ -42,7 +42,6 @@ namespace npc
         Type type = Type::UNDEFINED;
 
         llvm::Type *get_llvm_type(CodegenContext &context) const;
-        llvm::Constant *get_default_value(CodegenContext &context) const;
 
     protected:
         TypeNode() = default;
